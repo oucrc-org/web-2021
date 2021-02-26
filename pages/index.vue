@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <div id="containts">
+    <div id="contents">
       <code><pre>{{ json }}</pre></code>
     </div>
     <Footer />

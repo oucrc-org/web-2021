@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<Header />
-		<div id="containts">
+		<div id="contents">
 			<!-- ここにコンテンツ -->
 		</div>
 		<Footer />
