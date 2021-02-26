@@ -15,8 +15,13 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      /* Google Fonts */
       { rel: 'preconnect', href: 'https://fonts.gstatic.com'},
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap' }
+    ],
+    script: [
+      { src: 'https://polyfill.io/v3/polyfill.min.js?features=es6', mode: 'client' },
+      { id: 'MathJax-script', async: true, src: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js', mode: 'client' }
     ]
   },
 
