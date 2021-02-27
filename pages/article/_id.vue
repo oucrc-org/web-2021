@@ -10,7 +10,7 @@
             {{article.title}}
           </div>
           <div class="m-8">
-            <p>執筆者：{{article.name}}</p>
+            <p v-if="article.name !== null">執筆者：{{article.name.name}}</p>
             <p>最終更新：{{ timeUpdated }}</p>
           </div>
           <span v-html="article.body"></span>
