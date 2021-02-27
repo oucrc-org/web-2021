@@ -12,9 +12,9 @@
     <!-- ▼ 電子計算機研究会とは -->
     <section class="bg-white border-t-2 py-32 relative w-full">
       <div class="container mx-auto">
-        <div class="divide-y divide-divider mb-20 px-24 md:px-40 lg:px-64 xl:px-96">
-          <h2 class="font-bold mb-4 text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
-          <p class="pt-5 text-center text-lg text-secondary tracking-widest">何をしているところなの？</p>
+        <div class="divide-y divide-divider mb-20 px-4 sm:px-24 md:px-40 lg:px-64 xl:px-96">
+          <h2 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
+          <p class="pt-5 text-center sm:text-lg text-secondary tracking-widest">何をしているところなの？</p>
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
