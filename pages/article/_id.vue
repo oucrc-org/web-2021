@@ -11,7 +11,7 @@
           </div>
           <div class="m-8">
             <p>執筆者：{{article.name}}</p>
-            <p>最終更新：{{article.updatedAt}}</p>
+            <p>最終更新：{{ timeUpdated }}</p>
           </div>
           <span v-html="article.body"></span>
         </div>
@@ -37,7 +37,8 @@
   export default{
     data(){
       return{
-        article: 'There are no data'
+        article: 'There are no data',
+        timeUpdated: ''
       }
     },
 
@@ -47,9 +48,20 @@
         headers: {
           'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
         }
-      })
-    .then(response => {
-        return{ article: response.data}
+      }).then(response => {
+        const options = {
+          year: 'numeric',
+          month: 'numeric',
+          day: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          second: 'numeric',
+        }
+        const timeUpdated = new Date(response.data.updatedAt).toLocaleString('ja-JP', options)
+        return {
+          article: response.data,
+          timeUpdated: timeUpdated
+        }
       }).catch(function (e) {
         console.log(e.statusCode)
         error({
