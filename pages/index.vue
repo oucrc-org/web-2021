@@ -10,9 +10,24 @@
 
 
     <!-- ▼ 電子計算機研究会とは -->
-    <section class="bg-red-300 h-64 relative w-full">
+    <section class="bg-white border-t-2 py-32 relative w-full">
       <div class="container mx-auto">
-        電子計算機研究会とは
+        <div class="divide-y divide-divider mb-20 px-96">
+          <h2 class="font-bold mb-4 text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
+          <p class="pt-5 text-center text-lg text-secondary tracking-widest">何をしているところなの？</p>
+        </div>
+
+        <div class="grid grid-cols-3 gap-16">
+          <ArticleCard tag="プログラミング" :img-path="require('@/assets/images/cover-programming.png')"
+                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+          <ArticleCard tag="電子工作" :img-path="require('@/assets/images/cover-electronic.png')"
+                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+          <ArticleCard tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
+                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+        </div>
+        <p class="font-semibold mt-20 text-center text-lg text-secondary tracking-widest">
+          他にも、3Dモデルを作成したりゲーム大会を開いたりしています！
+        </p>
       </div>
     </section>
     <!-- ▲ 電子計算機研究会とは -->
@@ -21,10 +36,11 @@
     <!-- ▼ 電算研の部室 -->
     <section class="relative w-full z-10" style="height: 76vh">
       <div class="container h-full relative mx-auto">
-        <img class="oucrc-room-label absolute left-0" src="~/assets/images/oucrc-room-label.png" alt="電算研の部室">
+        <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
         <a href="#">
-          <img class="oucrc-room-button absolute right-0 transform hover:scale-105 transition duration-500 ease-in-out"
-               src="~/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
+          <img
+            class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-102 transition duration-500 ease-in-out"
+            src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
         </a>
       </div>
     </section>
@@ -84,6 +100,6 @@
 }
 
 .parallax {
-  background-image: url(~/assets/images/oucrc-room.png)
+  background-image: url(@/assets/images/oucrc-room.png)
 }
 </style>
