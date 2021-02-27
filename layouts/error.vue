@@ -1,7 +1,5 @@
 <template>
   <div class="">
-    <Header />
-
     <div class="error container mx-auto bg-white text-center m-8" >
       <p class="text-9xl">{{ error.statusCode }}</p>
       <div v-if="error.statusCode === 404" class="text-5xl">
@@ -18,7 +16,6 @@
         </button>
       </a>
     </div>
-    <Footer />
   </div>
 </template>
 
