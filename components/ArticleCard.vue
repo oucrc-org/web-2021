@@ -21,12 +21,7 @@
 <script>
 export default {
   name: "ArticleCard",
-  props: ['tag', 'imgPath', 'description'],
-  // data() {
-  //   return {
-  //     a: require(this.props.imgPath)
-  //   }
-  // }
+  props: ['tag', 'imgPath', 'description']
 }
 </script>
 
