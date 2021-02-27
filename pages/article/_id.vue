@@ -52,7 +52,10 @@
         return{ article: response.data}
       }).catch(function (e) {
         console.log(e.statusCode)
-        error({ statusCode: 404, message: e.message})
+        error({
+          statusCode: e.statusCode,
+          message: e.message
+        })
       })
     }
   };
