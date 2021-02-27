@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <Header />
     <div id="contents">
       <code><pre>{{ json }}</pre></code>
     </div>
-    <Footer />
   </div>
 </template>
 
