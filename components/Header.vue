@@ -13,7 +13,7 @@
 			</nav>
 			<img src="~/assets/images/search.svg" width="23" height="23" alt="検索" class="m-2">
 		</div>
-		<img src="~/assets/images/hamburger.svg" width="23" height="16" alt="メニュー" class="m-2">
+		<img src="~/assets/images/hamburger.svg" width="23" height="16" alt="メニュー" class="m-2 block md:hidden">
 	</div>
 </template>
 
