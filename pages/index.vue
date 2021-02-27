@@ -12,12 +12,12 @@
     <!-- ▼ 電子計算機研究会とは -->
     <section class="bg-white border-t-2 py-32 relative w-full">
       <div class="container mx-auto">
-        <div class="divide-y divide-divider mb-20 px-96">
+        <div class="divide-y divide-divider mb-20 px-24 md:px-40 lg:px-64 xl:px-96">
           <h2 class="font-bold mb-4 text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
           <p class="pt-5 text-center text-lg text-secondary tracking-widest">何をしているところなの？</p>
         </div>
 
-        <div class="grid grid-cols-3 gap-16">
+        <div class="grid sm:grid-cols-3 gap-16 px-5">
           <ArticleCard tag="プログラミング" :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           <ArticleCard tag="電子工作" :img-path="require('@/assets/images/cover-electronic.png')"
@@ -26,7 +26,7 @@
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
         <p class="font-semibold mt-20 text-center text-lg text-secondary tracking-widest">
-          他にも、3Dモデルを作成したりゲーム大会を開いたりしています！
+          他にも、3Dモデルを作成したり<br class="sm:hidden">ゲーム大会を開いたりしています！
         </p>
       </div>
     </section>
@@ -34,7 +34,7 @@
 
 
     <!-- ▼ 電算研の部室 -->
-    <section class="relative w-full z-10" style="height: 76vh">
+    <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
         <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
         <a href="#">
@@ -64,30 +64,6 @@
   </div>
 </template>
 
-<script>
-// import axios from 'axios'
-//
-// export default {
-//   data() {
-//     return {
-//       json: 'No data'
-//     }
-//   },
-//   mounted() {
-//     // APIはこれで叩けます！！
-//     axios
-//       .get('https://oucrc.microcms.io/api/v1/article', {
-//         headers: {
-//         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
-//         }
-//       })
-//       .then(response => {
-//         this.json = response.data
-//       })
-//   }
-// };
-</script>
-
 <style scoped>
 .oucrc-room-label {
   height: 40vh;
@@ -96,7 +72,7 @@
 
 .oucrc-room-button {
   bottom: 5vh;
-  height: 7vh;
+  height: 8vh;
 }
 
 .parallax {
