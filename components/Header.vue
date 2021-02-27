@@ -1,5 +1,5 @@
 <template>
-	<div id="header" class="text-lg flex flex-row justify-between">
+	<div id="header" class="bg-white text-lg flex flex-row justify-between fixed w-full z-50">
 		<NuxtLink to="/" class="m-2 flex flex-row items-center">
 			<img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ">
 			<img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="hidden md:block">
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-	
+
 }
 </script>
 
