@@ -40,7 +40,7 @@
 
     <!-- ▼ お問い合わせ -->
     <section class="bg-white h-64 relative">
-      お問い合わせ
+      <Contact />
     </section>
     <!-- ▲ お問い合わせ -->
 
@@ -49,27 +49,10 @@
 </template>
 
 <script>
-// import axios from 'axios'
-//
-// export default {
-//   data() {
-//     return {
-//       json: 'No data'
-//     }
-//   },
-//   mounted() {
-//     // APIはこれで叩けます！！
-//     axios
-//       .get('https://oucrc.microcms.io/api/v1/article', {
-//         headers: {
-//         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
-//         }
-//       })
-//       .then(response => {
-//         this.json = response.data
-//       })
-//   }
-// };
+import Contact from "~/components/Contact";
+export default {
+  components: {Contact}
+}
 </script>
 
 <style scoped>
