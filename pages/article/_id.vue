@@ -1,25 +1,25 @@
 <template>
-  <div class="grid grid-cols-6">
-    <div class="grid grid-cols-1"></div>
-    <section class="col-span-3 bg-red-500 m-5 p-8" :class="$style.article">
-      <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-        <img :src="article.image.url" :class="$style.article"/>
-      </div>
-      <div class="text-4xl m-8">
-        {{article.title}}
-      </div>
-      <div class="m-8">
-        <p>執筆者：{{article.name}}</p>
-        <p>最終更新：{{article.updatedAt}}</p>
-      </div>
-      <span v-html="article.body"></span>
-    </section>
+  <div class="bg-gray-300">
+    <div class="container mx-auto flex">
+      <section class="bg-white m-5 p-8 max-w-screen-md" :class="$style.article">
+        <div class="">
+          <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
+            <img :src="article.image.url" :class="$style.article"/>
+          </div>
+          <div class="text-5xl m-8">
+            {{article.title}}
+          </div>
+          <div class="m-8">
+            <p>執筆者：{{article.name}}</p>
+            <p>最終更新：{{article.updatedAt}}</p>
+          </div>
+          <span v-html="article.body"></span>
+        </div>
+      </section>
 
-
-
-    <section class="col-span-1 bg-blue-500" :class="$style.article">
-    </section>
-    <div class="col-span-1"></div>
+      <section class="bg-blue-500 sub-bar">
+      </section>
+    </div>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/androidstudio.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
@@ -58,38 +58,51 @@
   };
 </script>
 
+<style scoped>
+
+.sub-bar{
+  width: 400px;
+  margin-left: 20px;
+}
+
+</style>
+
 <style module>
+
   .article img{
     display: block;
     margin: auto;
   }
 
   .article h1{
-    font-size: 2.5em;
+    font-size: 2.1em;
+    @apply border-gray-500 border-b-2 pt-5
   }
 
   .article h2{
-    font-size: 1.5em;
+    font-size: 1.8em;
+    @apply pt-3
   }
 
   .article h3{
-    font-size: 1.2em;
+    font-size: 1.5em;
+    @apply pt-1
   }
 
   .article h4{
-    font-size: 0.9em;
+    font-size: 1.2em;
   }
 
   .article h5{
-    font-size: 0.6em;
+    font-size: 0.9em;
   }
 
   .article h6{
-    font-size: 0.3em;
+    font-size: 0.6em;
   }
 
   .article code{
-
+    overflow: scroll;
   }
 
   .article blockquote{
