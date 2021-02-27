@@ -10,10 +10,7 @@
       <h3 class="font-semibold leading-8 mt-4 px-3 text-left text-lg text-secondary tracking-widest">
         {{ description }}
       </h3>
-      <p class="double-line-button mt-8 transform hover:scale-105 transition duration-500 ease-in-out">
-        <img src="@/assets/images/next.png" alt="もっと見る">
-        <span class="mr-1 tracking-widest">内容を見る</span>
-      </p>
+      <DoubleLineButton label="内容を見る" />
     </a>
   </div>
 </template>
