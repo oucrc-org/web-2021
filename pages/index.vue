@@ -4,7 +4,7 @@
 
     <!-- ▼ ヒーローエリア -->
     <section class="bg-white h-64 relative">
-      <br><br><br>スライドショー
+      スライドショー
     </section>
     <!-- ▲ ヒーローエリア -->
 
