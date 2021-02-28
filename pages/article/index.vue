@@ -42,9 +42,13 @@ export default {
   },
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
-    const requestFieldFilter = 'id,title,publishedAt,category,image,body';
     return axios
-      .get(`https://oucrc.microcms.io/api/v1/article?limit=9&offset=${ (currentPageNum - 1) * 9 || 1 }&fields=${ requestFieldFilter }`, {
+      .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
+        limit: 9,
+        offset: (currentPageNum - 1) * 9,
+        fields: 'id,title,date,category,image,body',
+        orders: '-date,-title',
+      }).map(([key, value]) => key + '=' + value).join('&'), {
         headers: {
           "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
         },
