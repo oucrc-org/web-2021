@@ -27,17 +27,26 @@ export default {
       articles: {
         contents: [],
       },
+      currentPageNum: {
+        type: Number,
+        default: 1
+      },
+      arrayJumpTo: [],
     };
   },
   asyncData({ query, error }) {
+    const currentPageNum = +query.p || 1;
+    const requestFieldFilter = 'id,title,publishedAt,category,image,body';
     return axios
-      .get(`https://oucrc.microcms.io/api/v1/article?limit=9&offset=${ (query.p - 1) * 9 || 1 }`, {
+      .get(`https://oucrc.microcms.io/api/v1/article?limit=9&offset=${ (currentPageNum - 1) * 9 || 1 }&fields=${ requestFieldFilter }`, {
         headers: {
           "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
         },
       }).then(response => {
         return {
-          articles: response.data
+          articles: response.data,
+          currentPageNum: currentPageNum,
+          arrayJumpTo: getArrayJumpTo(currentPageNum, response.data.totalCount, 9)
         }
       }).catch(e => {
         error({
@@ -47,6 +56,23 @@ export default {
       })
   },
 };
+
+function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
+  const arrayJumpTo = [];
+  for (let i = currentPageNum, j = 1; i >= 1; i -= j, j *= 2) {
+    arrayJumpTo.unshift(i);
+  }
+  if (arrayJumpTo[0] !== 1) {
+    arrayJumpTo.unshift(1);
+  }
+  for (let i = currentPageNum, j = 1; (i += j) <= totalCount / countPerPage; j *= 2) {
+    arrayJumpTo.push(i);
+  }
+  if (arrayJumpTo[arrayJumpTo.length - 1] < Math.ceil(totalCount / countPerPage)) {
+    arrayJumpTo.push(Math.ceil(totalCount / countPerPage));
+  }
+  return arrayJumpTo;
+}
 </script>
 
 <style scoped>
