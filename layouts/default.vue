@@ -33,8 +33,4 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-
-.double-line-button > img {
-  @apply absolute bottom-0 h-4 mr-2 my-auto right-0 top-0
-}
 </style>
