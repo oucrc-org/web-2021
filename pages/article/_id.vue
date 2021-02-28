@@ -87,9 +87,9 @@
 
 
         <!-- ▼ この人が書いた記事 -->
-        <div class="pt-20 mx-8 sm:mx-12 text-center">
+        <div class="pt-16 mx-8 sm:mx-12 text-center">
           <Title label="この人が書いた記事"/>
-          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-6"
+          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
                        :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
@@ -97,9 +97,9 @@
 
 
         <!-- ▼ 最新の投稿 -->
-        <div class="pt-20 mb-8 mx-8 sm:mx-12 text-center">
+        <div class="pt-16 mb-8 mx-8 sm:mx-12 text-center">
           <Title label="最新の投稿"/>
-          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-6"
+          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
                        :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
@@ -116,7 +116,11 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/androidstudio.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad()</script>
+    <script>
+      window.setTimeout(function () {
+        hljs.initHighlighting()
+      }, 1000)
+    </script>
 
     <!---------------------------------------------------  スクリプト  -------------------------------------------------->
 
@@ -124,7 +128,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
   data() {
@@ -140,7 +144,7 @@ export default {
     renderMathJax() {
       if (window.MathJax) {
         window.MathJax.Hub.Config({
-          TeX: { equationNumbers: { autoNumber: 'AMS' } },
+          TeX: {equationNumbers: {autoNumber: 'AMS'}},
           tex2jax: {
             inlineMath: [
               ['$', '$'],
@@ -148,13 +152,13 @@ export default {
             ],
             processEscapes: true
           },
-          'HTML-CSS': { matchFontHeight: false },
+          'HTML-CSS': {matchFontHeight: false},
           displayAlign: 'center',
           displayIndent: '2em'
         })
         window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
       }
-    }
+    },
   },
   asyncData({params, error}) {
     return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
