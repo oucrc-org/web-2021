@@ -133,6 +133,29 @@ export default {
       timeUpdated: ''
     }
   },
+  mounted() {
+    this.renderMathJax()
+  },
+  methods: {
+    renderMathJax() {
+      if (window.MathJax) {
+        window.MathJax.Hub.Config({
+          TeX: { equationNumbers: { autoNumber: 'AMS' } },
+          tex2jax: {
+            inlineMath: [
+              ['$', '$'],
+              ['\\(', '\\)']
+            ],
+            processEscapes: true
+          },
+          'HTML-CSS': { matchFontHeight: false },
+          displayAlign: 'center',
+          displayIndent: '2em'
+        })
+        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
+      }
+    }
+  },
   asyncData({params, error}) {
     return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
       headers: {
