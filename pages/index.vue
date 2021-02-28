@@ -25,7 +25,7 @@
           <ArticleCard tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
-        <p class="font-semibold mt-20 text-center text-lg text-secondary tracking-widest">
+        <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
           他にも、3Dモデルを作成したり<br class="sm:hidden">ゲーム大会を開いたりしています！
         </p>
       </div>
