@@ -45,22 +45,37 @@
             src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
         </a>
       </div>
+      <hr class="line">
     </section>
     <!-- ▲ 電算研の部室 -->
 
 
     <!-- ▼ お知らせ -->
-    <section class="bg-white relative">
+    <section class="bg-white relative pt-20 md:py-20">
       <div class="grid grid-cols-1 md:grid-cols-3">
-        <section class="col-span-1 image">
+        <section class="col-span-1 image bg-red-500">
           test
         </section>
-        <section class="col-span-1 md:col-span-2 bg-blue-500">
-          <div>お知らせ</div>
-          <div v-for="notice in notices.contents" v-html="removeHtmlTag(notice.body)">
+        <section class="col-span-1 md:col-span-2">
+          <div class="text-3xl font-bold border-b-2 py-5 pl-5">お知らせ</div>
+          <div v-for="notice in notices.contents" class="border-b-2 border-gray-300 text-gray-700">
+            <a href="https://google.com">
+                <div class="text-xl text-left py-5 pl-5">
+                  {{notice.title.slice(0, 30)}}
+                  <div class="text-right float-right pr-5">
+                    &#9658;
+                  </div>
+                </div>
+            </a>
+          </div>
+          <div class="py-5 pr-5">
+            <a href="https://google.com">
+              <button class="block font-bold text-xl text-gray-700" style="margin: 0 0 0 auto">もっとみる</button>
+            </a>
           </div>
         </section>
       </div>
+      <hr class="line md:hidden">
     </section>
     <!-- ▲ お知らせ -->
 
@@ -83,12 +98,18 @@ export default {
   /*お知らせを取ってくる処理系統*/
   data(){
     return{
-      notices: null,
+      notices: {
+        contents: []
+      },
       status: 'wait'
     }
   },
   asyncData(){
-    return axios.get('https://oucrc.microcms.io/api/v1/news', {
+    return axios.get('https://oucrc.microcms.io/api/v1/news?' + Object.entries({
+      limit: 3,
+      fields: 'id title',
+      orders: '-date -createdAt'
+    }), {
       headers: {
         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
       }
@@ -113,9 +134,6 @@ export default {
   methods: {
     handleScroll() {
       this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
-    },
-    removeHtmlTag(value){
-      return value.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
     }
   },
   beforeMount() {
@@ -141,4 +159,10 @@ export default {
 .parallax {
   background-image: url(@/assets/images/oucrc-room.png)
 }
+
+.line{
+  margin: 0 auto;
+  @apply border-gray-600 border-solid border
+}
+
 </style>
