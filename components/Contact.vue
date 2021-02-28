@@ -47,16 +47,14 @@
           <br>
         </div>
 
-        <div class="p-8 py-5">
-          <a href="https://goo.gl/maps/7f3dBUqcR3sSp7rU6"><Button class="mx-auto w-4/5 py-2" label="Google Mapでみる" /></a>
-        </div>
+          <a href="https://goo.gl/maps/7f3dBUqcR3sSp7rU6"><DoubleLineButton label="Google Map" /></a>
       </section>
     </div>
     <iframe class="md:absolute map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.7694421644273!2d133.92608985529841!3d34.685767976922165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x355407bfda0c20f3%3A0xe202078b14c47aea!2z5bKh5bGx5aSn5a2m44K144O844Kv44OrQm945qOf!5e0!3m2!1sja!2sjp!4v1614314155992!5m2!1sja!2sjp?wmode=transparent" frameborder="0" allowfullscreen loading="lazy"></iframe>
   </div>
 </template>
 
-<style>
+<style scoped>
   .form{
     left: 300px;
     top: 100px;
