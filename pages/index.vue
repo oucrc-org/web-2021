@@ -18,9 +18,11 @@
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard href="/article?tag=programming" tag="プログラミング" :img-path="require('@/assets/images/cover-programming.png')"
+          <ArticleCard href="/article?tag=programming" tag="プログラミング"
+                       :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?tag=electronic" tag="電子工作" :img-path="require('@/assets/images/cover-electronic.png')"
+          <ArticleCard href="/article?tag=electronic" tag="電子工作"
+                       :img-path="require('@/assets/images/cover-electronic.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           <ArticleCard href="/article?tag=dtm" tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
@@ -56,7 +58,7 @@
 
     <!-- ▼ お問い合わせ -->
     <section class="bg-white h-64 relative">
-      お問い合わせ
+      <Contact/>
     </section>
     <!-- ▲ お問い合わせ -->
 
@@ -65,7 +67,12 @@
 </template>
 
 <script>
+import Contact from "~/components/Contact";
+
 export default {
+  components: {
+    Contact
+  },
   methods: {
     handleScroll() {
       this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
