@@ -1,6 +1,6 @@
 <template>
-  <div class="m-10">
-    <div class="form bg-red-300 text-center">
+  <div>
+    <div class="form bg-white text-center relative z-50">
       <section>
         <p class="form-title">お問い合わせ</p>
       </section>
@@ -27,8 +27,6 @@
           </svg>
           <p>Google Form</p>
         </div>
-
-        </p>
         <hr>
         <p class="inline-block text-left">
           <span>岡山大学　サークル　BOX棟（2F　209）</span>
@@ -40,7 +38,8 @@
         <a href="https://goo.gl/maps/7f3dBUqcR3sSp7rU6"><Button class="mx-auto w-4/5" label="Google Mapでみる" /></a>
       </section>
     </div>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.7694421644273!2d133.92608985529841!3d34.685767976922165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x355407bfda0c20f3%3A0xe202078b14c47aea!2z5bKh5bGx5aSn5a2m44K144O844Kv44OrQm945qOf!5e0!3m2!1sja!2sjp!4v1614314155992!5m2!1sja!2sjp" width="1000" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    <iframe class="absolute left-0 top-0 w-full"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3280.7694421644273!2d133.92608985529841!3d34.685767976922165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x355407bfda0c20f3%3A0xe202078b14c47aea!2z5bKh5bGx5aSn5a2m44K144O844Kv44OrQm945qOf!5e0!3m2!1sja!2sjp!4v1614314155992!5m2!1sja!2sjp" width="1000" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
   </div>
 </template>
 
@@ -52,7 +51,7 @@
   }
 
   .form-title{
-    margin: 100px;
+    /*margin: 100px;*/
     @apply text-3xl text-center
   }
 </style>
