@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
+    <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
 
     <!-- ▼ ヒーローエリア -->
     <section class="bg-white h-64 relative">
@@ -18,14 +18,14 @@
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard tag="プログラミング" :img-path="require('@/assets/images/cover-programming.png')"
+          <ArticleCard href="/article?tag=programming" tag="プログラミング" :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard tag="電子工作" :img-path="require('@/assets/images/cover-electronic.png')"
+          <ArticleCard href="/article?tag=electronic" tag="電子工作" :img-path="require('@/assets/images/cover-electronic.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
+          <ArticleCard href="/article?tag=dtm" tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
-        <p class="font-semibold mt-20 text-center text-lg text-secondary tracking-widest">
+        <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
           他にも、3Dモデルを作成したり<br class="sm:hidden">ゲーム大会を開いたりしています！
         </p>
       </div>
@@ -65,9 +65,18 @@
 </template>
 
 <script>
-import Contact from "~/components/Contact";
 export default {
-  components: {Contact}
+  methods: {
+    handleScroll() {
+      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
 }
 </script>
 
