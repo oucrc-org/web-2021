@@ -11,8 +11,14 @@
           :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
       </div>
     </div>
-    <div>
-      <div></div>
+    <div class="page-jumper divide-x-2">
+      <NuxtLink v-if="currentPageNum > 1" :to="'?p=' + (currentPageNum - 1)"><div>&lt;</div></NuxtLink>
+      <NuxtLink v-for="pageNum in arrayJumpTo"
+        :key="pageNum"
+        :to="'?p=' + pageNum">
+        <div>{{pageNum}}</div>
+      </NuxtLink>
+      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="'?p=' + (currentPageNum + 1)"><div>&gt;</div></NuxtLink>
     </div>
   </div>
 </template>
@@ -76,5 +82,11 @@ function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
 </script>
 
 <style scoped>
+.page-jumper {
+  @apply flex flex-row mx-auto my-2 justify-center
+}
 
+.page-jumper div {
+  @apply p-1
+}
 </style>
