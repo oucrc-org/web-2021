@@ -2,7 +2,7 @@
   <div id="app" class="md:mx-auto md:w-3/4">
     <h1 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">最新の投稿</h1>
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
-      <div v-for="article in articles.contents" :key="article.publishedAt" class="mx-2 my-5 text-center">
+      <div v-for="article in articles.contents" :key="article.date + '-' + article.createdAt" class="mx-2 my-5 text-center">
         <h2 class="text-2xl">{{article.title}}</h2>
         <ArticleCard
           :href="'/article/' + article.id"
@@ -42,12 +42,14 @@ export default {
   },
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
+    const currentTime = new Date().toISOString();
     return axios
       .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,date,category,image,body',
-        orders: '-date,-title',
+        fields: 'id,date,createdAt,title,category,image,body',
+        orders: '-date,-createdAt',
+        filters: 'date[less_than]' + currentTime
       }).map(([key, value]) => key + '=' + value).join('&'), {
         headers: {
           "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
