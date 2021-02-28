@@ -7,7 +7,7 @@
         <p class="form-title font-bold">お問い合わせ</p>
       </section>
 
-      <hr class="line ">
+      <hr class="line">
 
       <section class="text-center max-w-sm text-xl py-5" style="margin: 0 auto">
         <div class="inline-block">
