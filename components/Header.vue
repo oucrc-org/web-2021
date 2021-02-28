@@ -1,8 +1,8 @@
 <template>
   <div id="header" class="bg-white text-lg flex flex-row h-16 justify-between px-3 shadow sticky top-0 w-full z-50">
     <NuxtLink to="/" class="m-2 flex flex-row items-center">
-      <img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ" class="h-10">
-      <img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="hidden md:block h-8 ml-2">
+      <img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ" class="h-10 hidden md:block mr-2">
+      <img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="h-8">
     </NuxtLink>
     <div class="hidden md:flex flex-grow justify-end">
       <nav id="navigation" class="self-center h-full">
