@@ -63,9 +63,9 @@
           timeUpdated: timeUpdated
         }
       }).catch(function (e) {
-        console.log(e.statusCode)
+        console.log(e.response.status)
         error({
-          statusCode: e.statusCode,
+          statusCode: e.response.status,
           message: e.message
         })
       })
