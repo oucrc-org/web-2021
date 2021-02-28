@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white text-center">
-    <a href="#" class="inline-block transform hover:scale-102 transition duration-500 ease-in-out">
+    <a :href="href" class="inline-block transform hover:scale-102 transition duration-500 ease-in-out">
       <div class="relative">
         <img class="object-cover h-56 w-full" :src="imgPath" v-bind:alt="tag">
         <div class="absolute bg-primary font-bold h-10 pt-2 px-5 text-center text-sm text-white tracking-widest" style="left: -8px;top: 10px">
@@ -21,7 +21,7 @@
 <script>
 export default {
   name: "ArticleCard",
-  props: ['tag', 'imgPath', 'description']
+  props: ['href', 'tag', 'imgPath', 'description']
 }
 </script>
 
