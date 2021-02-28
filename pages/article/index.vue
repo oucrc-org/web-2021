@@ -6,7 +6,7 @@
         <h2 class="text-2xl">{{article.title}}</h2>
         <ArticleCard
           :href="'/article/' + article.id"
-          :tag="article.category !== null ? article.category.category : null"
+          :tag="article.series !== null ? article.series.series : null"
           :imgPath="article.image !== void(0) ? article.image.url : null"
           :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
       </div>
@@ -47,7 +47,7 @@ export default {
       .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,date,createdAt,title,category,image,body',
+        fields: 'id,date,createdAt,title,series,image,body',
         orders: '-date,-createdAt',
         filters: 'date[less_than]' + currentTime
       }).map(([key, value]) => key + '=' + value).join('&'), {
