@@ -58,7 +58,7 @@
         </section>
         <section class="col-span-1 md:col-span-2">
           <div class="text-3xl font-bold border-b-2 py-5 pl-5">お知らせ</div>
-          <div v-for="notice in notices.contents" class="border-b-2 border-gray-300 text-gray-700">
+          <div v-for="notice in notices.contents" :key="notice.date + '-' + notice.createdAt" class="border-b-2 border-gray-300 text-gray-700">
             <a href="https://google.com">
                 <div class="text-xl text-left py-5 pl-5">
                   {{notice.title.slice(0, 30)}}
@@ -107,9 +107,9 @@ export default {
   asyncData(){
     return axios.get('https://oucrc.microcms.io/api/v1/news?' + Object.entries({
       limit: 3,
-      fields: 'id title',
-      orders: '-date -createdAt'
-    }), {
+      fields: 'id,title',
+      orders: '-date,-createdAt'
+    }).map(([key, value]) => key + '=' + value).join('&'), {
       headers: {
         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
       }
