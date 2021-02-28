@@ -2,6 +2,10 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  router: {
+    linkActiveClass: 'active'
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'web',
