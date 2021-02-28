@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
+    <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
 
     <!-- ▼ ヒーローエリア -->
     <section class="bg-white h-64 relative">
@@ -63,6 +63,22 @@
 
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    handleScroll() {
+      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
+    }
+  },
+  beforeMount() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  }
+}
+</script>
 
 <style scoped>
 .oucrc-room-label {

@@ -1,32 +1,30 @@
 <template>
-	<div id="header" class="bg-white text-lg flex flex-row justify-between sticky top-0 w-full z-50">
-		<NuxtLink to="/" class="m-2 flex flex-row items-center">
-			<img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ">
-			<img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="hidden md:block">
-		</NuxtLink>
-		<div class="m-2 hidden md:flex flex-grow justify-end">
-			<nav id="navigation" class="self-center">
-				<NuxtLink to="/">ホーム</NuxtLink>
-				<NuxtLink to="/article">作品紹介</NuxtLink>
-				<NuxtLink to="/members">部員紹介</NuxtLink>
-				<NuxtLink to="/join">入部フォーム</NuxtLink>
-			</nav>
-		</div>
-		<div class="h-auto flex flex-row">
-			<img src="~/assets/images/search.svg" width="23" height="23" alt="検索" class="m-2">
-			<img src="~/assets/images/hamburger.svg" width="23" height="16" alt="メニュー" class="m-2 block md:hidden">
-		</div>
-	</div>
+  <div id="header" class="bg-white text-lg flex flex-row h-16 justify-between px-3 shadow sticky top-0 w-full z-50">
+    <NuxtLink to="/" class="m-2 flex flex-row items-center">
+      <img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ" class="h-10">
+      <img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="hidden md:block h-8 ml-2">
+    </NuxtLink>
+    <div class="hidden md:flex flex-grow justify-end">
+      <nav id="navigation" class="self-center h-full">
+        <NuxtLink to="/" class="border-b-2 border-white hover:border-divider">ホーム</NuxtLink>
+        <NuxtLink to="/article" class="border-b-2 border-white hover:border-divider">作品紹介</NuxtLink>
+        <NuxtLink to="/members" class="border-b-2 border-white hover:border-divider">部員紹介</NuxtLink>
+        <NuxtLink to="/join" class="border-b-2 border-white hover:border-divider">入部フォーム</NuxtLink>
+      </nav>
+    </div>
+    <div class="h-auto flex flex-row">
+      <img src="~/assets/images/search.svg" width="18" height="18" alt="検索" class="m-2">
+      <img src="~/assets/images/hamburger.svg" width="18" height="18" alt="メニュー" class="m-2 ml-4 block md:hidden">
+    </div>
+  </div>
 </template>
-
-<script>
-export default {
-
-}
-</script>
 
 <style scoped>
 #navigation > * {
-	@apply m-1
+  @apply h-full inline-block mr-4 pt-5 text-sm text-primary transition duration-300 ease-in-out
+}
+
+#navigation > .active {
+  @apply border-b-2 border-primary
 }
 </style>
