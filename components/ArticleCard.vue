@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white text-center">
-    <a :href="href" class="inline-block transform hover:scale-102 transition duration-500 ease-in-out">
+    <NuxtLink v-bind:to="href" class="inline-block transform hover:scale-101 transition duration-500 ease-in-out">
       <div class="relative">
         <img v-if="imgPath !== null" class="object-cover h-56 w-full" :src="imgPath" v-bind:alt="tag">
         <img v-else class="object-cover h-56 w-full" src="@/assets/images/dummy.png" alt="">
@@ -12,7 +12,7 @@
         {{ description }}
       </h3>
       <DoubleLineButton label="内容を見る" />
-    </a>
+    </NuxtLink>
   </div>
 </template>
 

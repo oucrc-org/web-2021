@@ -7,7 +7,8 @@
 
 <script>
 export default {
-	props: {
+  name: 'DoubleLineButton',
+  props: {
 		label: {
 			type: String,
 			default: ''
