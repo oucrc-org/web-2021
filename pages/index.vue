@@ -50,8 +50,17 @@
 
 
     <!-- ▼ お知らせ -->
-    <section class="bg-red-300 h-64 relative">
-      お知らせ
+    <section class="bg-white relative">
+      <div class="grid grid-cols-1 md:grid-cols-3">
+        <section class="col-span-1 image">
+          test
+        </section>
+        <section class="col-span-1 md:col-span-2 bg-blue-500">
+          <div>お知らせ</div>
+          <div v-for="notice in notices.contents" v-html="removeHtmlTag(notice.body)">
+          </div>
+        </section>
+      </div>
     </section>
     <!-- ▲ お知らせ -->
 
@@ -68,14 +77,45 @@
 
 <script>
 import Contact from "~/components/Contact";
+import axios from "axios";
 
 export default {
+  /*お知らせを取ってくる処理系統*/
+  data(){
+    return{
+      notices: null,
+      status: 'wait'
+    }
+  },
+  asyncData(){
+    return axios.get('https://oucrc.microcms.io/api/v1/news', {
+      headers: {
+        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+      }
+    }).then(response => {
+      return {
+        notices: response.data,
+        status: 'success'
+      }
+    }).catch(function (e){
+      console.log('Oops')
+      console.log(e.response.status)
+      return {
+        notices: null,
+        status: 'error'
+      }
+    })
+  },
+
   components: {
     Contact
   },
   methods: {
     handleScroll() {
       this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
+    },
+    removeHtmlTag(value){
+      return value.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'')
     }
   },
   beforeMount() {
