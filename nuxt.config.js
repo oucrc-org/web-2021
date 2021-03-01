@@ -8,9 +8,9 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'web',
+    title: 'OUCRC | 岡山大学電子計算機研究会',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'ja'
     },
     meta: [
       {charset: 'utf-8'},
@@ -19,6 +19,7 @@ export default {
     ],
     link: [
       {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
+      {rel: 'apple-touch-icon', size: '180x180', href: '/apple-touch-icon.png'},
       /* Google Fonts */
       {rel: 'preconnect', href: 'https://fonts.gstatic.com'},
       {
@@ -52,7 +53,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-
 
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
