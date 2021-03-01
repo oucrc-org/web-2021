@@ -1,5 +1,5 @@
 <template>
-  <div id="footer" class="bg-gray-900 w-full z-50">
+  <div id="footer" class="bg-gray-900 w-full z-30">
     <div class="w-full">
       <div class="pt-20 px-10 md:px-40">
         <img src="~/assets/images/oucrc-label-reverse.png" alt="岡山大学電子計算機研究会" class="m-20 label" style="margin: 0 auto;">

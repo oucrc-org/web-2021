@@ -1,5 +1,5 @@
 <template>
-  <div class="container lg:mt-16 mx-auto px-10">
+  <div class="container mx-auto lg:pt-16 px-10">
 
     <!---------------------------------------------------  部員情報  --------------------------------------------------->
 
