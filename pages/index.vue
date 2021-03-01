@@ -81,7 +81,7 @@
 
 
     <!-- ▼ お問い合わせ -->
-    <section class="bg-white h-64 relative">
+    <section class="bg-white relative contact">
       <Contact/>
     </section>
     <!-- ▲ お問い合わせ -->
@@ -165,6 +165,12 @@ export default {
 .line{
   margin: 0 auto;
   @apply border-gray-600 border-solid border
+}
+
+@media (min-width: 768px) {
+  .contact{
+    height: 80vh;
+  }
 }
 
 </style>
