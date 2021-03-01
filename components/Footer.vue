@@ -1,7 +1,7 @@
 <template>
   <div id="footer" class="bg-gray-900 relative z-50">
     <div class="grid md:grid-cols-5">
-      <div class="col-span-1 md:col-span-2 pt-20 md:p-20">
+      <div class="col-span-1 md:col-span-2 pt-20 md:p-20 px-6 sm:px-0">
         <img src="~/assets/images/oucrc-label-reverse.png" alt="岡山大学電子計算機研究会" class="m-2 label">
       </div>
       <div class="col-span-1 md:col-span-3">

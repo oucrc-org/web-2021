@@ -60,7 +60,7 @@
     top: 100px;
     width: auto;
     height: auto;
-    min-width: 400px;
+    min-width: 350px;
     z-index: 10;
     @apply mx-auto;
   }
@@ -78,7 +78,7 @@
   .map{
     width: 100%;
     height: 80vh;
-    min-width: 400px;
+    min-width: 350px;
     z-index: 0;
   }
 </style>
