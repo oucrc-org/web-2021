@@ -61,14 +61,18 @@
             <p class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
               2019年度 入部
             </p>
-            <div class="lg:text-left">
+            <div class="lg:text-left pl-1 xl:pl-6">
               <a href="#">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
-                     class="inline ml-1 xl:ml-6 mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
+                     class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a href="#">
                 <img src="@/assets/images/sns-github.png" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
+              </a>
+              <a href="#">
+                <img src="@/assets/images/sns-youtube.png" alt="YouTube"
+                     class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
             </div>
           </div>
@@ -87,7 +91,7 @@
 
 
         <!-- ▼ この人が書いた記事 -->
-        <div class="pt-16 mx-8 sm:mx-12 text-center">
+        <div class="pt-16 mx-8 sm:mx-10 text-center">
           <Title label="この人が書いた記事"/>
           <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
                        :img-path="require('@/assets/images/cover-programming.png')"
@@ -97,7 +101,7 @@
 
 
         <!-- ▼ 最新の投稿 -->
-        <div class="pt-16 mb-8 mx-8 sm:mx-12 text-center">
+        <div class="pt-16 mb-8 mx-8 sm:mx-10 text-center">
           <Title label="最新の投稿"/>
           <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
                        :img-path="require('@/assets/images/cover-programming.png')"
