@@ -1,6 +1,6 @@
 <template>
-  <div class="container mb-32 mt-16 mx-auto px-10">
-    <Title label="部員一覧"/>
+  <div class="container mb-32 mx-auto px-10">
+    <Title label="部員一覧" class="mt-16"/>
 
     <div v-for="n in 4">
       <div class="mb-12 mt-20 relative text-center">
