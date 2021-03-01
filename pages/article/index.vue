@@ -33,14 +33,14 @@ export default {
   watchQuery: ['p'],
   data() {
     return {
-      articles: {
-        contents: [],
-      },
       currentPageNum: {
         type: Number,
         default: 1
       },
       arrayJumpTo: [],
+      articles: { contents: [] },
+      categories: { contents: [] },
+      serieses: { contents: [] }
     };
   },
   methods: {
@@ -54,29 +54,54 @@ export default {
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
-    return axios
-      .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
+    const url = 'https://oucrc.microcms.io/api/v1';
+    const headers = {
+      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+    };
+    const promiseArticles = axios.get(url + '/article', {
+      headers,
+      params: {
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,series,image,body',
+        fields: 'id,title,category,image,body',
         orders: '-date,-createdAt',
         filters: 'date[less_than]' + currentTime
-      }).map(([key, value]) => key + '=' + value).join('&'), {
-        headers: {
-          "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
-        },
-      }).then(response => {
-        return {
-          articles: response.data,
-          currentPageNum: currentPageNum,
-          arrayJumpTo: getArrayJumpTo(currentPageNum, response.data.totalCount, 9)
-        }
-      }).catch(e => {
-        error({
-          statusCode: e.response.status,
-          message: e.message
-        })
+      }
+    });
+    const promiseCategories = axios.get(url + '/category', {
+      headers,
+      params: {
+        limit: 1000,
+        fields: 'id,category'
+      }
+    });
+    const promiseSerieses = axios.get(url + '/series', {
+      headers,
+      params: {
+        limit: 1000,
+        fields: 'id,series',
+        orders: 'createdAt'
+      }
+    });
+
+    return Promise.all([
+      promiseArticles,
+      promiseCategories,
+      promiseSerieses
+    ]).then(([articles, categories, serieses]) => {
+      return Promise.resolve({
+        articles: articles.data,
+        currentPageNum: currentPageNum,
+        arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
+        categories: categories.data,
+        serieses: serieses.data,
       })
+    }).catch(e => {
+      error({
+        statusCode: e.response.status,
+        message: e.message
+      })
+    })
   },
 };
 
