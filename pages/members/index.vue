@@ -6,8 +6,8 @@
       <div class="mb-12 mt-20 relative text-center">
         <div class="border-b border-heading pt-3"></div>
         <h3
-          class="absolute bg-white font-bold inline-block mx-auto left-0 right-0 text-subtext top-0 tracking-widest w-24">
-          １回生
+          class="absolute bg-white font-bold inline-block mx-auto left-0 right-0 text-subtext top-0 tracking-widest w-48">
+          2020年度 入部
         </h3>
       </div>
 
