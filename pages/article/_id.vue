@@ -1,6 +1,6 @@
 <template>
-  <div class="container lg:mt-16 mx-auto">
-    <div class="lg:grid grid-cols-3 gap-8 xl:gap-12">
+  <div class="container mx-auto">
+    <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16">
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
