@@ -12,13 +12,13 @@
       </div>
     </div>
     <div class="page-jumper divide-x-2">
-      <NuxtLink v-if="currentPageNum > 1" :to="'?p=' + (currentPageNum - 1)"><div>&lt;</div></NuxtLink>
+      <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }"><div>&lt;</div></NuxtLink>
       <NuxtLink v-for="pageNum in arrayJumpTo"
         :key="'jumper' + pageNum"
-        :to="'?p=' + pageNum">
+        :to="{ query: appendQuery({p: pageNum}) }">
         <div>{{pageNum}}</div>
       </NuxtLink>
-      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="'?p=' + (currentPageNum + 1)"><div>&gt;</div></NuxtLink>
+      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }"><div>&gt;</div></NuxtLink>
     </div>
   </div>
 </template>
@@ -40,6 +40,14 @@ export default {
       arrayJumpTo: [],
     };
   },
+  methods: {
+    appendQuery(newQuery) {
+      return {
+        ...this.$route.query,
+        ...newQuery
+      }
+    }
+  },
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
@@ -47,7 +55,7 @@ export default {
       .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,date,createdAt,title,series,image,body',
+        fields: 'id,title,series,image,body',
         orders: '-date,-createdAt',
         filters: 'date[less_than]' + currentTime
       }).map(([key, value]) => key + '=' + value).join('&'), {
