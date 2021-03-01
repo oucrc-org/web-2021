@@ -45,7 +45,6 @@
             src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
         </a>
       </div>
-      <hr class="line">
     </section>
     <!-- ▲ 電算研の部室 -->
 
@@ -61,20 +60,30 @@
             <a href="https://google.com">
                 <div class="text-xl text-left py-5 pl-5">
                   {{notice.title.slice(0, 30)}}
+    <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20">
+      <div class="container mx-auto">
+        <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
+          <div class="col-span-2 image bg-red-500 hidden lg:block">キャラ</div>
+          <div class="col-span-3">
+            <div class="text-2xl font-bold border-b-2 border-divider py-5 pl-5 tracking-widest">お知らせ</div>
+            <div v-for="notice in notices.contents" :key="notice.id" class="border-b-2 border-divider text-secondary">
+              <NuxtLink :to="'news/'+notice.id">
+                <div class="text-lg text-left tracking-widest py-3 sm:py-5 pl-5">
+                  <p class="inline-block overflow-hidden whitespace-no-wrap" style="text-overflow: ellipsis;width: 90%">
+                    {{ notice.title.slice(0, 30) }}
+                  </p>
                   <div class="text-right float-right pr-5">
-                    &#9658;
+                    <img class="mt-2" src="@/assets/images/news-link.svg" alt="News">
                   </div>
                 </div>
-            </a>
+              </NuxtLink>
+            </div>
+            <NuxtLink to="/news" class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
+              もっとみる
+            </NuxtLink>
           </div>
-          <div class="py-5 pr-5">
-            <a href="https://google.com">
-              <button class="block font-bold text-xl text-gray-700" style="margin: 0 0 0 auto">もっとみる</button>
-            </a>
-          </div>
-        </section>
+        </div>
       </div>
-      <hr class="line md:hidden">
     </section>
     <!-- ▲ お知らせ -->
 
@@ -95,8 +104,8 @@ import axios from "axios";
 
 export default {
   /*お知らせを取ってくる処理系統*/
-  data(){
-    return{
+  data() {
+    return {
       notices: {
         contents: []
       },
@@ -119,7 +128,7 @@ export default {
         notices: response.data,
         status: 'success'
       }
-    }).catch(function (e){
+    }).catch(function (e) {
       console.log('Oops')
       console.log(e.response.status)
       return {
@@ -161,13 +170,8 @@ export default {
   background-image: url(@/assets/images/oucrc-room.png)
 }
 
-.line{
-  margin: 0 auto;
-  @apply border-gray-600 border-solid border
-}
-
 @media (min-width: 768px) {
-  .contact{
+  .contact {
     height: 80vh;
   }
 }
