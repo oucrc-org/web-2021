@@ -2,7 +2,7 @@
   <div id="app" class="md:mx-auto md:w-3/4">
     <h1 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">最新の投稿</h1>
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
-      <div v-for="article in articles.contents" :key="article.date + '-' + article.createdAt" class="mx-2 my-5 text-center">
+      <div v-for="article in articles.contents" :key="article.id" class="mx-2 my-5 text-center">
         <h2 class="text-2xl">{{article.title}}</h2>
         <ArticleCard
           :href="'/article/' + article.id"
@@ -14,7 +14,7 @@
     <div class="page-jumper divide-x-2">
       <NuxtLink v-if="currentPageNum > 1" :to="'?p=' + (currentPageNum - 1)"><div>&lt;</div></NuxtLink>
       <NuxtLink v-for="pageNum in arrayJumpTo"
-        :key="pageNum"
+        :key="'jumper' + pageNum"
         :to="'?p=' + pageNum">
         <div>{{pageNum}}</div>
       </NuxtLink>
