@@ -54,7 +54,6 @@
     <section class="bg-white relative pt-20 md:py-20">
       <div class="grid grid-cols-1 md:grid-cols-3">
         <section class="col-span-1 image bg-red-500">
-          test
         </section>
         <section class="col-span-1 md:col-span-2">
           <div class="text-3xl font-bold border-b-2 py-5 pl-5">お知らせ</div>
