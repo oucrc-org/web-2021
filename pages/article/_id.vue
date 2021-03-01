@@ -44,13 +44,14 @@
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
 
-      <section class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-12 lg:px-0 lg:shadow-xl">
+      <section v-if="article.name !== null" class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-12 lg:px-0 lg:shadow-xl">
         <div class="grid grid-cols-10 gap-4 mt-12">
 
           <!-- ▼ メンバーアイコン -->
           <div class="col-span-4 inline-block pl-8 row-end-2">
             <img
-              src="https://avatars.githubusercontent.com/u/58544849?s=460&u=9e921c5bba0462a1873f73f3d8d98dcad33a2bd7&v=4"
+              v-if="article.name.avatar !== null"
+              :src="article.name.avatar.url"
               class="rounded-full" alt="仮">
           </div>
           <!-- ▲ メンバーアイコン -->
@@ -59,18 +60,18 @@
           <!-- ▼ SNSリンク -->
           <div class="col-span-6 inline-block mt-2 pr-8 text-center">
             <p class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
-              2019年度 入部
+              {{ article.name.enteryear }}年度 入部
             </p>
             <div class="lg:text-left pl-1 xl:pl-6">
-              <a href="#">
+              <a v-if="article.name.twitter !== void(0)" :href="article.name.twitter">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a href="#">
+              <a v-if="article.name.github !== void(0)" :href="article.name.github">
                 <img src="@/assets/images/sns-github.png" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a href="#">
+              <a v-if="article.name.youtube !== void(0)" :href="article.name.youtube">
                 <img src="@/assets/images/sns-youtube.png" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
@@ -82,9 +83,9 @@
 
         <!-- ▼ メンバー紹介 -->
         <div class="mt-6 mx-10">
-          <p class="font-bold text-3xl text-secondary tracking-widest">いけちぃ</p>
-          <p class="leading-7 mt-4 text-secondary tracking-widest">
-            自己紹介をAPIから取ってきて3行くらい埋め尽くそう！これはもろRAMDOMのぱｋりです。
+          <p v-if="article.name.name !== void(0)" class="font-bold text-3xl text-secondary tracking-widest">{{ article.name.name }}</p>
+          <p v-if="article.name.status !== void(0)" class="leading-7 mt-4 text-secondary tracking-widest">
+            {{ article.name.status }}
           </p>
         </div>
         <!-- ▲ メンバー情報 -->
@@ -176,6 +177,7 @@ export default {
         day: 'numeric'
       }
       const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
+      console.log(response.data)
       return {
         article: response.data,
         timeUpdated: timeUpdated
