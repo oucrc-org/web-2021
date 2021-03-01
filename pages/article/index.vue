@@ -1,6 +1,7 @@
 <template>
-  <div id="app" class="md:mx-auto md:w-3/4">
-    <h1 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">最新の投稿</h1>
+  <div class="container mb-32 mt-16 mx-auto px-10">
+    <!-- 記事一覧 -->
+    <Title label="最新の投稿" class="mt-20" />
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
       <div v-for="article in articles.contents" :key="article.id" class="mx-2 my-5 text-center">
         <h2 class="text-2xl">{{article.title}}</h2>
@@ -11,6 +12,8 @@
           :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
       </div>
     </div>
+
+    <!-- ページジャンパー -->
     <div class="page-jumper divide-x-2">
       <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }"><div>&lt;</div></NuxtLink>
       <NuxtLink v-for="pageNum in arrayJumpTo"
