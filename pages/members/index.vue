@@ -11,7 +11,7 @@
         </h3>
       </div>
 
-      <div class="grid grid-cols-5 gap-10 px-32">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32">
         <NuxtLink to="members/{member_id}" class="transform hover:scale-103 transition duration-500 ease-in-out"
                   v-for="n in 9">
           <div class="px-5">
