@@ -9,10 +9,11 @@ module.exports = {
       colors: {
         'primary': '#262626',
         'secondary': '#595959',
+        'subtext': '#A8A8A8',
+        'heading': '#BBBBBB',
         'divider': '#DADADA',
         'blockquote': '#F8F8F8',
         'blockquoteSidebar': '#CACACA',
-
         'highlight': '#F3F3F3'
       },
       fontSize: {
@@ -24,7 +25,8 @@ module.exports = {
         'h6': '0.8em',
       },
       scale: {
-        '101': '1.01'
+        '101': '1.01',
+        '103': '1.03'
       },
       spacing: {
         '72': '18rem',
