@@ -6,7 +6,7 @@
         <h2 class="text-2xl">{{article.title}}</h2>
         <ArticleCard
           :href="'/article/' + article.id"
-          :tag="article.series !== null ? article.series.series : null"
+          :tag="article.category !== null ? article.category.category : null"
           :imgPath="article.image !== void(0) ? article.image.url : null"
           :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
       </div>
