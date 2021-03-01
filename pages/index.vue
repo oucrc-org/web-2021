@@ -50,16 +50,6 @@
 
 
     <!-- ▼ お知らせ -->
-    <section class="bg-white relative pt-20 md:py-20">
-      <div class="grid grid-cols-1 md:grid-cols-3">
-        <section class="col-span-1 image bg-red-500">
-        </section>
-        <section class="col-span-1 md:col-span-2">
-          <div class="text-3xl font-bold border-b-2 py-5 pl-5">お知らせ</div>
-          <div v-for="notice in notices.contents" :key="notice.id" class="border-b-2 border-gray-300 text-gray-700">
-            <a href="https://google.com">
-                <div class="text-xl text-left py-5 pl-5">
-                  {{notice.title.slice(0, 30)}}
     <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20">
       <div class="container mx-auto">
         <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
@@ -104,8 +94,8 @@ import axios from "axios";
 
 export default {
   /*お知らせを取ってくる処理系統*/
-  data() {
-    return {
+  data(){
+    return{
       notices: {
         contents: []
       },
@@ -128,7 +118,7 @@ export default {
         notices: response.data,
         status: 'success'
       }
-    }).catch(function (e) {
+    }).catch(function (e){
       console.log('Oops')
       console.log(e.response.status)
       return {
