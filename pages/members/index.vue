@@ -14,7 +14,7 @@
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32">
         <div v-for="content in members.contents" v-if="content.enteryear === year">
           <MemberIndexCard
-            :href="'members/' + content.id"
+            :href="`members/${content.id}`"
             :img-path="content.avatar !== void(0) ? content.avatar.url : null"
             :name="content.name"
             :status="content.status"
@@ -54,9 +54,12 @@ export default {
     return axios.get('https://oucrc.microcms.io/api/v1/member', {
       headers: {
         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+      },
+      params: {
+        limit: 10000,
+        fields: 'id,name,avatar,enteryear,status'
       }
     }).then(response => {
-      console.log(response.data)
       return {
         members: response.data
       }
