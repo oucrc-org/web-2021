@@ -9,7 +9,7 @@
 
     <Title label="部員一覧" class="mt-16"/>
 
-    <div v-for="year in years">
+    <div v-for="year in years" :key="`join-year-${year}`">
       <div class="mb-12 mt-20 relative text-center">
         <div class="border-b border-heading pt-3"></div>
         <h3
