@@ -64,7 +64,7 @@
       </div>
 
       <!-- ▼ この人が書いた記事 -->
-      <div class="pt-16 mb-24 mx-8 sm:mx-12 text-center">
+      <div class="pt-16 mb-24 mt-10 mx-8 sm:mx-12 text-center">
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4"/>
           <div class="grid sm:grid-cols-3 gap-8">
