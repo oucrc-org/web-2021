@@ -39,15 +39,18 @@
               {{ article.name.enteryear }}年度 入部
             </p>
             <div class="lg:text-left xl:pl-3 pr-1">
-              <a v-if="article.name.twitter !== void(0)" :href="article.name.twitter">
+              <a v-if="article.name.twitter !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://twitter.com/${article.name.twitter.replace(/@/g,'')}`">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a v-if="article.name.github !== void(0)" :href="article.name.github">
+              <a v-if="article.name.github !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://github.com/${article.name.github.replace(/@/g,'')}`">
                 <img src="@/assets/images/sns-github.png" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a v-if="article.name.youtube !== void(0)" :href="article.name.youtube">
+              <a v-if="article.name.youtube !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://www.youtube.com/user/${article.name.youtube}`">
                 <img src="@/assets/images/sns-youtube.png" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
