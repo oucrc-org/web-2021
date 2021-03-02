@@ -2,10 +2,10 @@
   <div class="container mb-32 mx-auto px-10">
     <!-- 絞り込みツール -->
     <Title label="絞り込み" />
-    <form method="GET" class="md:mx-16 mt-4">
+    <form @submit.prevent="search" name="search" class="md:mx-16 mt-4">
       <div class="relative mb-2">
-        <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full">
-        <img src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3">
+        <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full" placeholder="キーワードを入力">
+        <img @click="search" src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3 cursor-pointer">
       </div>
       <div>
         カテゴリ：
@@ -76,6 +76,28 @@ export default {
         ...this.$route.query,
         ...newQuery
       }
+    },
+    search() {
+      const elementsSearchForm = document.forms.search.elements;
+      const searchQuery = {};
+      if (typeof elementsSearchForm.keyword.value !== 'undefined' && elementsSearchForm.keyword.value !== '') {
+        searchQuery.keyword = elementsSearchForm.keyword.value;
+      }
+      searchQuery.category = [];
+      for (const category of elementsSearchForm.category) {
+        if (category.checked) {
+          searchQuery.category.push(category.value);
+        }
+      }
+      searchQuery.series = [];
+      for (const series of elementsSearchForm.series) {
+        if (series.checked) {
+          searchQuery.series.push(series.value);
+        }
+      }
+      this.$router.push({
+        query: searchQuery
+      });
     }
   },
   asyncData({ query, error }) {
