@@ -55,19 +55,7 @@
         <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
           <div class="col-span-2 image bg-red-500 hidden lg:block">キャラ</div>
           <div class="col-span-3">
-            <div class="text-2xl font-bold border-b-2 border-divider py-5 pl-5 tracking-widest">お知らせ</div>
-            <div v-for="notice in notices.contents" :key="notice.id" class="border-b-2 border-divider text-secondary">
-              <NuxtLink :to="'news/'+notice.id">
-                <div class="text-lg text-left tracking-widest py-3 sm:py-5 pl-5">
-                  <p class="inline-block overflow-hidden whitespace-no-wrap" style="text-overflow: ellipsis;width: 90%">
-                    {{ notice.title.slice(0, 30) }}
-                  </p>
-                  <div class="text-right float-right pr-5">
-                    <img class="mt-2" src="@/assets/images/news-link.svg" alt="News">
-                  </div>
-                </div>
-              </NuxtLink>
-            </div>
+            <News :notices="notices"/>
             <NuxtLink to="/news" class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
               もっとみる
             </NuxtLink>
@@ -98,12 +86,11 @@ export default {
     return{
       notices: {
         contents: []
-      },
-      status: 'wait'
+      }
     }
   },
   asyncData() {
-    const currentTime = new Date().toISOString();
+    const currentTime = new Date().toISOString()
     return axios.get('https://oucrc.microcms.io/api/v1/news?' + Object.entries({
       limit: 3,
       fields: 'id,title',
@@ -115,19 +102,14 @@ export default {
       }
     }).then(response => {
       return {
-        notices: response.data,
-        status: 'success'
+        notices: response.data
       }
-    }).catch(function (e){
-      console.log('Oops')
-      console.log(e.response.status)
+    }).catch(function (){
       return {
-        notices: null,
-        status: 'error'
+        notices: null
       }
     })
   },
-
   components: {
     Contact
   },
