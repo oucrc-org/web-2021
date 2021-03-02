@@ -67,6 +67,17 @@
         </div>
       </div>
 
+
+      <!-- ▼ 自己紹介画像 -->
+      <div v-if="member.introImage !== void(0)" class="my-32">
+        <Title label="自己紹介画像" class="mb-10"/>
+        <img
+          :src="member.introImage.url"
+          class="w-full" alt="取得に失敗しました">
+      </div>
+      <!-- ▲ 自己紹介画像 -->
+
+
       <!-- ▼ この人が書いた記事 -->
       <div v-if="articles.contents !== void(0) && articles.contents.length"
            class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
