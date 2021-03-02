@@ -1,5 +1,10 @@
 <template>
   <div id="app">
+
+    <OGPSetter
+      :url="this.$route.path"
+    />
+
     <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
 
     <!-- ▼ ヒーローエリア -->
@@ -81,12 +86,18 @@ import Contact from "~/components/Contact";
 import axios from "axios";
 
 export default {
+
   /*お知らせを取ってくる処理系統*/
   data(){
     return{
       notices: {
         contents: []
       }
+    }
+  },
+  head(){
+    return {
+      titleTemplate: null,
     }
   },
   asyncData() {
