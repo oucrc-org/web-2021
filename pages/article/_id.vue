@@ -49,7 +49,7 @@
         <div class="grid grid-cols-9 gap-4 mt-12">
 
           <!-- ▼ メンバーアイコン -->
-          <NuxtLink :to="'/members/' + article.name.id" class="col-span-4">
+          <NuxtLink :to="`/members/${article.name.id}`" class="col-span-4">
             <div v-if="article.name.avatar !== void(0)"
                  class="inline-block pl-8 row-end-2">
               <img
@@ -91,12 +91,12 @@
         <!-- ▼ メンバー紹介 -->
         <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article.name !== void(0)">
           <p class="font-bold text-3xl text-secondary tracking-widest">
-            <NuxtLink :to="'/members/' + article.name.id">
+            <NuxtLink :to="`/members/${article.name.id}`">
               {{ article.name.name }}
             </NuxtLink>
           </p>
           <p class="leading-7 mt-1 text-secondary tracking-widest">
-            <NuxtLink :to="'/members/' + article.name.id">
+            <NuxtLink :to="`/members/${article.name.id}`">
               {{ article.name.status }}
             </NuxtLink>
           </p>
@@ -108,7 +108,7 @@
              class="pt-10 mx-6 xl:mx-10 text-center">
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
-            <ArticleCard :href="'/article/' + otherArticle.id"
+            <ArticleCard :href="`/article/${otherArticle.id}`"
                          :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
@@ -199,7 +199,7 @@ export default {
             'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
           },
           params: {
-            filters: 'name[equals]' + response.data.name.id + '[and]id[not_equals]' + response.data.id,
+            filters: `name[equals]${response.data.name.id}[and]id[not_equals]${response.data.id}`,
             limit: 4
           }
 
