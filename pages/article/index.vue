@@ -1,5 +1,32 @@
 <template>
   <div class="container mb-32 mt-16 mx-auto px-10">
+    <!-- 絞り込みツール -->
+    <Title label="絞り込み" />
+    <form method="GET" class="md:mx-16 mt-4">
+      <div class="relative mb-2">
+        <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full">
+        <img src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3">
+      </div>
+      <div>
+        カテゴリ：
+        <LabeledCheckbox
+          v-for="category in categories.contents"
+          :key="`checkbox-${category.id}`"
+          :label="category.category"
+          name="category"
+          :value="category.id" />
+      </div>
+      <div>
+        シリーズ：
+        <LabeledCheckbox
+          v-for="series in serieses.contents"
+          :key="`checkbox-${series.id}`"
+          :label="series.series"
+          name="series"
+          :value="series.id" />
+      </div>
+    </form>
+
     <!-- 記事一覧 -->
     <Title label="最新の投稿" class="mt-20" />
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
@@ -125,10 +152,10 @@ function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
 
 <style scoped>
 .page-jumper {
-  @apply flex flex-row mx-auto my-2 justify-center
+  @apply flex flex-row mx-auto my-2 justify-center;
 }
 
 .page-jumper div {
-  @apply p-1
+  @apply p-1;
 }
 </style>
