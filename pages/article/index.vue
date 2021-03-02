@@ -57,7 +57,7 @@
 import axios from "axios";
 
 export default {
-  watchQuery: ['p'],
+  watchQuery: ['p', 'keyword', 'category', 'series'],
   data() {
     return {
       currentPageNum: {
@@ -92,7 +92,40 @@ export default {
         offset: (currentPageNum - 1) * 9,
         fields: 'id,title,category,image,body',
         orders: '-date,-createdAt',
-        filters: 'date[less_than]' + currentTime
+        filters: [
+          `date[less_than]${currentTime}`,
+          ...(() => {
+            const searchQuery = [];
+            if ('keyword' in query && query.keyword !== null) {
+              searchQuery.push(
+                query.keyword.split(/\s+/)
+                .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                .join('[and]')
+              )
+            }
+            if ('category' in query) {
+              if (typeof query.category === 'string') {
+                query.category = [query.category]
+              }
+              searchQuery.push(
+                query.category
+                .map(id => `category[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            if ('series' in query) {
+              if (typeof query.series === 'string') {
+                query.series = [query.series]
+              }
+              searchQuery.push(
+                query.series
+                .map(id => `series[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            return searchQuery;
+          })()
+        ].join('[and]')
       }
     });
     const promiseCategories = axios.get(url + '/category', {
