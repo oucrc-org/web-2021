@@ -31,11 +31,11 @@
                  class="inline-block pl-8 row-end-2">
               <img
                 :src="article.name.avatar.url"
-                class="rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
+                class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
             </div>
             <div v-else>
-              <img class="object-cover rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
-                   src="@/assets/images/dummy.png" alt="">
+              <img class="object-cover shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
+                   src="@/assets/images/member.png" alt="メンバーアイコン">
             </div>
           </NuxtLink>
           <!-- ▲ メンバーアイコン -->
