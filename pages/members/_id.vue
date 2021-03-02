@@ -99,6 +99,7 @@
           <div class="grid sm:grid-cols-3 gap-8">
             <ArticleCard
               v-for="article in articles.contents"
+              :key="`articlecard-${article.id}`"
               class="py-6"
               :href="`/article/${article.id}`"
               :series="article.series != null ? article.series : {}"

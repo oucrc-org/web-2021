@@ -87,7 +87,7 @@
         <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length"
              class="pt-24 mx-8 sm:mx-10 text-center">
           <Title label="この人が書いた記事"/>
-          <div v-for="otherArticle in otherArticles.contents">
+          <div v-for="otherArticle in otherArticles.contents" :key="`otherarticle-${otherArticle.id}`">
             <ArticleCard :href="`/article/${otherArticle.id}`"
                          :category="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
