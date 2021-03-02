@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto">
-    <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16">
+    <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16 pb-10">
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
@@ -44,33 +44,41 @@
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
 
-      <section class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-12 lg:px-0 lg:shadow-xl">
-        <div class="grid grid-cols-10 gap-4 mt-12">
+      <section v-if="article.name !== null"
+               class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-16 md:px-24 lg:px-0 lg:shadow-xl">
+        <div class="grid grid-cols-9 gap-4 mt-12">
 
           <!-- ▼ メンバーアイコン -->
-          <div class="col-span-4 inline-block pl-8 row-end-2">
-            <img
-              src="https://avatars.githubusercontent.com/u/58544849?s=460&u=9e921c5bba0462a1873f73f3d8d98dcad33a2bd7&v=4"
-              class="rounded-full" alt="仮">
-          </div>
+          <NuxtLink :to="'/members/' + article.name.id" class="col-span-4">
+            <div v-if="article.name.avatar !== void(0)"
+                 class="inline-block pl-8 row-end-2">
+              <img
+                :src="article.name.avatar.url"
+                class="rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
+            </div>
+            <div v-else>
+              <img class="object-cover rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
+                   src="@/assets/images/dummy.png" alt="">
+            </div>
+          </NuxtLink>
           <!-- ▲ メンバーアイコン -->
 
 
           <!-- ▼ SNSリンク -->
-          <div class="col-span-6 inline-block mt-2 pr-8 text-center">
-            <p class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
-              2019年度 入部
+          <div class="col-span-5 inline-block mt-2 pr-8 lg:pr-5 pl-4 lg:pl-0 text-right lg:text-center">
+            <p class="bg-highlight inline-block px-5 xl:px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
+              {{ article.name.enteryear }}年度 入部
             </p>
-            <div class="lg:text-left pl-1 xl:pl-6">
-              <a href="#">
+            <div class="lg:text-left xl:pl-3 pr-1">
+              <a v-if="article.name.twitter !== void(0)" :href="article.name.twitter">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a href="#">
+              <a v-if="article.name.github !== void(0)" :href="article.name.github">
                 <img src="@/assets/images/sns-github.png" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a href="#">
+              <a v-if="article.name.youtube !== void(0)" :href="article.name.youtube">
                 <img src="@/assets/images/sns-youtube.png" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
@@ -81,33 +89,33 @@
         </div>
 
         <!-- ▼ メンバー紹介 -->
-        <div class="mt-6 mx-10">
-          <p class="font-bold text-3xl text-secondary tracking-widest">いけちぃ</p>
-          <p class="leading-7 mt-4 text-secondary tracking-widest">
-            自己紹介をAPIから取ってきて3行くらい埋め尽くそう！これはもろRAMDOMのぱｋりです。
+        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article.name !== void(0)">
+          <p class="font-bold text-3xl text-secondary tracking-widest">
+            <NuxtLink :to="'/members/' + article.name.id">
+              {{ article.name.name }}
+            </NuxtLink>
+          </p>
+          <p class="leading-7 mt-1 text-secondary tracking-widest">
+            <NuxtLink :to="'/members/' + article.name.id">
+              {{ article.name.status }}
+            </NuxtLink>
           </p>
         </div>
         <!-- ▲ メンバー情報 -->
 
-
         <!-- ▼ この人が書いた記事 -->
-        <div class="pt-16 mx-8 sm:mx-10 text-center">
+        <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length"
+             class="pt-10 mx-6 xl:mx-10 text-center">
           <Title label="この人が書いた記事"/>
-          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
-                       :img-path="require('@/assets/images/cover-programming.png')"
-                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+          <div v-for="otherArticle in otherArticles.contents">
+            <ArticleCard :href="'/article/' + otherArticle.id"
+                         :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
+                         :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
+                         :description="otherArticle.title"
+            />
+          </div>
         </div>
         <!-- ▲ この人が書いた記事 -->
-
-
-        <!-- ▼ 最新の投稿 -->
-        <div class="pt-16 mb-8 mx-8 sm:mx-10 text-center">
-          <Title label="最新の投稿"/>
-          <ArticleCard href="/article?tag=programming" tag="プログラミング" class="py-3"
-                       :img-path="require('@/assets/images/cover-programming.png')"
-                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-        </div>
-        <!-- ▲ 最新の投稿 -->
 
       </section>
 
@@ -138,6 +146,7 @@ export default {
   data() {
     return {
       article: 'There are no data',
+      otherArticles: 'No',
       timeUpdated: ''
     }
   },
@@ -164,24 +173,67 @@ export default {
       }
     },
   },
+
   asyncData({params, error}) {
+    /*一度目の処理*/
     return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
       headers: {
         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
       }
     }).then(response => {
+
+      /*最終更新時間の取得*/
       const options = {
         year: 'numeric',
         month: 'numeric',
         day: 'numeric'
       }
       const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
-      return {
-        article: response.data,
-        timeUpdated: timeUpdated
+
+      /*名前が取得できたとき*/
+      if (response.data.name !== null) {
+
+        /*二回目の処理*/
+        return axios.get('https://oucrc.microcms.io/api/v1/article', {
+          headers: {
+            'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+          },
+          params: {
+            filters: 'name[equals]' + response.data.name.id + '[and]id[not_equals]' + response.data.id,
+            limit: 4
+          }
+
+          /*二回目の処理のコールバック*/
+        }).then(res => {
+
+          /*返り値*/
+          return {
+            article: response.data,
+            otherArticles: res.data,
+            timeUpdated: timeUpdated
+          }
+
+          /*二回目の処理のエラーハンドリング*/
+        }).catch(function (e) {
+          console.log(e)
+          error({
+            statusCode: e.response.status,
+            message: e.message
+          })
+        })
       }
+
+      /*名前が取得できなかったときの処理*/
+      else {
+        return {
+          article: response.data,
+          timeUpdated: timeUpdated
+        }
+      }
+
+      /*一回目の処理のエラーハンドリング*/
     }).catch(function (e) {
-      console.log(e.response.status)
+      console.log(e)
       error({
         statusCode: e.response.status,
         message: e.message
