@@ -72,7 +72,7 @@
 
         <!-- ▼ この人が書いた記事 -->
         <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length"
-             class="pt-10 mx-6 xl:mx-10 text-center">
+             class="pt-24 mx-8 sm:mx-10 text-center">
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
             <ArticleCard :href="'/article/' + otherArticle.id"
@@ -140,7 +140,6 @@ export default {
       }
     },
   },
-
   asyncData({params, error}) {
     /*一度目の処理*/
     return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
