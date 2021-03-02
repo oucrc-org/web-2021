@@ -1,10 +1,20 @@
 <template>
   <div class="container mx-auto">
+
+    <OGPSetter
+      :title="article.title"
+      :description="article.body"
+      :url="this.$route.path"
+      :image="article.image"
+    />
+
     <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16 pb-10">
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
-      <ArticleContent :article="article" :timeUpdated="timeUpdated"/>
+      <ArticleContent :article="article" :timeUpdated="timeUpdated"
+                      :category="article.category"
+                      :series="article.series"/>
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
@@ -37,15 +47,18 @@
               {{ article.name.enteryear }}年度 入部
             </p>
             <div class="lg:text-left xl:pl-3 pr-1">
-              <a v-if="article.name.twitter !== void(0)" :href="article.name.twitter">
+              <a v-if="article.name.twitter !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://twitter.com/${article.name.twitter.replace(/@/g,'')}`">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a v-if="article.name.github !== void(0)" :href="article.name.github">
+              <a v-if="article.name.github !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://github.com/${article.name.github.replace(/@/g,'')}`">
                 <img src="@/assets/images/sns-github.png" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
-              <a v-if="article.name.youtube !== void(0)" :href="article.name.youtube">
+              <a v-if="article.name.youtube !== void(0)" target="_blank" rel="noopener noreferrer"
+                 :href="`https://www.youtube.com/user/${article.name.youtube}`">
                 <img src="@/assets/images/sns-youtube.png" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
@@ -76,7 +89,7 @@
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
             <ArticleCard :href="`/article/${otherArticle.id}`"
-                         :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
+                         :category="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
             />

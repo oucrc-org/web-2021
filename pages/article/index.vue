@@ -1,5 +1,10 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
+    <OGPSetter
+      title="記事一覧"
+      description="OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！"
+      :url="this.$route.path" />
+
     <!-- 絞り込みツール -->
     <Title label="絞り込み" />
     <form @submit.prevent="search" name="search" class="md:mx-16 mt-4">
