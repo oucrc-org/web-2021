@@ -4,7 +4,9 @@
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
-      <ArticleContent :article="article" :timeUpdated="timeUpdated"/>
+      <ArticleContent :article="article" :timeUpdated="timeUpdated"
+                      :category="article.category"
+                      :series="article.series"/>
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
