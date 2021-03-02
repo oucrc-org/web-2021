@@ -3,30 +3,30 @@
 
     <!---------------------------------------------------  部員情報  --------------------------------------------------->
 
-    <section class="bg-white pt-16 lg:pt-0 sm:px-12 lg:px-0">
-      <div class="grid grid-cols-10 gap-4 mt-20">
+    <section class="bg-white pt-16 lg:pt-0">
+      <div class="sm:grid grid-cols-9 md:grid-cols-10 gap-4 mt-20">
         <div class="col-span-4 grid grid-cols-10 gap-4">
 
           <!-- ▼ メンバーアイコン -->
-          <div v-if="member.avatar !== void(0)" class="col-span-4 inline-block pl-8 row-end-2">
+          <div v-if="member.avatar !== void(0)" class="col-span-4 inline-block lg:pl-8 row-end-2">
             <img
               :src="member.avatar.url"
-              class="rounded-full" alt="取得に失敗しました">
+              class="rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="取得に失敗しました">
           </div>
-          <div v-else class="col-span-4 inline-block pl-8 row-end-2">
+          <div v-else class="col-span-4 inline-block lg:pl-8 row-end-2">
             <img
               src="@/assets/images/dummy.png"
-              class="rounded-full" alt="仮">
+              class="rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="仮">
           </div>
           <!-- ▲ メンバーアイコン -->
 
 
           <!-- ▼ SNSリンク -->
-          <div class="col-span-6 inline-block mt-2 pr-8 text-center">
+          <div class="col-span-6 inline-block mt-2 lg:pr-8 text-center">
             <p v-if="member.enteryear !== void(0)" class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
               {{ member.enteryear }}年度 入部
             </p>
-            <div class="lg:text-left ml-1 xl:pl-10">
+            <div class="lg:text-left lg:pl-6 xl:pl-12">
               <a v-if="member.twitter !== void(0)" :href="member.twitter">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
@@ -45,7 +45,7 @@
 
 
           <!-- ▼ メンバー名 -->
-          <div class="col-span-8 col-start-2">
+          <div class="col-span-8 lg:col-start-2">
             <p v-if="member.name !== void(0)" class="font-bold text-3xl text-secondary tracking-widest">{{ member.name }}</p>
             <p v-if="member.status !== void(0)" class="text-lg text-subtext tracking-widest">{{ member.status }}</p>
           </div>
@@ -53,13 +53,13 @@
 
         </div>
 
-        <div v-if="member.intro !== void(0)" class="col-span-6 border-l-4 border-highlight px-12">
+        <div class="col-span-5 md:col-span-6 sm:border-l-4 border-highlight mt-12 sm:mt-0 sm:px-12">
 
           <!-- ▼ 自己紹介 -->
           <div class="bg-primary font-bold inline-block py-2 px-8 text-center text-sm text-white tracking-widest">
             自己紹介
           </div>
-          <p class="leading-8 mt-4 text-secondary tracking-widest">
+          <p v-if="member.intro !== void(0)" class="leading-8 mt-4 text-secondary tracking-widest">
             {{ member.intro }}
           </p>
           <!-- ▲ 自己紹介 -->
@@ -69,14 +69,14 @@
 
       <!-- ▼ この人が書いた記事 -->
       <div v-if="articles.contents !== void(0) && articles.contents.length"
-           class="pt-16 mb-24 mx-8 sm:mx-12 text-center"
+           class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
       >
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4"/>
           <div class="grid sm:grid-cols-3 gap-8">
             <ArticleCard
               v-for="article in articles.contents"
-              class="py-4"
+              class="py-6"
               :href="`/article/${article.id}`"
               :tag="article.category !== void(0) ? article.category.category : null"
               :img-path="article.image !== void(0) ? article.image.url : null"
@@ -89,12 +89,6 @@
     </section>
 
     <!---------------------------------------------------  部員情報  --------------------------------------------------->
-
-
-    <!-----------------------------------------------  この人が書いた記事  ----------------------------------------------->
-
-
-    <!-----------------------------------------------  この人が書いた記事  ----------------------------------------------->
 
   </div>
 </template>
@@ -168,7 +162,3 @@ export default {
   }
 }
 </script>
-
-<style module>
-
-</style>
