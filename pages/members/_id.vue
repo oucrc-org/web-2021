@@ -18,12 +18,12 @@
           <div v-if="member.avatar !== void(0)" class="col-span-4 inline-block lg:pl-8 row-end-2">
             <img
               :src="member.avatar.url"
-              class="rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="取得に失敗しました">
+              class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="取得に失敗しました">
           </div>
           <div v-else class="col-span-4 inline-block lg:pl-8 row-end-2">
             <img
-              src="@/assets/images/dummy.png"
-              class="rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="仮">
+              src="@/assets/images/member.png"
+              class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="メンバーアイコン">
           </div>
           <!-- ▲ メンバーアイコン -->
 
