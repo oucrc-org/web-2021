@@ -3,7 +3,7 @@
 
     <OGPSetter
       title="お知らせ"
-      description="OUCRC（岡山大学系戦記研究会）のからのお知らせ一覧です！"
+      description="OUCRC（岡山大学電子計算機研究会）のからのお知らせ一覧です！"
       :url="this.$route.path"
     />
 
