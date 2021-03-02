@@ -56,7 +56,7 @@ export default {
         'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
       },
       params: {
-        limit: Infinity,
+        limit: 10000,
         fields: 'id,name,avatar,enteryear,status'
       }
     }).then(response => {
