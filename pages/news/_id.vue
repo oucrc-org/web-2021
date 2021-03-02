@@ -1,5 +1,11 @@
 <template>
   <div class="container mx-auto">
+    <OGPSetter
+      :title="article.title"
+      :description="article.body"
+      :url="this.$route.path"
+      :image="article.image"
+    />
     <div class="my-16">
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
@@ -34,6 +40,7 @@ export default {
         day: 'numeric'
       }
       const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
+      console.log(response.data)
       return {
         article: response.data,
         timeUpdated: timeUpdated

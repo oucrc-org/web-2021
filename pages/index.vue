@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+
+    <OGPSetter
+      description="OUCRC（岡山大学電子計算機研究会）のホームぺージです！"
+      :url="this.$route.path"
+    />
+
     <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
 
     <!-- ▼ ヒーローエリア -->
@@ -93,7 +99,6 @@ export default {
   head(){
     return {
       titleTemplate: null,
-      title: 'OUCUC | 岡山大学電子計算機研究会'
     }
   },
   asyncData() {
