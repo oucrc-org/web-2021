@@ -44,30 +44,32 @@
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
 
-      <section v-if="article.name !== null" class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-12 lg:px-0 lg:shadow-xl">
-        <div class="grid grid-cols-10 gap-4 mt-12">
+      <section v-if="article.name !== null"
+               class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-16 md:px-24 lg:px-0 lg:shadow-xl">
+        <div class="grid grid-cols-9 gap-4 mt-12">
 
           <!-- ▼ メンバーアイコン -->
-          <NuxtLink :to="'/members/' + article.name.id">
+          <NuxtLink :to="'/members/' + article.name.id" class="col-span-4">
             <div v-if="article.name.avatar !== void(0)"
-                 class="col-span-4 inline-block pl-8 row-end-2">
+                 class="inline-block pl-8 row-end-2">
               <img
                 :src="article.name.avatar.url"
-                class="rounded-full" alt="取得に失敗しました">
+                class="rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
             </div>
             <div v-else>
-              <img class="object-cover rounded-full w-24 sm:w-32 h-24 sm:h-32 m-auto" src="@/assets/images/dummy.png" alt="">
+              <img class="object-cover rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
+                   src="@/assets/images/dummy.png" alt="">
             </div>
           </NuxtLink>
           <!-- ▲ メンバーアイコン -->
 
 
           <!-- ▼ SNSリンク -->
-          <div class="col-span-6 inline-block mt-2 pr-8 text-center">
-            <p class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
+          <div class="col-span-5 inline-block mt-2 pr-8 lg:pr-5 pl-4 lg:pl-0 text-right lg:text-center">
+            <p class="bg-highlight inline-block px-5 xl:px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
               {{ article.name.enteryear }}年度 入部
             </p>
-            <div class="lg:text-left pl-1 xl:pl-6">
+            <div class="lg:text-left xl:pl-3 pr-1">
               <a v-if="article.name.twitter !== void(0)" :href="article.name.twitter">
                 <img src="@/assets/images/sns-twitter.png" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
@@ -87,13 +89,13 @@
         </div>
 
         <!-- ▼ メンバー紹介 -->
-        <div class="mt-6 mx-10 pb-8" v-if="article.name !== void(0)">
+        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article.name !== void(0)">
           <p class="font-bold text-3xl text-secondary tracking-widest">
             <NuxtLink :to="'/members/' + article.name.id">
               {{ article.name.name }}
             </NuxtLink>
           </p>
-          <p class="leading-7 mt-4 text-secondary tracking-widest">
+          <p class="leading-7 mt-1 text-secondary tracking-widest">
             <NuxtLink :to="'/members/' + article.name.id">
               {{ article.name.status }}
             </NuxtLink>
@@ -102,11 +104,12 @@
         <!-- ▲ メンバー情報 -->
 
         <!-- ▼ この人が書いた記事 -->
-        <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length" class="pt-16 mx-8 sm:mx-10 text-center">
+        <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length"
+             class="pt-10 mx-6 xl:mx-10 text-center">
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
             <ArticleCard :href="'/article/' + otherArticle.id"
-                         :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-3"
+                         :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
             />
@@ -188,7 +191,7 @@ export default {
       const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
 
       /*名前が取得できたとき*/
-      if(response.data.name !== null){
+      if (response.data.name !== null) {
 
         /*二回目の処理*/
         return axios.get('https://oucrc.microcms.io/api/v1/article', {
@@ -221,7 +224,7 @@ export default {
       }
 
       /*名前が取得できなかったときの処理*/
-      else{
+      else {
         return {
           article: response.data,
           timeUpdated: timeUpdated
