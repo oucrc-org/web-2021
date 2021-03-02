@@ -43,7 +43,7 @@ export default {
     },
     series: {
       type: Object,
-      default: {}
+      default: () => {return {}}
     },
     category: {
       type: String,
