@@ -19,7 +19,7 @@ export default {
   data() {
     return {
       article: 'There are no data',
-      timeUpdated: ''
+      timeUpdated: '',
     }
   },
   asyncData({params, error}) {

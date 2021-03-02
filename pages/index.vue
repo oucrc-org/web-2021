@@ -81,12 +81,19 @@ import Contact from "~/components/Contact";
 import axios from "axios";
 
 export default {
+
   /*お知らせを取ってくる処理系統*/
   data(){
     return{
       notices: {
         contents: []
       }
+    }
+  },
+  head(){
+    return {
+      titleTemplate: null,
+      title: 'OUCUC | 岡山大学電子計算機研究会'
     }
   },
   asyncData() {
