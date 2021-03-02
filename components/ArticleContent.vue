@@ -3,7 +3,7 @@
 
     <!-- ▼ トップ画像 -->
     <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-      <img :src="article.image.url" style="margin: 0!important"/>
+      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"/>
     </div>
     <div v-else>
       <img src="@/assets/images/cover.png" class="block m-auto w-full"/>
@@ -30,8 +30,8 @@
 
 
     <!-- ▼ タグ -->
-    <div class="mx-16 my-8">
-      <NuxtLink :to="`/article?category=${category.id}`" v-if="category" class="bg-blockquote inline-block mr-4 rounded-lg pb-2 px-4">
+    <div class="mx-8 sm:mx-16 my-8">
+      <NuxtLink :to="`/article?category=${category.id}`" v-if="category" class="bg-blockquote inline-block mb-3 mr-4 rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
           <img class="pt-2" src="@/assets/images/category.png" style="margin: 0 !important" alt="カテゴリー">
         </span>
