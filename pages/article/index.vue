@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-32 mt-16 mx-auto px-10">
+  <div class="container mb-32 mx-auto px-10">
     <!-- 絞り込みツール -->
     <Title label="絞り込み" />
     <form method="GET" class="md:mx-16 mt-4">
