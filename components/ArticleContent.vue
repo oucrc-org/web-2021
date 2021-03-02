@@ -19,7 +19,7 @@
 
 
     <!-- ▼ サブテキスト -->
-    <div class="mb-16 mt-6 mx-8 sm:mx-16">
+    <div class="mb-8 mt-6 mx-8 sm:mx-16">
       <p v-if="typeof article.name !== 'undefined' && article.name !== null"
          class="sm:text-lg text-secondary tracking-widest">
         執筆者: {{ article.name.name }}
@@ -28,8 +28,28 @@
     </div>
     <!-- ▲ サブテキスト -->
 
+
+    <!-- ▼ タグ -->
+    <div class="mx-16 my-8">
+      <NuxtLink :to="`/article?category=${category.id}`" v-if="category" class="bg-blockquote inline-block mr-4 rounded-lg pb-2 px-4">
+        <span class="inline-block h-6 w-6">
+          <img class="pt-2" src="@/assets/images/category.png" style="margin: 0 !important" alt="カテゴリー">
+        </span>
+        <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ category.category }}</span>
+      </NuxtLink>
+
+      <NuxtLink :to="`/article?series=${series.id}`" v-if="series" class="bg-blockquote inline-block rounded-lg pb-2 px-4">
+        <span class="inline-block h-6 w-6">
+          <img class="pt-2" src="@/assets/images/series.png" style="margin: 0 !important" alt="シリーズ">
+        </span>
+        <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ series.series }}</span>
+      </NuxtLink>
+    </div>
+    <!-- ▲ タグ -->
+
+
     <!-- ▼ 記事本文 -->
-    <span v-html="article.body" class="block leading-8 px-8 sm:px-16 text-lg tracking-wider"></span>
+    <span v-html="article.body" class="block leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"></span>
     <!-- ▲ 記事本文 -->
 
   </section>
@@ -42,6 +62,14 @@ export default {
     article: {
       type: Object,
       default: ''
+    },
+    category: {
+      type: Object,
+      default: {}
+    },
+    series: {
+      type: Object,
+      default: {}
     },
     timeUpdated: {
       type: String,
