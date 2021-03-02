@@ -1,6 +1,13 @@
 <template>
   <div class="container mx-auto lg:pt-16 px-10 sm:px-0">
 
+    <OGPSetter
+      :title="member.name"
+      :description="member.status"
+      :url="this.$route.path"
+      :image="member.avatar !== void(0) ? member.avatar.url : null"
+    />
+
     <!---------------------------------------------------  部員情報  --------------------------------------------------->
 
     <section class="bg-white pt-16 lg:pt-0">

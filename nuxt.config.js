@@ -12,6 +12,7 @@ export default {
     htmlAttrs: {
       lang: 'ja'
     },
+    titleTemplate: '%s - OUCRC | 岡山大学電子計算機研究会',
     meta: [
       {charset: 'utf-8'},
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},

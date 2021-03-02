@@ -1,5 +1,12 @@
 <template>
   <div id="app" class="md:mx-auto md:w-3/4">
+
+    <OGPSetter
+      title="記事一覧"
+      description="OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！"
+      :url="this.$route.path"
+    />
+
     <h1 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">最新の投稿</h1>
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
       <div v-for="article in articles.contents" :key="article.id" class="mx-2 my-5 text-center">

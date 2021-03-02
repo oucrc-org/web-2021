@@ -1,5 +1,11 @@
 <template>
   <div class="container mx-auto">
+    <OGPSetter
+      :title="article.title"
+      :description="article.body"
+      :url="this.$route.path"
+      :image="article.image"
+    />
     <div class="my-16">
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
@@ -19,7 +25,7 @@ export default {
   data() {
     return {
       article: 'There are no data',
-      timeUpdated: ''
+      timeUpdated: '',
     }
   },
   asyncData({params, error}) {

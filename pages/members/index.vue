@@ -1,5 +1,12 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
+
+    <OGPSetter
+      title="部員一覧"
+      description="OUCRC（岡山大学電子計算機研究会）の皆さんのプロフィールの一覧です！"
+      :url="this.$route.path"
+    />
+
     <Title label="部員一覧" class="mt-16"/>
 
     <div v-for="year in years">
