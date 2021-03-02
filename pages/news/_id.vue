@@ -4,7 +4,7 @@
       :title="article.title"
       :description="article.body"
       :url="this.$route.path"
-      :image="typeof article.image.url !== 'undefined' ? article.image.url : null"
+      :image="typeof article.image !== 'undefined' ? article.image.url : null"
     />
     <div class="my-16">
 
