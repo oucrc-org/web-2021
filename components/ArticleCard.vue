@@ -1,17 +1,34 @@
 <template>
   <div class="bg-white text-center">
-    <NuxtLink v-bind:to="href" class="inline-block transform hover:scale-101 transition duration-500 ease-in-out w-full">
+    <NuxtLink v-bind:to="href"
+              class="inline-block transform hover:scale-101 transition duration-500 ease-in-out w-full">
       <div class="relative">
-        <img v-if="imgPath !== null" class="object-cover h-56 w-full" :src="imgPath" v-bind:alt="tag">
-        <img v-else class="object-cover h-56 w-full" src="@/assets/images/dummy.png" alt="">
-        <div v-if="tag !== null" class="absolute bg-primary font-bold py-2 px-5 text-center text-sm text-white tracking-widest" style="left: -8px;top: 10px">
-          {{ tag }}
+        <img v-if="imgPath !== null" class="object-cover shadow-lg h-56 w-full" :src="imgPath" v-bind:alt="category">
+        <img v-else class="object-cover shadow-lg h-56 w-full" src="@/assets/images/cover.png" alt="NoImage">
+        <div v-if="category !== null"
+             class="absolute bg-primary font-bold py-2 px-5 text-center text-sm text-white tracking-widest"
+             style="left: -8px;top: 10px">
+          {{ category }}
         </div>
       </div>
-      <h3 class="font-semibold leading-8 mt-4 px-3 text-left text-lg text-secondary tracking-widest">
-        {{ description }}
+      <h2 class="font-semibold leading-8 mt-6 px-3 text-left text-2xl text-primary tracking-widest">
+        {{ title }}
+      </h2>
+      <h3 class="font-semibold leading-8 mt-4 overflow-hidden px-3 text-left text-lg text-secondary tracking-widest">
+        <span class="block" style="display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3">
+          {{ description }}
+        </span>
       </h3>
-      <DoubleLineButton label="内容を見る" />
+      <div class="mt-3 text-left">
+        <NuxtLink :to="`/article?series=${series.id}`" v-if="typeof series.series !== 'undefined'"
+                  class="bg-blockquote inline-block mb-3 mr-4 rounded-lg pb-2 px-4 transform hover:scale-105 transition duration-500 ease-in-out">
+          <span class="inline-block h-6 w-6">
+            <img class="pt-2" src="@/assets/images/series.png" style="margin: 0 !important" alt="シリーズ">
+          </span>
+          <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ series.series }}</span>
+        </NuxtLink>
+      </div>
+      <DoubleLineButton label="内容を見る" class="mt-4"/>
     </NuxtLink>
   </div>
 </template>
@@ -24,7 +41,15 @@ export default {
       type: String,
       default: '#'
     },
-    tag: {
+    series: {
+      type: Object,
+      default: {}
+    },
+    category: {
+      type: String,
+      default: null
+    },
+    title: {
       type: String,
       default: null
     },

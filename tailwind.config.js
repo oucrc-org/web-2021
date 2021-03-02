@@ -17,7 +17,8 @@ module.exports = {
         'divider': '#DADADA',
         'blockquote': '#F8F8F8',
         'blockquoteSidebar': '#CACACA',
-        'highlight': '#F3F3F3'
+        'highlight': '#F3F3F3',
+        'footer': '#3B3B3B'
       },
       fontSize: {
         'h1': '1.8em',
@@ -37,7 +38,8 @@ module.exports = {
       spacing: {
         72: '18rem',
         84: '21rem',
-        96: '24rem'
+        96: '24rem',
+        120: '30rem'
       }
     },
   },
