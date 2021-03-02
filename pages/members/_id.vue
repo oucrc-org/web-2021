@@ -130,6 +130,7 @@ export default {
             'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
           },
           params: {
+            limit: 10000,
             filters: `name[equals]${response.data.id}`
           }
 
