@@ -33,14 +33,6 @@ export default {
     return{
       notices: {
         contents: []
-      },
-
-      meta: {
-        title: '記事一覧',
-        description: 'OUCRC（岡山電気計算機研究会）の皆さんが書いた記事の一覧です！',
-        type: 'article',
-        url: '',
-        image: '@/assets/images/dummy.png'
       }
     }
   },

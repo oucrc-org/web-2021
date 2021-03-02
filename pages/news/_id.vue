@@ -40,7 +40,6 @@ export default {
         day: 'numeric'
       }
       const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
-      console.log(response.data)
       return {
         article: response.data,
         timeUpdated: timeUpdated
