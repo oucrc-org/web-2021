@@ -50,7 +50,7 @@
 
 
     <!-- ▼ お知らせ -->
-    <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20">
+    <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20 z-20">
       <div class="container mx-auto">
         <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
           <div class="col-span-2 image bg-red-500 hidden lg:block">キャラ</div>
