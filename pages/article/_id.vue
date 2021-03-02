@@ -5,7 +5,7 @@
       :title="article.title"
       :description="article.body"
       :url="this.$route.path"
-      :image="typeof article.image.url !== 'undefined' ? article.image.url : null"
+      :image="typeof article.image !== 'undefined' ? article.image.url : null"
     />
 
     <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16 pb-10">
