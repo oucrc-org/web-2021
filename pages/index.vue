@@ -45,36 +45,23 @@
             src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
         </a>
       </div>
-      <hr class="line">
     </section>
     <!-- ▲ 電算研の部室 -->
 
 
     <!-- ▼ お知らせ -->
-    <section class="bg-white relative pt-20 md:py-20">
-      <div class="grid grid-cols-1 md:grid-cols-3">
-        <section class="col-span-1 image bg-red-500">
-        </section>
-        <section class="col-span-1 md:col-span-2">
-          <div class="text-3xl font-bold border-b-2 py-5 pl-5">お知らせ</div>
-          <div v-for="notice in notices.contents" :key="notice.id" class="border-b-2 border-gray-300 text-gray-700">
-            <a href="https://google.com">
-                <div class="text-xl text-left py-5 pl-5">
-                  {{notice.title.slice(0, 30)}}
-                  <div class="text-right float-right pr-5">
-                    &#9658;
-                  </div>
-                </div>
-            </a>
+    <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20">
+      <div class="container mx-auto">
+        <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
+          <div class="col-span-2 image bg-red-500 hidden lg:block">キャラ</div>
+          <div class="col-span-3">
+            <News :notices="notices"/>
+            <NuxtLink to="/news" class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
+              もっとみる
+            </NuxtLink>
           </div>
-          <div class="py-5 pr-5">
-            <a href="https://google.com">
-              <button class="block font-bold text-xl text-gray-700" style="margin: 0 0 0 auto">もっとみる</button>
-            </a>
-          </div>
-        </section>
+        </div>
       </div>
-      <hr class="line md:hidden">
     </section>
     <!-- ▲ お知らせ -->
 
@@ -99,12 +86,11 @@ export default {
     return{
       notices: {
         contents: []
-      },
-      status: 'wait'
+      }
     }
   },
   asyncData() {
-    const currentTime = new Date().toISOString();
+    const currentTime = new Date().toISOString()
     return axios.get('https://oucrc.microcms.io/api/v1/news?' + Object.entries({
       limit: 3,
       fields: 'id,title',
@@ -116,19 +102,14 @@ export default {
       }
     }).then(response => {
       return {
-        notices: response.data,
-        status: 'success'
+        notices: response.data
       }
-    }).catch(function (e){
-      console.log('Oops')
-      console.log(e.response.status)
+    }).catch(function (){
       return {
-        notices: null,
-        status: 'error'
+        notices: null
       }
     })
   },
-
   components: {
     Contact
   },
@@ -161,13 +142,8 @@ export default {
   background-image: url(@/assets/images/oucrc-room.png)
 }
 
-.line{
-  margin: 0 auto;
-  @apply border-gray-600 border-solid border
-}
-
 @media (min-width: 768px) {
-  .contact{
+  .contact {
     height: 80vh;
   }
 }

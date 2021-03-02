@@ -4,40 +4,7 @@
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
-      <section class="bg-white lg:col-span-2 row-span-2 pb-16 lg:pb-0 lg:shadow-xl" :class="$style.article">
-
-        <!-- ▼ トップ画像 -->
-        <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-          <img :src="article.image.url" :class="$style.article"/>
-        </div>
-        <div v-else>
-          <img src="@/assets/images/cover.png" :class="$style.article"/>
-        </div>
-        <!-- ▲ トップ画像 -->
-
-
-        <!-- ▼ タイトル -->
-        <div class="font-bold mt-6 mx-8 sm:mx-16 text-5xl tracking-wider">
-          {{ article.title.replace(/　/g, " ") }}
-        </div>
-        <!-- ▲ タイトル -->
-
-
-        <!-- ▼ サブテキスト -->
-        <div class="mb-16 mt-6 mx-8 sm:mx-16">
-          <p v-if="article.name !== null" class="text-lg text-secondary tracking-widest">
-            執筆者: {{ article.name.name }}
-          </p>
-          <p class="text-lg text-secondary tracking-widest">最終更新: {{ timeUpdated }}</p>
-        </div>
-        <!-- ▲ サブテキスト -->
-
-
-        <!-- ▼ 記事本文 -->
-        <span v-html="article.body" class="block leading-8 px-8 sm:px-16 text-lg tracking-wider"></span>
-        <!-- ▲ 記事本文 -->
-
-      </section>
+      <ArticleContent :article="article" :timeUpdated="timeUpdated"/>
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
@@ -105,7 +72,7 @@
 
         <!-- ▼ この人が書いた記事 -->
         <div v-if="otherArticles.contents !== void(0) && otherArticles.contents.length"
-             class="pt-10 mx-6 xl:mx-10 text-center">
+             class="pt-24 mx-8 sm:mx-10 text-center">
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
             <ArticleCard :href="`/article/${otherArticle.id}`"
@@ -173,7 +140,6 @@ export default {
       }
     },
   },
-
   asyncData({params, error}) {
     /*一度目の処理*/
     return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
@@ -242,67 +208,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.MathJax_Display {
-  @apply overflow-x-scroll overflow-y-hidden
-}
-</style>
-
-<style module>
-.article img {
-  @apply block m-auto w-full
-}
-
-.article h1 {
-  @apply border-divider border-b-2 pb-3 pl-1 pt-5 text-h1
-}
-
-.article h2 {
-  @apply pt-3 text-h2
-}
-
-.article h3 {
-  @apply pt-1 text-h3
-}
-
-.article h4 {
-  @apply text-h4
-}
-
-.article h5 {
-  @apply text-h5
-}
-
-.article h6 {
-  @apply text-h6
-}
-
-.article code {
-  @apply overflow-scroll my-8 px-6 py-4 rounded-xl
-}
-
-.article blockquote {
-  @apply p-2 bg-blockquote mb-4 border-l-8 border-blockquoteSidebar rounded pl-4
-}
-
-.article blockquote > p {
-  @apply mb-0
-}
-
-.article ol {
-  @apply list-decimal p-2
-}
-
-.article ul {
-  @apply list-disc p-2
-}
-
-.article a {
-  @apply text-blue-600
-}
-
-.article iframe {
-  @apply block m-auto
-}
-</style>

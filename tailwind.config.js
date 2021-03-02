@@ -1,4 +1,7 @@
 module.exports = {
+  experimental: {
+    applyComplexClasses: true,
+  },
   future: {
     // removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
@@ -40,7 +43,8 @@ module.exports = {
   },
   variants: {
     extend: {
-      border: ['hover']
+      border: ['hover'],
+      text: ['sm']
     }
   },
   plugins: [],
