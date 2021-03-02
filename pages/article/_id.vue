@@ -89,7 +89,7 @@
           <Title label="この人が書いた記事"/>
           <div v-for="otherArticle in otherArticles.contents">
             <ArticleCard :href="`/article/${otherArticle.id}`"
-                         :tag="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
+                         :category="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
             />

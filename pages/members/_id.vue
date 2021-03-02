@@ -93,8 +93,7 @@
 
       <!-- ▼ この人が書いた記事 -->
       <div v-if="articles.contents !== void(0) && articles.contents.length"
-           class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
-      >
+           class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center">
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4"/>
           <div class="grid sm:grid-cols-3 gap-8">
@@ -102,9 +101,11 @@
               v-for="article in articles.contents"
               class="py-6"
               :href="`/article/${article.id}`"
-              :tag="article.category !== void(0) ? article.category.category : null"
+              :series="article.series != null ? article.series : {}"
+              :category="article.category !== void(0) ? article.category.category : null"
               :img-path="article.image !== void(0) ? article.image.url : null"
-              :description="article.title !== void(0) ? article.title : null"/>
+              :title="article.title !== void(0) ? article.title : null"
+              :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"/>
           </div>
         </div>
       </div>
