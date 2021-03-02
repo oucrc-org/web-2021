@@ -1,5 +1,5 @@
 <template>
-	<p class="double-line-button mt-8 transform hover:scale-105 transition duration-500 ease-in-out">
+	<p class="double-line-button transform hover:scale-105 transition duration-500 ease-in-out">
 		<img v-if="hasRightArrow" src="@/assets/images/next.png" alt=">">
 		<span class="mr-1 tracking-widest">{{ label }}</span>
 	</p>

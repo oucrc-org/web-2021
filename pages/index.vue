@@ -23,13 +23,13 @@
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard href="/article?tag=programming" tag="プログラミング"
+          <ArticleCard href="/article?tag=programming" category="プログラミング"
                        :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?tag=electronic" tag="電子工作"
+          <ArticleCard href="/article?tag=electronic" category="電子工作"
                        :img-path="require('@/assets/images/cover-electronic.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?tag=dtm" tag="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
+          <ArticleCard href="/article?tag=dtm" category="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
         <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
