@@ -1,7 +1,21 @@
 <template></template>
 
 <script>
+/*
+* 設定できるもの
+* title
+* type
+* description
+* url
+* image
+*
+* */
+
+
 import Meta from '~/assets/mixins/meta'
+
+//HTMLタグを取り除く式
+const replace = (data) => data !== null ? data.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'') : null
 
 export default{
 
@@ -33,13 +47,13 @@ export default{
   data(){
     return {
       meta: {
-        title: this.title,
+        title: replace(this.title),
         type: this.type,
-        description: this.description,
+        description: replace(this.description),
         url: this.url,
         image: this.image
       }
     }
-  }
+  },
 }
 </script>

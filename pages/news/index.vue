@@ -1,5 +1,13 @@
 <template>
   <section class="container mx-auto">
+
+    <OGPSetter
+      title="お知らせ"
+      description="OUCRC（岡山大学系戦記研究会）のからのお知らせ一覧です！"
+      :url="this.$route.path"
+    />
+
+
     <div class="lg:grid grid-cols-4 xl:grid-cols-5 gap-24 mt-16 px-8">
       <div class="col-span-2 xl:col-span-3">
         <News :notices="notices"/>

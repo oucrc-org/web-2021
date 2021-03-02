@@ -18,14 +18,6 @@ export default {
       {name: 'viewport', content: 'width=device-width, initial-scale=1'},
       {hid: 'description', name: 'description', content: ''},
       {name: 'google-site-verification', content: 'gUJca8xJ_QAdQ02BNBQRL7jCS53EgM8BWQZqA7zbSQU'},
-
-      { hid: 'description', name: 'description', content: ''},
-      { hid: 'og:site_name', property: 'og:site_name', content: 'OUCRC | 岡山大学電子計算機研究会' },
-      { hid: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:url', property: 'og:url', content: 'https://example.com' },
-      { hid: 'og:title', property: 'og:title', content: 'OUCRC | 岡山大学電子計算機研究会' },
-      { hid: 'og:description', property: 'og:description', content: '' },
-      { hid: 'og:image', property: 'og:image', content: '@/assets/images/cover.png' },
     ],
     link: [
       {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
