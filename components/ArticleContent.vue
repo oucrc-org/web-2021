@@ -93,27 +93,27 @@ export default {
 }
 
 .article h1 {
-  @apply border-divider border-b-2 mb-5 pb-3 pl-1 pt-5 text-h2 sm:text-h1
+  @apply border-divider border-b-2 my-5 pb-3 pl-1 pt-5 text-h2 leading-10
 }
 
 .article h2 {
-  @apply mb-3 pt-3 text-h3 sm:text-h2
+  @apply my-3 pt-3 text-h3 sm:text-h2
 }
 
 .article h3 {
-  @apply mb-3 pt-1 text-h4 sm:text-h3
+  @apply my-3 pt-1 text-h4 sm:text-h3
 }
 
 .article h4 {
-  @apply mb-3 text-h5 sm:text-h4
+  @apply my-3 text-h5 sm:text-h4
 }
 
 .article h5 {
-  @apply mb-3 text-h6 sm:text-h5
+  @apply my-3 text-h6 sm:text-h5
 }
 
 .article h6 {
-  @apply mb-3 text-h6
+  @apply my-3 text-h6
 }
 
 .article code {
