@@ -15,7 +15,7 @@
 import Meta from '~/assets/mixins/meta'
 
 //HTMLタグを取り除く式
-const replace = (data) => data !== null ? data.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'') : null
+const replace = (data) => data !== null ? data.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'').slice(0, 120) : null
 
 export default{
 
