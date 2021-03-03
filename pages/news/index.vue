@@ -7,7 +7,6 @@
       :url="this.$route.path"
     />
 
-
     <div class="lg:grid grid-cols-4 xl:grid-cols-5 gap-24 mt-16 px-8">
       <div class="col-span-2 xl:col-span-3">
         <News :notices="notices"/>
@@ -22,13 +21,9 @@
 </template>
 
 <script>
-import Meta from '~/assets/mixins/meta'
 import axios from "axios";
 
 export default {
-
-  mixins: [Meta],
-
   data(){
     return{
       notices: {
