@@ -14,7 +14,6 @@
         </nav>
       </div>
       <div class="h-auto flex flex-row">
-        <img src="~/assets/images/search.svg" width="18" height="18" alt="検索" class="m-2">
         <button v-on:click="flag = !flag">
           <img v-if="!flag" src="~/assets/images/hamburger.svg" width="18" height="18" alt="メニュー"
                class="m-2 block md:hidden">
