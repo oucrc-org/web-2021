@@ -3,10 +3,10 @@
 
     <!-- ▼ トップ画像 -->
     <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"/>
+      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important" alt="トップ画像"/>
     </div>
     <div v-else>
-      <img src="@/assets/images/cover.png" class="block m-auto w-full"/>
+      <img src="@/assets/images/cover.png" class="block m-auto w-full" alt="トップ画像"/>
     </div>
     <!-- ▲ トップ画像 -->
 
@@ -31,14 +31,16 @@
 
     <!-- ▼ タグ -->
     <div class="mx-8 sm:mx-16 my-8">
-      <NuxtLink :to="`/article?category=${category.id}`" v-if="category !== null" class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4">
+      <NuxtLink :to="`/article?category=${category.id}`" v-if="category !== null"
+                class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
           <img class="pt-2" src="@/assets/images/category.png" style="margin: 0 !important" alt="カテゴリー">
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ category.category }}</span>
       </NuxtLink>
 
-      <NuxtLink :to="`/article?series=${series.id}`" v-if="series !== null" class="bg-blockquote inline-block rounded-lg pb-2 px-4">
+      <NuxtLink :to="`/article?series=${series.id}`" v-if="series !== null"
+                class="bg-blockquote inline-block rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
           <img class="pt-2" src="@/assets/images/series.png" style="margin: 0 !important" alt="シリーズ">
         </span>
@@ -115,7 +117,11 @@ export default {
 }
 
 .article code {
-  @apply overflow-scroll my-8 px-6 py-4 rounded-xl
+  @apply overflow-scroll my-8 px-6 py-4 rounded-2xl
+}
+
+.article p code {
+  @apply bg-highlight mx-1 my-0 px-2 py-1 rounded text-base
 }
 
 .article blockquote {
