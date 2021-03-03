@@ -54,7 +54,7 @@ export default {
       for(let content of contents){
         yearSet.add(content.enteryear)
       }
-      this.years = yearSet
+      this.years = Array.from(yearSet).sort((a, b) => b - a)
     }
   },
   asyncData({ error }) {
