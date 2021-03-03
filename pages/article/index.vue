@@ -7,10 +7,12 @@
 
     <!-- 絞り込みツール -->
     <Title label="絞り込み" />
-    <form @submit.prevent="search" name="search" class="md:mx-16 mt-4">
+    <form @submit.prevent @change="updateSearchLink" name="search" class="md:mx-16 mt-4">
       <div class="relative mb-2">
         <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full" placeholder="キーワードを入力">
-        <img @click="search" src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3 cursor-pointer">
+        <NuxtLink :to="searchQueryString">
+          <img src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3 cursor-pointer">
+        </NuxtLink>
       </div>
       <div>
         カテゴリ：
@@ -72,7 +74,11 @@ export default {
       arrayJumpTo: [],
       articles: { contents: [] },
       categories: { contents: [] },
-      serieses: { contents: [] }
+      serieses: { contents: [] },
+      searchQueryString: {
+        type: String,
+        default: ''
+      }
     };
   },
   methods: {
@@ -82,28 +88,102 @@ export default {
         ...newQuery
       }
     },
-    search() {
+    updateSearchLink() {
       const elementsSearchForm = document.forms.search.elements;
       const searchQuery = {};
       if (typeof elementsSearchForm.keyword.value !== 'undefined' && elementsSearchForm.keyword.value !== '') {
         searchQuery.keyword = elementsSearchForm.keyword.value;
       }
-      searchQuery.category = [];
+      const categories = [];
       for (const category of elementsSearchForm.category) {
         if (category.checked) {
-          searchQuery.category.push(category.value);
+          categories.push(category.value);
         }
       }
-      searchQuery.series = [];
+      if (categories.length) {
+        searchQuery.category = categories;
+      }
+      const serieses = [];
       for (const series of elementsSearchForm.series) {
         if (series.checked) {
-          searchQuery.series.push(series.value);
+          serieses.push(series.value);
         }
       }
-      this.$router.push({
-        query: searchQuery
-      });
+      if (serieses.length) {
+        searchQuery.series = serieses;
+      }
+      this.searchQueryString = '?' + Object.entries(searchQuery).map(([k,v]) => {
+        console.log(typeof v)
+        if (typeof v === 'object') {
+          return v.map(u => `${k}=${u}`).join('&')
+        } else {
+          return `${k}=${v}`
+        }
+      }).join('&')
     }
+  },
+  beforeRouteUpdate(to, from, next) {
+    const currentPageNum = +to.query.p || 1;
+    const currentTime = new Date().toISOString();
+    const url = 'https://oucrc.microcms.io/api/v1';
+    const headers = {
+      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+    };
+    const promiseArticles = axios.get(url + '/article', {
+      headers,
+      params: {
+        limit: 9,
+        offset: (currentPageNum - 1) * 9,
+        fields: 'id,title,category,image,body',
+        orders: '-date,-createdAt',
+        filters: [
+          `date[less_than]${currentTime}`,
+          ...(() => {
+            const searchQuery = [];
+            if ('keyword' in to.query && to.query.keyword !== null) {
+              searchQuery.push(
+                to.query.keyword.split(/\s+/)
+                .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                .join('[and]')
+              )
+            }
+            if ('category' in to.query) {
+              if (typeof to.query.category === 'string') {
+                to.query.category = [to.query.category]
+              }
+              searchQuery.push(
+                to.query.category
+                .map(id => `category[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            if ('series' in to.query) {
+              if (typeof to.query.series === 'string') {
+                to.query.series = [to.query.series]
+              }
+              searchQuery.push(
+                to.query.series
+                .map(id => `series[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            return searchQuery;
+          })()
+        ].join('[and]')
+      }
+    });
+
+    promiseArticles.then(response => {
+      this.articles = response.data;
+      this.currentPageNum = currentPageNum;
+      this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
+    }).catch(e => {
+      error({
+        statusCode: e.response.status,
+        message: e.message
+      })
+    })
+    next();
   },
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
