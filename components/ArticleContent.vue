@@ -3,10 +3,10 @@
 
     <!-- ▼ トップ画像 -->
     <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"/>
+      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important" alt="トップ画像"/>
     </div>
     <div v-else>
-      <img src="@/assets/images/cover.png" class="block m-auto w-full"/>
+      <img src="@/assets/images/cover.png" class="block m-auto w-full" alt="トップ画像"/>
     </div>
     <!-- ▲ トップ画像 -->
 
