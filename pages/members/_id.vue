@@ -72,8 +72,8 @@
           <div class="bg-primary font-bold inline-block py-2 px-8 text-center text-sm text-white tracking-widest">
             自己紹介
           </div>
-          <p v-if="member.intro !== void(0)" class="leading-8 mt-4 text-secondary tracking-widest">
-            {{ member.intro }}
+          <p class="leading-8 mt-4 text-secondary tracking-widest">
+            {{ member.intro !== void(0) ? member.intro :'なし' }}
           </p>
           <!-- ▲ 自己紹介 -->
 
@@ -96,7 +96,7 @@
            class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center">
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4"/>
-          <div class="grid sm:grid-cols-3 gap-8">
+          <div class="sm:grid grid-cols-3 gap-8">
             <ArticleCard
               v-for="article in articles.contents"
               :key="`articlecard-${article.id}`"
