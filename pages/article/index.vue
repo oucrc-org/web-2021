@@ -1,31 +1,61 @@
 <template>
-  <div id="app" class="md:mx-auto md:w-3/4">
-
+  <div class="container mb-32 mx-auto px-10">
     <OGPSetter
       title="記事一覧"
       description="OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！"
-      :url="this.$route.path"
-    />
+      :url="this.$route.path" />
 
-    <h1 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">最新の投稿</h1>
+    <!-- 絞り込みツール -->
+    <Title label="絞り込み" />
+    <form @submit.prevent @change="updateSearchLink" name="search" class="md:mx-16 mt-4">
+      <div class="relative mb-2">
+        <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full" placeholder="キーワードを入力">
+        <NuxtLink :to="searchQueryString">
+          <img src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3 cursor-pointer">
+        </NuxtLink>
+      </div>
+      <div>
+        カテゴリ：
+        <LabeledCheckbox
+          v-for="category in categories.contents"
+          :key="`checkbox-${category.id}`"
+          :label="category.category"
+          name="category"
+          :value="category.id" />
+      </div>
+      <div>
+        シリーズ：
+        <LabeledCheckbox
+          v-for="series in serieses.contents"
+          :key="`checkbox-${series.id}`"
+          :label="series.series"
+          name="series"
+          :value="series.id" />
+      </div>
+    </form>
+
+    <!-- 記事一覧 -->
+    <Title label="最新の投稿" class="mt-20" />
     <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
       <div v-for="article in articles.contents" :key="article.id" class="mx-2 my-5 text-center">
         <h2 class="text-2xl">{{article.title}}</h2>
         <ArticleCard
           :href="'/article/' + article.id"
-          :tag="article.series !== null ? article.series.series : null"
+          :tag="article.category !== null ? article.category.category : null"
           :imgPath="article.image !== void(0) ? article.image.url : null"
           :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
       </div>
     </div>
+
+    <!-- ページジャンパー -->
     <div class="page-jumper divide-x-2">
-      <NuxtLink v-if="currentPageNum > 1" :to="'?p=' + (currentPageNum - 1)"><div>&lt;</div></NuxtLink>
+      <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }"><div>&lt;</div></NuxtLink>
       <NuxtLink v-for="pageNum in arrayJumpTo"
         :key="'jumper' + pageNum"
-        :to="'?p=' + pageNum">
+        :to="{ query: appendQuery({p: pageNum}) }">
         <div>{{pageNum}}</div>
       </NuxtLink>
-      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="'?p=' + (currentPageNum + 1)"><div>&gt;</div></NuxtLink>
+      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }"><div>&gt;</div></NuxtLink>
     </div>
   </div>
 </template>
@@ -34,45 +64,211 @@
 import axios from "axios";
 
 export default {
-  watchQuery: ['p'],
+  watchQuery: ['p', 'keyword', 'category', 'series'],
   data() {
     return {
-      articles: {
-        contents: [],
-      },
       currentPageNum: {
         type: Number,
         default: 1
       },
       arrayJumpTo: [],
+      articles: { contents: [] },
+      categories: { contents: [] },
+      serieses: { contents: [] },
+      searchQueryString: {
+        type: String,
+        default: ''
+      }
     };
+  },
+  methods: {
+    appendQuery(newQuery) {
+      return {
+        ...this.$route.query,
+        ...newQuery
+      }
+    },
+    updateSearchLink() {
+      const elementsSearchForm = document.forms.search.elements;
+      const searchQuery = {};
+      if (typeof elementsSearchForm.keyword.value !== 'undefined' && elementsSearchForm.keyword.value !== '') {
+        searchQuery.keyword = elementsSearchForm.keyword.value;
+      }
+      const categories = [];
+      for (const category of elementsSearchForm.category) {
+        if (category.checked) {
+          categories.push(category.value);
+        }
+      }
+      if (categories.length) {
+        searchQuery.category = categories;
+      }
+      const serieses = [];
+      for (const series of elementsSearchForm.series) {
+        if (series.checked) {
+          serieses.push(series.value);
+        }
+      }
+      if (serieses.length) {
+        searchQuery.series = serieses;
+      }
+      this.searchQueryString = '?' + Object.entries(searchQuery).map(([k,v]) => {
+        console.log(typeof v)
+        if (typeof v === 'object') {
+          return v.map(u => `${k}=${u}`).join('&')
+        } else {
+          return `${k}=${v}`
+        }
+      }).join('&')
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    const currentPageNum = +to.query.p || 1;
+    const currentTime = new Date().toISOString();
+    const url = 'https://oucrc.microcms.io/api/v1';
+    const headers = {
+      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+    };
+    const promiseArticles = axios.get(url + '/article', {
+      headers,
+      params: {
+        limit: 9,
+        offset: (currentPageNum - 1) * 9,
+        fields: 'id,title,category,image,body',
+        orders: '-date,-createdAt',
+        filters: [
+          `date[less_than]${currentTime}`,
+          ...(() => {
+            const searchQuery = [];
+            if ('keyword' in to.query && to.query.keyword !== null) {
+              searchQuery.push(
+                to.query.keyword.split(/\s+/)
+                .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                .join('[and]')
+              )
+            }
+            if ('category' in to.query) {
+              if (typeof to.query.category === 'string') {
+                to.query.category = [to.query.category]
+              }
+              searchQuery.push(
+                to.query.category
+                .map(id => `category[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            if ('series' in to.query) {
+              if (typeof to.query.series === 'string') {
+                to.query.series = [to.query.series]
+              }
+              searchQuery.push(
+                to.query.series
+                .map(id => `series[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            return searchQuery;
+          })()
+        ].join('[and]')
+      }
+    });
+
+    promiseArticles.then(response => {
+      this.articles = response.data;
+      this.currentPageNum = currentPageNum;
+      this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
+    }).catch(e => {
+      error({
+        statusCode: e.response.status,
+        message: e.message
+      })
+    })
+    next();
   },
   asyncData({ query, error }) {
     const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
-    return axios
-      .get('https://oucrc.microcms.io/api/v1/article?' + Object.entries({
+    const url = 'https://oucrc.microcms.io/api/v1';
+    const headers = {
+      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+    };
+    const promiseArticles = axios.get(url + '/article', {
+      headers,
+      params: {
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,date,createdAt,title,series,image,body',
+        fields: 'id,title,category,image,body',
         orders: '-date,-createdAt',
-        filters: 'date[less_than]' + currentTime
-      }).map(([key, value]) => key + '=' + value).join('&'), {
-        headers: {
-          "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
-        },
-      }).then(response => {
-        return {
-          articles: response.data,
-          currentPageNum: currentPageNum,
-          arrayJumpTo: getArrayJumpTo(currentPageNum, response.data.totalCount, 9)
-        }
-      }).catch(e => {
-        error({
-          statusCode: e.response.status,
-          message: e.message
-        })
+        filters: [
+          `date[less_than]${currentTime}`,
+          ...(() => {
+            const searchQuery = [];
+            if ('keyword' in query && query.keyword !== null) {
+              searchQuery.push(
+                query.keyword.split(/\s+/)
+                .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                .join('[and]')
+              )
+            }
+            if ('category' in query) {
+              if (typeof query.category === 'string') {
+                query.category = [query.category]
+              }
+              searchQuery.push(
+                query.category
+                .map(id => `category[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            if ('series' in query) {
+              if (typeof query.series === 'string') {
+                query.series = [query.series]
+              }
+              searchQuery.push(
+                query.series
+                .map(id => `series[equals]${id}`)
+                .join('[or]')
+              )
+            }
+            return searchQuery;
+          })()
+        ].join('[and]')
+      }
+    });
+    const promiseCategories = axios.get(url + '/category', {
+      headers,
+      params: {
+        limit: 1000,
+        fields: 'id,category'
+      }
+    });
+    const promiseSerieses = axios.get(url + '/series', {
+      headers,
+      params: {
+        limit: 1000,
+        fields: 'id,series',
+        orders: 'createdAt'
+      }
+    });
+
+    return Promise.all([
+      promiseArticles,
+      promiseCategories,
+      promiseSerieses
+    ]).then(([articles, categories, serieses]) => {
+      return Promise.resolve({
+        articles: articles.data,
+        currentPageNum: currentPageNum,
+        arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
+        categories: categories.data,
+        serieses: serieses.data,
       })
+    }).catch(e => {
+      error({
+        statusCode: e.response.status,
+        message: e.message
+      })
+    })
   },
 };
 
@@ -96,10 +292,10 @@ function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
 
 <style scoped>
 .page-jumper {
-  @apply flex flex-row mx-auto my-2 justify-center
+  @apply flex flex-row mx-auto my-2 justify-center;
 }
 
 .page-jumper div {
-  @apply p-1
+  @apply p-1;
 }
 </style>
