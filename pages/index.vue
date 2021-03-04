@@ -150,7 +150,7 @@ export default {
 }
 
 .parallax {
-  background-image: url(@/assets/images/oucrc-room.png)
+  background-image: url(@/assets/images/oucrc-room.jpg)
 }
 
 @media (min-width: 768px) {
