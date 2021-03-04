@@ -116,6 +116,10 @@ export default {
   @apply my-3 text-h6
 }
 
+.article p {
+  @apply overflow-x-scroll
+}
+
 .article code {
   @apply overflow-scroll my-8 px-6 py-4 rounded-2xl
 }
