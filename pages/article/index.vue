@@ -3,59 +3,71 @@
     <OGPSetter
       title="記事一覧"
       description="OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！"
-      :url="this.$route.path" />
+      :url="this.$route.path"/>
 
     <!-- 絞り込みツール -->
-    <Title label="絞り込み" />
-    <form @submit.prevent @change="updateSearchLink" name="search" class="md:mx-16 mt-4">
-      <div class="relative mb-2">
-        <input type="search" name="keyword" class="block bg-highlight w-full px-10 py-2 rounded-full" placeholder="キーワードを入力">
+    <Title label="絞り込み" class="mt-16"/>
+    <form @submit.prevent @change="updateSearchLink" name="search" class="md:mx-32 my-8">
+      <div class="relative">
+        <input type="search" name="keyword" class="appearance-none block bg-highlight w-full px-8 py-3 placeholder-heading rounded-full text-secondary text-sm"
+               placeholder="キーワードを入力">
         <NuxtLink :to="searchQueryString">
-          <img src="~/assets/images/search.svg" alt="検索" class="absolute top-0 right-0 my-2 mx-3 cursor-pointer">
+          <img src="~/assets/images/search.svg" alt="検索" class="absolute h-6 top-0 right-0 mr-5 mt-3 cursor-pointer">
         </NuxtLink>
       </div>
-      <div>
-        カテゴリ：
+      <div class="mt-10">
         <LabeledCheckbox
           v-for="category in categories.contents"
           :key="`checkbox-${category.id}`"
           :label="category.category"
           name="category"
-          :value="category.id" />
+          :value="category.id"/>
       </div>
-      <div>
-        シリーズ：
+      <div class="mt-4">
         <LabeledCheckbox
           v-for="series in serieses.contents"
           :key="`checkbox-${series.id}`"
           :label="series.series"
           name="series"
-          :value="series.id" />
+          :value="series.id"/>
       </div>
     </form>
 
     <!-- 記事一覧 -->
-    <Title label="最新の投稿" class="mt-20" />
-    <div id="contents" class="grid grid-cols-1 md:grid-cols-3 m-5">
-      <div v-for="article in articles.contents" :key="article.id" class="mx-2 my-5 text-center">
-        <h2 class="text-2xl">{{article.title}}</h2>
-        <ArticleCard
-          :href="'/article/' + article.id"
-          :tag="article.category !== null ? article.category.category : null"
-          :imgPath="article.image !== void(0) ? article.image.url : null"
-          :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '').slice(0,60)" />
+    <div v-if="articles.contents !== void(0) && articles.contents.length"
+         class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center">
+      <div class="container mx-auto">
+        <Title label="最新の投稿" class="mb-4"/>
+        <div class="sm:grid grid-cols-3 gap-8">
+          <ArticleCard
+            v-for="article in articles.contents"
+            :key="article.id"
+            class="py-6"
+            :href="`/article/${article.id}`"
+            :series="article.series != null ? article.series : {}"
+            :category="article.category !== void(0) ? article.category.category : null"
+            :img-path="article.image !== void(0) ? article.image.url : null"
+            :title="article.title !== void(0) ? article.title : null"
+            :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"/>
+        </div>
       </div>
     </div>
 
     <!-- ページジャンパー -->
-    <div class="page-jumper divide-x-2">
-      <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }"><div>&lt;</div></NuxtLink>
-      <NuxtLink v-for="pageNum in arrayJumpTo"
-        :key="'jumper' + pageNum"
-        :to="{ query: appendQuery({p: pageNum}) }">
-        <div>{{pageNum}}</div>
+    <div class="page-jumper">
+      <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }">
+        <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
-      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }"><div>&gt;</div></NuxtLink>
+      <NuxtLink v-for="pageNum in arrayJumpTo"
+                :key="'jumper' + pageNum"
+                :to="{ query: appendQuery({p: pageNum}) }">
+        <div class="text-xl" :class="[ pageNum === currentPageNum ? 'text-primary' : 'text-subtext' ]">
+          {{ pageNum }}
+        </div>
+      </NuxtLink>
+      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }">
+        <div class="text-subtext text-xl">&gt;</div>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -72,9 +84,9 @@ export default {
         default: 1
       },
       arrayJumpTo: [],
-      articles: { contents: [] },
-      categories: { contents: [] },
-      serieses: { contents: [] },
+      articles: {contents: []},
+      categories: {contents: []},
+      serieses: {contents: []},
       searchQueryString: {
         type: String,
         default: ''
@@ -112,7 +124,7 @@ export default {
       if (serieses.length) {
         searchQuery.series = serieses;
       }
-      this.searchQueryString = '?' + Object.entries(searchQuery).map(([k,v]) => {
+      this.searchQueryString = '?' + Object.entries(searchQuery).map(([k, v]) => {
         console.log(typeof v)
         if (typeof v === 'object') {
           return v.map(u => `${k}=${u}`).join('&')
@@ -143,8 +155,8 @@ export default {
             if ('keyword' in to.query && to.query.keyword !== null) {
               searchQuery.push(
                 to.query.keyword.split(/\s+/)
-                .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                .join('[and]')
+                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                  .join('[and]')
               )
             }
             if ('category' in to.query) {
@@ -153,8 +165,8 @@ export default {
               }
               searchQuery.push(
                 to.query.category
-                .map(id => `category[equals]${id}`)
-                .join('[or]')
+                  .map(id => `category[equals]${id}`)
+                  .join('[or]')
               )
             }
             if ('series' in to.query) {
@@ -163,8 +175,8 @@ export default {
               }
               searchQuery.push(
                 to.query.series
-                .map(id => `series[equals]${id}`)
-                .join('[or]')
+                  .map(id => `series[equals]${id}`)
+                  .join('[or]')
               )
             }
             return searchQuery;
@@ -185,7 +197,7 @@ export default {
     })
     next();
   },
-  asyncData({ query, error }) {
+  asyncData({query, error}) {
     const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
     const url = 'https://oucrc.microcms.io/api/v1';
@@ -206,8 +218,8 @@ export default {
             if ('keyword' in query && query.keyword !== null) {
               searchQuery.push(
                 query.keyword.split(/\s+/)
-                .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                .join('[and]')
+                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                  .join('[and]')
               )
             }
             if ('category' in query) {
@@ -216,8 +228,8 @@ export default {
               }
               searchQuery.push(
                 query.category
-                .map(id => `category[equals]${id}`)
-                .join('[or]')
+                  .map(id => `category[equals]${id}`)
+                  .join('[or]')
               )
             }
             if ('series' in query) {
@@ -226,8 +238,8 @@ export default {
               }
               searchQuery.push(
                 query.series
-                .map(id => `series[equals]${id}`)
-                .join('[or]')
+                  .map(id => `series[equals]${id}`)
+                  .join('[or]')
               )
             }
             return searchQuery;
@@ -291,11 +303,15 @@ function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
 </script>
 
 <style scoped>
+::-webkit-search-cancel-button {
+  appearance: none;
+}
+
 .page-jumper {
   @apply flex flex-row mx-auto my-2 justify-center;
 }
 
 .page-jumper div {
-  @apply p-1;
+  @apply px-3;
 }
 </style>
