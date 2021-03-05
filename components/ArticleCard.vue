@@ -11,7 +11,7 @@
           {{ category }}
         </div>
       </div>
-      <h2 class="font-semibold leading-8 mt-6 px-3 text-left text-2xl text-primary tracking-widest">
+      <h2 class="font-semibold leading-8 mt-6 overflow-hidden whitespace-no-wrap px-3 text-left text-2xl text-primary tracking-widest" style="text-overflow: ellipsis">
         {{ title }}
       </h2>
       <h3 class="font-semibold leading-8 mt-4 overflow-hidden px-3 text-left text-lg text-secondary tracking-widest">
@@ -23,7 +23,7 @@
         <NuxtLink :to="`/article?series=${series.id}`" v-if="typeof series.series !== 'undefined'"
                   class="bg-blockquote inline-block mb-3 mr-4 rounded-lg pb-2 px-4 transform hover:scale-105 transition duration-500 ease-in-out">
           <span class="inline-block h-6 w-6">
-            <img class="pt-2" src="@/assets/images/series.png" style="margin: 0 !important" alt="シリーズ">
+            <img class="pt-2" src="@/assets/images/series.svg" style="margin: 0 !important" alt="シリーズ">
           </span>
           <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ series.series }}</span>
         </NuxtLink>
