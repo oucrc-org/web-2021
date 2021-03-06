@@ -21,6 +21,7 @@
           :key="`checkbox-${category.id}`"
           :label="category.category"
           name="category"
+          @search="updateSearchLink();$router.push(searchQueryString)"
           :value="category.id"/>
       </div>
       <div class="mt-4">
@@ -29,6 +30,7 @@
           :key="`checkbox-${series.id}`"
           :label="series.series"
           name="series"
+          @search="updateSearchLink();$router.push(searchQueryString)"
           :value="series.id"/>
       </div>
     </form>
