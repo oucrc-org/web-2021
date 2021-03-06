@@ -1,10 +1,10 @@
 <template>
-  <label :for="keys" class="font-semibold inline-block text-sm mr-3 mb-3 py-2 pl-3 pr-5 rounded-md"
+  <label :for="id" class="font-semibold inline-block text-sm mr-3 mb-3 py-2 pl-3 pr-5 rounded-md"
          :class="[checked ? 'bg-secondary text-highlight' : 'bg-blockquote text-secondary']">
     <img class="inline h-6 mr-2"
          :src="name === 'category' ? ( checked ? require('@/assets/images/category-checked.svg') : require('@/assets/images/category.svg') ) : ( checked ? require('@/assets/images/series-checked.svg') : require('@/assets/images/series.svg') )"
          alt="Image">
-    <input :id="keys" type="checkbox" v-model="checked" class="hidden" :value="value" :name="name" @click="runSearch">
+    <input :id="id" type="checkbox" v-model="checked" class="hidden" :value="value" :name="name" @click="runSearch">
     {{ label }}
   </label>
 </template>
@@ -12,6 +12,11 @@
 <script>
 export default {
   name: 'LabeledCheckbox',
+  data() {
+    return {
+      checked: false,
+    }
+  },
   props: {
     label: {
       type: String,
@@ -21,28 +26,36 @@ export default {
       type: String,
       required: true
     },
+    id: {
+      type: String,
+      default: ''
+    },
     value: {
       type: String,
       default: ''
-    },
-    keys: {
-      type: String,
-      default: ''
-    },
-    checked: {
-      type: Boolean,
-      default: false
     }
+  },
+  created() {
+    console.log("name: " + this.name)
+    console.log("id: " + this.id)
+    this.checked = this.checkQuery(this.id, this.name);
   },
   methods: {
+    checkQuery(id, kind) {
+      let value = kind === 'category' ? this.$route.query.category : this.$route.query.series
+      if (value === 'undefined' || value === void (0)) {
+        return false
+      } else if (typeof (value) === 'string') {
+        // console.log("1: " + value + "-" + id)
+        return value === id
+      } else if (Array.isArray(value)) {
+        return value.indexOf(id) !== -1
+      } else {
+        return false
+      }
+    },
     runSearch(){
       this.$emit('search');
-    }
-  },
-  asyncData(){
-    console.log(this.props.checked)
-    return {
-      checked: this.props.checked
     }
   }
 }
