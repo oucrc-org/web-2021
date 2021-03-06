@@ -36,8 +36,6 @@ export default {
     }
   },
   created() {
-    console.log("name: " + this.name)
-    console.log("id: " + this.id)
     this.checked = this.checkQuery(this.id, this.name);
   },
   methods: {
@@ -46,7 +44,6 @@ export default {
       if (value === 'undefined' || value === void (0)) {
         return false
       } else if (typeof (value) === 'string') {
-        // console.log("1: " + value + "-" + id)
         return value === id
       } else if (Array.isArray(value)) {
         return value.indexOf(id) !== -1
