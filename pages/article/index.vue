@@ -20,7 +20,7 @@
           v-for="category in categories.contents"
           :keys="`checkbox-${category.id}`"
           :label="category.category"
-          :check="checkQuery(category.id, 'category')"
+          :checked="checkQuery(category.id, 'category')"
           name="category"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="category.id"/>
@@ -30,7 +30,7 @@
           v-for="series in serieses.contents"
           :keys="`checkbox-${series.id}`"
           :label="series.series"
-          :check="checkQuery(series.id, 'series')"
+          :checked="checkQuery(series.id, 'series')"
           name="series"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="series.id"/>
