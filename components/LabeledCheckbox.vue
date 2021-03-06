@@ -1,5 +1,5 @@
 <template>
-  <label :for="id" class="font-semibold inline-block text-sm mr-3 mb-3 py-2 pl-3 pr-5 rounded-md"
+  <label :for="id" class="cursor-pointer font-semibold inline-block text-sm mr-3 mb-3 py-2 pl-3 pr-5 rounded-md"
          :class="[checked ? 'bg-secondary text-highlight' : 'bg-blockquote text-secondary']">
     <img class="inline h-6 mr-2"
          :src="name === 'category' ? ( checked ? require('@/assets/images/category-checked.svg') : require('@/assets/images/category.svg') ) : ( checked ? require('@/assets/images/series-checked.svg') : require('@/assets/images/series.svg') )"
