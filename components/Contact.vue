@@ -1,111 +1,71 @@
 <template>
-  <div class="relative text-gray-700">
-    <div id="map">
-
-      <iframe class="md:absolute map"
+  <section class="relative">
+    <div id="map" class="overflow-hidden">
+      <iframe class="md:absolute w-full z-0"
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2319.864736986123!2d133.9248861920379!3d34.685396222423485!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554066d34a8412f%3A0x59f13aab8699ff49!2z44CSNzAwLTAwODIg5bKh5bGx55yM5bKh5bGx5biC5YyX5Yy65rSl5bO25Lit77yS5LiB55uu77yRIOagoeWPi-S8muaWh-WMluezu-OCr-ODqeODluajnw!5e0!3m2!1sja!2sjp!4v1614782882747!5m2!1sja!2sjp"
               frameborder="0" allowfullscreen loading="lazy"></iframe>
     </div>
-    <div class="form bg-white text-center md:absolute shadow-2xl">
 
-      <section>
-        <p class="form-title font-bold">お問い合わせ</p>
-      </section>
+    <div class="md:container xl:mx-auto">
+      <div class="form">
+        <h2 class="form-title">お問い合わせ</h2>
 
-      <hr class="line">
-
-      <section class="text-center max-w-sm text-xl py-5" style="margin: 0 auto">
-        <div class="inline-block">
-
-          <div class="flex">
-            <svg width="31" height="29" viewBox="0 0 31 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M24.5417 0.291626H6.45833C4.74611 0.293677 3.1046 0.974765 1.89387 2.18549C0.683139 3.39622 0.00205098 5.03773 0 6.74996L0 22.25C0.00205098 23.9622 0.683139 25.6037 1.89387 26.8144C3.1046 28.0252 4.74611 28.7062 6.45833 28.7083H24.5417C26.2539 28.7062 27.8954 28.0252 29.1061 26.8144C30.3169 25.6037 30.9979 23.9622 31 22.25V6.74996C30.9979 5.03773 30.3169 3.39622 29.1061 2.18549C27.8954 0.974765 26.2539 0.293677 24.5417 0.291626ZM6.45833 2.87496H24.5417C25.3151 2.87648 26.0704 3.10942 26.7103 3.54379C27.3502 3.97816 27.8456 4.5941 28.1325 5.31233L18.2409 15.2052C17.513 15.9302 16.5274 16.3373 15.5 16.3373C14.4726 16.3373 13.487 15.9302 12.7591 15.2052L2.8675 5.31233C3.15444 4.5941 3.64975 3.97816 4.28969 3.54379C4.92962 3.10942 5.6849 2.87648 6.45833 2.87496ZM24.5417 26.125H6.45833C5.43062 26.125 4.445 25.7167 3.71829 24.99C2.99159 24.2633 2.58333 23.2777 2.58333 22.25V8.68746L10.9327 17.0316C12.1451 18.241 13.7876 18.9201 15.5 18.9201C17.2124 18.9201 18.8549 18.241 20.0673 17.0316L28.4167 8.68746V22.25C28.4167 23.2777 28.0084 24.2633 27.2817 24.99C26.555 25.7167 25.5694 26.125 24.5417 26.125Z"
-                fill="#595959"/>
-            </svg>
-            <a href="mailto:oucrc.master@gmail.com">
-              <p class="ml-4">oucrc.master@gmail.com</p>
-            </a>
-          </div>
-
-          <br>
-
-          <div class="flex">
-            <svg width="31" height="27" viewBox="0 0 31 27" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M29.7082 1.87505C28.4713 2.74754 27.1017 3.41486 25.6523 3.8513C24.8744 2.95683 23.8406 2.32286 22.6906 2.03512C21.5406 1.74738 20.33 1.81976 19.2225 2.24247C18.115 2.66518 17.1641 3.41782 16.4983 4.3986C15.8325 5.37938 15.4839 6.54098 15.4998 7.7263V9.01797C13.2299 9.07682 10.9806 8.57339 8.95239 7.5525C6.92413 6.53161 5.17983 5.02495 3.87484 3.16672C3.87484 3.16672 -1.29183 14.7917 10.3332 19.9584C7.67302 21.7641 4.50408 22.6695 1.2915 22.5417C12.9165 29 27.1248 22.5417 27.1248 7.68755C27.1236 7.32776 27.0891 6.96886 27.0215 6.61547C28.3398 5.31539 29.2701 3.67397 29.7082 1.87505V1.87505Z"
-                stroke="#595959" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <a href="https://twitter.com/oucrc?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor">
-              <p class="ml-4">@oucrc</p>
-            </a>
-          </div>
-
-          <br>
-
-          <div class="flex">
-            <svg width="25" height="31" viewBox="0 0 25 31" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M9.91667 12.9167C8.88895 12.9167 7.90333 13.3249 7.17663 14.0516C6.44992 14.7784 6.04167 15.764 6.04167 16.7917C6.04167 17.8194 6.44992 18.805 7.17663 19.5317C7.90333 20.2584 8.88895 20.6667 9.91667 20.6667H15.0833C16.111 20.6667 17.0967 20.2584 17.8234 19.5317C18.5501 18.805 18.9583 17.8194 18.9583 16.7917C18.9583 15.764 18.5501 14.7784 17.8234 14.0516C17.0967 13.3249 16.111 12.9167 15.0833 12.9167H9.91667ZM16.375 16.7917C16.375 17.1343 16.2389 17.4628 15.9967 17.705C15.7544 17.9473 15.4259 18.0834 15.0833 18.0834H9.91667C9.5741 18.0834 9.24556 17.9473 9.00332 17.705C8.76109 17.4628 8.625 17.1343 8.625 16.7917C8.625 16.4491 8.76109 16.1206 9.00332 15.8783C9.24556 15.6361 9.5741 15.5 9.91667 15.5H15.0833C15.4259 15.5 15.7544 15.6361 15.9967 15.8783C16.2389 16.1206 16.375 16.4491 16.375 16.7917ZM18.9583 24.5417C18.9583 24.8843 18.8223 25.2128 18.58 25.455C18.3378 25.6973 18.0092 25.8334 17.6667 25.8334H7.33333C6.99076 25.8334 6.66222 25.6973 6.41999 25.455C6.17775 25.2128 6.04167 24.8843 6.04167 24.5417C6.04167 24.1991 6.17775 23.8706 6.41999 23.6283C6.66222 23.3861 6.99076 23.25 7.33333 23.25H17.6667C18.0092 23.25 18.3378 23.3861 18.58 23.6283C18.8223 23.8706 18.9583 24.1991 18.9583 24.5417ZM22.234 4.03131L20.0924 1.89231C19.4942 1.29072 18.7826 0.813721 17.9989 0.488913C17.2151 0.164105 16.3748 -0.00206405 15.5264 1.93507e-05H7.33333C5.62111 0.00207033 3.9796 0.683159 2.76887 1.89389C1.55814 3.10462 0.877051 4.74613 0.875 6.45835V24.5417C0.877051 26.2539 1.55814 27.8954 2.76887 29.1062C3.9796 30.3169 5.62111 30.998 7.33333 31H17.6667C19.3789 30.998 21.0204 30.3169 22.2311 29.1062C23.4419 27.8954 24.1229 26.2539 24.125 24.5417V8.59864C24.1274 7.75013 23.9615 6.90956 23.637 6.12558C23.3124 5.3416 22.8355 4.62978 22.234 4.03131ZM20.4076 5.85773C20.5893 6.0417 20.7529 6.24285 20.8958 6.45835H17.6667V3.22919C17.8825 3.37066 18.0833 3.53383 18.266 3.71614L20.4076 5.85773ZM21.5417 24.5417C21.5417 25.5694 21.1334 26.555 20.4067 27.2817C19.68 28.0084 18.6944 28.4167 17.6667 28.4167H7.33333C6.30562 28.4167 5.32 28.0084 4.59329 27.2817C3.86659 26.555 3.45833 25.5694 3.45833 24.5417V6.45835C3.45833 5.43064 3.86659 4.44502 4.59329 3.71831C5.32 2.99161 6.30562 2.58335 7.33333 2.58335H15.0833V6.45835C15.0833 7.1435 15.3555 7.80058 15.84 8.28505C16.3244 8.76952 16.9815 9.04169 17.6667 9.04169H21.5417V24.5417Z"
-                fill="#595959"/>
-            </svg>
-            <NuxtLink to="join">
-              <p class="ml-6">Google Form</p>
-            </NuxtLink>
-          </div>
-
-        </div>
         <hr class="line">
 
-        <div class="inline-block text-left">
-          <div class="pt-8 font-bold text-base">岡山大学　サークル　BOX棟（2F　209）</div>
-          <br>
-          <div class="text-sm">2階へ上がって右の奥にあります</div>
-          <br>
+        <div class="text-left mb-6 mt-8 px-3 sm:px-8">
+          <img class="inline h-6" src="@/assets/images/contact-mail.svg" alt="Mail">
+          <a href="mailto:oucrc.master@gmail.com" class="font-semibold ml-4 text-secondary tracking-widest">
+            oucrc.master@gmail.com
+          </a>
         </div>
 
-        <a href="https://www.google.com/maps/place/%E3%80%92700-0082+%E5%B2%A1%E5%B1%B1%E7%9C%8C%E5%B2%A1%E5%B1%B1%E5%B8%82%E5%8C%97%E5%8C%BA%E6%B4%A5%E5%B3%B6%E4%B8%AD%EF%BC%92%E4%B8%81%E7%9B%AE%EF%BC%91+%E6%A0%A1%E5%8F%8B%E4%BC%9A%E6%96%87%E5%8C%96%E7%B3%BB%E3%82%AF%E3%83%A9%E3%83%96%E6%A3%9F/@34.6853962,133.9248862,17.5z/data=!4m5!3m4!1s0x3554066d34a8412f:0x59f13aab8699ff49!8m2!3d34.6854759!4d133.9246382">
-          <DoubleLineButton label="Google Map"/>
+        <div class="text-left my-6 px-3 sm:px-8">
+          <img class="inline h-6" src="@/assets/images/contact-twitter.svg" alt="Twitter">
+          <a href="https://twitter.com/oucrc?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" class="font-semibold ml-4 text-secondary tracking-widest"
+             target="_blank" rel="noopener noreferrer">
+            @oucrc
+          </a>
+        </div>
+
+        <div class="text-left mb-8 mt-6 px-3 sm:px-8">
+          <img class="inline h-6" src="@/assets/images/contact-google-form.svg" alt="GoogleForm">
+          <NuxtLink to="join" class="font-semibold ml-4 text-secondary tracking-widest">
+            Google Form
+          </NuxtLink>
+        </div>
+
+        <hr class="line">
+
+        <div class="text-left mt-8 px-3 sm:px-8">
+          <p class="font-bold text-secondary tracking-widest">岡山大学 サークル BOX棟（2F 209)</p>
+          <p class="mt-2 text-xs text-secondary tracking-widest">2階へ上がって右の奥にあります</p>
+        </div>
+
+        <a
+          href="https://www.google.com/maps/place/%E3%80%92700-0082+%E5%B2%A1%E5%B1%B1%E7%9C%8C%E5%B2%A1%E5%B1%B1%E5%B8%82%E5%8C%97%E5%8C%BA%E6%B4%A5%E5%B3%B6%E4%B8%AD%EF%BC%92%E4%B8%81%E7%9B%AE%EF%BC%91+%E6%A0%A1%E5%8F%8B%E4%BC%9A%E6%96%87%E5%8C%96%E7%B3%BB%E3%82%AF%E3%83%A9%E3%83%96%E6%A3%9F/@34.6853962,133.9248862,17.5z/data=!4m5!3m4!1s0x3554066d34a8412f:0x59f13aab8699ff49!8m2!3d34.6854759!4d133.9246382"
+          class="inline-block" target="_blank" rel="noopener noreferrer">
+          <DoubleLineButton label="Google Mapでみる" class="mb-8 mt-12 text-sm"/>
         </a>
-      </section>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
-#map {
-  overflow: hidden;
-}
-
 #map iframe {
   height: 110vh;
   margin-top: -15vh;
 }
 
 .form {
-  left: 300px;
-  top: 100px;
-  width: auto;
-  height: auto;
-  min-width: 350px;
-  z-index: 10;
-  @apply mx-auto;
+  @apply md:absolute bg-white md:mt-40 px-6 sm:px-10 md:shadow-2xl text-center z-10
 }
 
 .form-title {
-  @apply text-3xl text-center py-12
+  @apply font-bold text-3xl text-center mb-10 mt-12 text-secondary tracking-wider
 }
 
 .line {
-  width: 80%;
-  margin: 0 auto;
-  @apply border-gray-300 border-solid border
-}
-
-.map {
-  width: 100%;
-  height: 80vh;
-  min-width: 350px;
-  z-index: 0;
+  @apply border-divider border-solid border mx-auto
 }
 </style>
