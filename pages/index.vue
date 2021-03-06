@@ -5,12 +5,44 @@
       :url="this.$route.path"
     />
 
-    <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-0 w-full z-0"></div>
+    <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-16 w-full z-0"></div>
+
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
 
     <!-- ▼ ヒーローエリア -->
-    <section class="bg-white h-64 relative">
-      スライドショー
-    </section>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <NuxtLink to="#" class="swiper-slide block">
+          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
+               src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
+        </NuxtLink>
+        <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">
+          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
+               src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
+        </NuxtLink>
+      </div>
+      <div class="swiper-button-next swiper-button-white"></div>
+      <div class="swiper-button-prev swiper-button-white"></div>
+      <div class="swiper-pagination swiper-pagination-white"></div>
+    </div>
+
+    <script>
+      var swiper = new Swiper('.swiper-container', {
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        loop: true,
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          dynamicBullets: true,
+        }
+      })
+    </script>
     <!-- ▲ ヒーローエリア -->
 
 
@@ -61,7 +93,8 @@
           <div class="col-span-2 image bg-red-500 hidden lg:block">キャラ</div>
           <div class="col-span-3">
             <News :notices="notices"/>
-            <NuxtLink to="/news" class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
+            <NuxtLink to="/news"
+                      class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
               もっとみる
             </NuxtLink>
           </div>
@@ -77,7 +110,6 @@
     </section>
     <!-- ▲ お問い合わせ -->
 
-
   </div>
 </template>
 
@@ -86,16 +118,15 @@ import Contact from "~/components/Contact";
 import axios from "axios";
 
 export default {
-
   /*お知らせを取ってくる処理系統*/
-  data(){
-    return{
+  data() {
+    return {
       notices: {
         contents: []
       }
     }
   },
-  head(){
+  head() {
     return {
       titleTemplate: null,
     }
@@ -115,7 +146,7 @@ export default {
       return {
         notices: response.data
       }
-    }).catch(function (){
+    }).catch(function () {
       return {
         notices: null
       }
@@ -126,7 +157,7 @@ export default {
   },
   methods: {
     handleScroll() {
-      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 500 : 250) - (window.scrollY / 5) + 'px'
+      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 1200 : 900) - (window.scrollY / 2) + 'px'
     }
   },
   beforeMount() {
@@ -139,6 +170,28 @@ export default {
 </script>
 
 <style scoped>
+.swiper-wrapper {
+  height: 85vh;
+}
+
+@media (max-width: 1024px) {
+  .swiper-wrapper {
+    height: 65vh;
+  }
+}
+
+@media (max-width: 768px) {
+  .swiper-wrapper {
+    height: 55vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .swiper-wrapper {
+    height: 45vh;
+  }
+}
+
 .oucrc-room-label {
   height: 40vh;
   top: 5vh;
@@ -158,5 +211,4 @@ export default {
     height: 80vh;
   }
 }
-
 </style>

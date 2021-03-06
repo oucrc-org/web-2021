@@ -35,7 +35,8 @@ export default {
     ],
     script: [
       {src: 'https://polyfill.io/v3/polyfill.min.js?features=es6', mode: 'client'},
-      {src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'}
+      {src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'},
+      {src: 'https://unpkg.com/swiper/swiper-bundle.min.js'}
     ]
   },
 
