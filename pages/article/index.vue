@@ -21,7 +21,7 @@
           :key="`checkbox-${category.id}`"
           :label="category.category"
           name="category"
-          @search="updateSearchLink();$router.push(searchQueryString)"
+          @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="category.id"/>
       </div>
       <div class="mt-4">
@@ -30,7 +30,7 @@
           :key="`checkbox-${series.id}`"
           :label="series.series"
           name="series"
-          @search="updateSearchLink();$router.push(searchQueryString)"
+          @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="series.id"/>
       </div>
     </form>
@@ -137,154 +137,99 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    const currentPageNum = +to.query.p || 1;
-    const currentTime = new Date().toISOString();
-    const url = 'https://oucrc.microcms.io/api/v1';
-    const headers = {
-      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
-    };
-    const promiseArticles = axios.get(url + '/article', {
-      headers,
-      params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body',
-        orders: '-date,-createdAt',
-        filters: [
-          `date[less_than]${currentTime}`,
-          ...(() => {
-            const searchQuery = [];
-            if ('keyword' in to.query && to.query.keyword !== null) {
-              searchQuery.push(
-                to.query.keyword.split(/\s+/)
-                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                  .join('[and]')
-              )
-            }
-            if ('category' in to.query) {
-              if (typeof to.query.category === 'string') {
-                to.query.category = [to.query.category]
-              }
-              searchQuery.push(
-                to.query.category
-                  .map(id => `category[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            if ('series' in to.query) {
-              if (typeof to.query.series === 'string') {
-                to.query.series = [to.query.series]
-              }
-              searchQuery.push(
-                to.query.series
-                  .map(id => `series[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            return searchQuery;
-          })()
-        ].join('[and]')
-      }
-    });
-
-    promiseArticles.then(response => {
-      this.articles = response.data;
-      this.currentPageNum = currentPageNum;
-      this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
-    }).catch(e => {
-      error({
-        statusCode: e.response.status,
-        message: e.message
-      })
-    })
+    getDataAsync(to.query, false);
     next();
   },
-  asyncData({query, error}) {
-    const currentPageNum = +query.p || 1;
-    const currentTime = new Date().toISOString();
-    const url = 'https://oucrc.microcms.io/api/v1';
-    const headers = {
-      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
-    };
-    const promiseArticles = axios.get(url + '/article', {
-      headers,
-      params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body',
-        orders: '-date,-createdAt',
-        filters: [
-          `date[less_than]${currentTime}`,
-          ...(() => {
-            const searchQuery = [];
-            if ('keyword' in query && query.keyword !== null) {
-              searchQuery.push(
-                query.keyword.split(/\s+/)
-                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                  .join('[and]')
-              )
-            }
-            if ('category' in query) {
-              if (typeof query.category === 'string') {
-                query.category = [query.category]
-              }
-              searchQuery.push(
-                query.category
-                  .map(id => `category[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            if ('series' in query) {
-              if (typeof query.series === 'string') {
-                query.series = [query.series]
-              }
-              searchQuery.push(
-                query.series
-                  .map(id => `series[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            return searchQuery;
-          })()
-        ].join('[and]')
-      }
-    });
-    const promiseCategories = axios.get(url + '/category', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,category'
-      }
-    });
-    const promiseSerieses = axios.get(url + '/series', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,series',
-        orders: 'createdAt'
-      }
-    });
-
-    return Promise.all([
-      promiseArticles,
-      promiseCategories,
-      promiseSerieses
-    ]).then(([articles, categories, serieses]) => {
-      return Promise.resolve({
-        articles: articles.data,
-        currentPageNum: currentPageNum,
-        arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
-        categories: categories.data,
-        serieses: serieses.data,
-      })
-    }).catch(e => {
-      error({
-        statusCode: e.response.status,
-        message: e.message
-      })
-    })
-  },
+  asyncData({query}) {
+    return getDataAsync(query, true);
+  }
 };
+
+function getDataAsync(query, isInitialLoad) {
+  const currentPageNum = +query.p || 1;
+  const currentTime = new Date().toISOString();
+  const url = 'https://oucrc.microcms.io/api/v1';
+  const headers = {
+    "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+  };
+  const promiseArticles = axios.get(url + '/article', {
+    headers,
+    params: {
+      limit: 9,
+      offset: (currentPageNum - 1) * 9,
+      fields: 'id,title,category,image,body',
+      orders: '-date,-createdAt',
+      filters: [
+        `date[less_than]${currentTime}`,
+        ...(() => {
+          const searchQuery = [];
+          if ('keyword' in query && query.keyword !== null) {
+            searchQuery.push(
+              query.keyword.split(/\s+/)
+                .map(w => `body[contains]${w}[or]title[contains]${w}`)
+                .join('[and]')
+            )
+          }
+          if ('category' in query) {
+            if (typeof query.category === 'string') {
+              query.category = [query.category]
+            }
+            searchQuery.push(
+              query.category
+                .map(id => `category[equals]${id}`)
+                .join('[or]')
+            )
+          }
+          if ('series' in query) {
+            if (typeof query.series === 'string') {
+              query.series = [query.series]
+            }
+            searchQuery.push(
+              query.series
+                .map(id => `series[equals]${id}`)
+                .join('[or]')
+            )
+          }
+          return searchQuery;
+        })()
+      ].join('[and]')
+    }
+  });
+  const promiseCategories = isInitialLoad ? axios.get(url + '/category', {
+    headers,
+    params: {
+      limit: 1000,
+      fields: 'id,category'
+    }
+  }) : Promise.resolve();
+  const promiseSerieses = isInitialLoad ? axios.get(url + '/series', {
+    headers,
+    params: {
+      limit: 1000,
+      fields: 'id,series',
+      orders: 'createdAt'
+    }
+  }) : Promise.resolve();
+
+  return Promise.all([
+    promiseArticles,
+    promiseCategories,
+    promiseSerieses
+  ]).then(([articles, categories, serieses]) => {
+    return Promise.resolve({
+      articles: articles.data,
+      currentPageNum: currentPageNum,
+      arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
+      categories: categories.data,
+      serieses: serieses.data,
+    })
+  }).catch(e => {
+    this.$nuxt.error({
+      statusCode: e.response.status,
+      message: e.message
+    })
+  })
+}
 
 function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
   const arrayJumpTo = [];
