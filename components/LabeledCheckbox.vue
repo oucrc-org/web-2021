@@ -12,11 +12,6 @@
 <script>
 export default {
   name: 'LabeledCheckbox',
-  data(){
-    return {
-      checked: false
-    }
-  },
   props: {
     label: {
       type: String,
@@ -34,7 +29,7 @@ export default {
       type: String,
       default: ''
     },
-    check: {
+    checked: {
       type: Boolean,
       default: false
     }
@@ -45,8 +40,9 @@ export default {
     }
   },
   asyncData(){
+    console.log(this.props.checked)
     return {
-      checked: this.props.check
+      checked: this.props.checked
     }
   }
 }
