@@ -101,7 +101,7 @@
               v-for="article in articles.contents"
               :key="`articlecard-${article.id}`"
               class="py-6"
-              :href="`/article/${article.id}`"
+              :href="`/articles/${article.id}`"
               :series="article.series != null ? article.series : {}"
               :category="article.category !== void(0) ? article.category.category : null"
               :img-path="article.image !== void(0) ? article.image.url : null"

@@ -8,7 +8,7 @@
       <div class="hidden md:flex flex-grow justify-end">
         <nav id="navigation" class="self-center h-full">
           <NuxtLink to="/" class="border-b-2 border-white hover:border-divider" exact>ホーム</NuxtLink>
-          <NuxtLink to="/article" class="border-b-2 border-white hover:border-divider">作品紹介</NuxtLink>
+          <NuxtLink to="/articles" class="border-b-2 border-white hover:border-divider">作品紹介</NuxtLink>
           <NuxtLink to="/members" class="border-b-2 border-white hover:border-divider">部員紹介</NuxtLink>
           <NuxtLink to="/join" class="border-b-2 border-white hover:border-divider">入部フォーム</NuxtLink>
         </nav>
