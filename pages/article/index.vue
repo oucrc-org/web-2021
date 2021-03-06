@@ -19,6 +19,7 @@
         <LabeledCheckbox
           v-for="category in categories.contents"
           :key="`checkbox-${category.id}`"
+          :id="category.id"
           :label="category.category"
           name="category"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
@@ -28,6 +29,7 @@
         <LabeledCheckbox
           v-for="series in serieses.contents"
           :key="`checkbox-${series.id}`"
+          :id="series.id"
           :label="series.series"
           name="series"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
