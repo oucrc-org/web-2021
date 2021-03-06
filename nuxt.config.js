@@ -53,7 +53,8 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/google-analytics'
+    '@nuxtjs/google-analytics',
+    'cookie-universal-nuxt'
   ],
 
   // Google Analytics
