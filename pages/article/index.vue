@@ -18,9 +18,9 @@
       <div class="mt-10">
         <LabeledCheckbox
           v-for="category in categories.contents"
-          :keys="`checkbox-${category.id}`"
+          :key="`checkbox-${category.id}`"
+          :id="category.id"
           :label="category.category"
-          :checked="checkQuery(category.id, 'category')"
           name="category"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="category.id"/>
@@ -28,9 +28,9 @@
       <div class="mt-4">
         <LabeledCheckbox
           v-for="series in serieses.contents"
-          :keys="`checkbox-${series.id}`"
+          :key="`checkbox-${series.id}`"
+          :id="series.id"
           :label="series.series"
-          :checked="checkQuery(series.id, 'series')"
           name="series"
           @search="updateSearchLink();$router.push(String(searchQueryString))"
           :value="series.id"/>
@@ -129,26 +129,13 @@ export default {
         searchQuery.series = serieses;
       }
       this.searchQueryString = '?' + Object.entries(searchQuery).map(([k, v]) => {
-        //console.log(typeof v)
+        console.log(typeof v)
         if (typeof v === 'object') {
           return v.map(u => `${k}=${u}`).join('&')
         } else {
           return `${k}=${v}`
         }
       }).join('&')
-    },
-    checkQuery(id, kind){
-      let value = kind === 'category' ? this.$route.query.category : this.$route.query.series
-
-      if(value === 'undefined' || value === void(0)){
-        return false
-      }else if(typeof (value) ==='string'){
-        return value === id
-      }else if(Array.isArray(value)){
-        return value.indexOf(id) !== -1
-      }else{
-        return false
-      }
     }
   },
   beforeRouteUpdate(to, from, next) {
@@ -239,11 +226,10 @@ function getDataAsync(query, isInitialLoad) {
       serieses: serieses.data,
     })
   }).catch(e => {
-    console.log(e)
-    /*this.$nuxt.error({
+    this.$nuxt.error({
       statusCode: e.response.status,
       message: e.message
-    })*/
+    })
   })
 }
 
