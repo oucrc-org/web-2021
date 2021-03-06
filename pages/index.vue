@@ -16,7 +16,7 @@
           <img class="h-full object-cover w-full" style="object-position: 50% 100%"
                src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
         </NuxtLink>
-        <NuxtLink to="#" class="swiper-slide block">
+        <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">
           <img class="h-full object-cover w-full" style="object-position: 50% 100%"
                src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
         </NuxtLink>
