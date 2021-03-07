@@ -55,13 +55,13 @@
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard href="/article?category=noi18t4xa3" category="プログラミング"
+          <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
                        :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?category=2_x0e6wfbu" category="電子工作"
+          <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
                        :img-path="require('@/assets/images/cover-electronic.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?category=dtm" category="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
+          <ArticleCard href="/articles?category=dtm" category="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
         <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
