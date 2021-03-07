@@ -102,13 +102,8 @@ export default {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
-      }).then(res => {
-        console.log(res)
-        window.alert('申込みが完了しました。')
-      }).catch(err => {
-        console.log(err)
-        window.alert('申込みに失敗しました…')
       })
+      window.alert('申込みが完了しました。')
       return true
     }
   }
