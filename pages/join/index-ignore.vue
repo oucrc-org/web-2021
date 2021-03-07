@@ -104,6 +104,7 @@ export default {
         }
       }).finally(() => {
         window.alert('申込みが完了しました。')
+        this.$router.push('/')
         return true
       })
     }
