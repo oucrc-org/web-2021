@@ -141,7 +141,6 @@ export default {
       }
       /*一回目のコールバック*/
     }).then(response => {
-      console.log(response.data)
 
       /*メンバーのIDが取得出来た時*/
       if (response.data.id !== void (0)) {
@@ -156,7 +155,6 @@ export default {
 
           /*二回目のコールバック*/
         }).then(res => {
-          console.log(res.data)
           return {
             member: response.data,
             articles: res.data

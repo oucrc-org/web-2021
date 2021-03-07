@@ -129,7 +129,6 @@ export default {
         searchQuery.series = serieses;
       }
       this.searchQueryString = '?' + Object.entries(searchQuery).map(([k, v]) => {
-        console.log(typeof v)
         if (typeof v === 'object') {
           return v.map(u => `${k}=${u}`).join('&')
         } else {
