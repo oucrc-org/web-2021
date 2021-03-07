@@ -21,7 +21,7 @@
     <!-- ▼ サブテキスト -->
     <div class="mb-8 mt-6 mx-8 sm:mx-16">
       <p v-if="typeof article.name !== 'undefined' && article.name !== null"
-         class="sm:text-lg text-secondary tracking-widest">
+         class="sm:text-lg text-secondary tracking-widest overflow-hidden">
         執筆者: {{ article.name.name }}
       </p>
       <p class="sm:text-lg text-secondary tracking-widest">最終更新: {{ timeUpdated }}</p>
@@ -117,7 +117,7 @@ export default {
 }
 
 .article p {
-  @apply overflow-x-scroll
+
 }
 
 .article code {
