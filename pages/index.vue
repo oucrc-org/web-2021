@@ -76,7 +76,7 @@
     <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
         <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
-        <a href="#">
+        <a href="news/l99fk47dvp6">
           <img
             class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
             src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
