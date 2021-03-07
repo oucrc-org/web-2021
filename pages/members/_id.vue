@@ -72,7 +72,7 @@
           <div class="bg-primary font-bold inline-block py-2 px-8 text-center text-sm text-white tracking-widest">
             自己紹介
           </div>
-          <p class="leading-8 mt-4 text-secondary tracking-widest">
+          <p class="leading-8 mt-4 text-secondary tracking-widest" :class="$style.member">
             <span v-html="member.intro !== void(0) ? member.intro :'なし'"></span>
           </p>
           <!-- ▲ 自己紹介 -->
@@ -188,8 +188,8 @@ export default {
 }
 </script>
 
-<style>
-a {
+<style module>
+.member a {
   @apply text-blue-600
 }
 </style>
