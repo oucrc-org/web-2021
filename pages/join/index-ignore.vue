@@ -102,9 +102,10 @@ export default {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
+      }).finally(() => {
+        window.alert('申込みが完了しました。')
+        return true
       })
-      window.alert('申込みが完了しました。')
-      return true
     }
   }
 }
