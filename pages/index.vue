@@ -30,23 +30,25 @@
       <div class="swiper-pagination swiper-pagination-white"></div>
     </div>
 
-    <script>
-      var swiper = new Swiper('.swiper-container', {
-        autoplay: {
-          delay: 4000,
-          disableOnInteraction: false,
-        },
-        loop: true,
-        navigation: {
-          nextEl: '.swiper-button-next',
-          prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          dynamicBullets: true,
-        }
-      })
-    </script>
+    <client-only>
+      <script>
+        var swiper = new Swiper('.swiper-container', {
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false,
+          },
+          loop: true,
+          navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+          },
+          pagination: {
+            el: '.swiper-pagination',
+            dynamicBullets: true,
+          }
+        })
+      </script>
+    </client-only>
     <!-- ▲ ヒーローエリア -->
 
 
