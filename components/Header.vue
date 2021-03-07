@@ -29,7 +29,7 @@
           </NuxtLink>
         </div>
         <div class="py-5">
-          <NuxtLink to="/article" v-on:click.native="flag = false" class="border-b-2 border-white hover:border-divider">
+          <NuxtLink to="/articles" v-on:click.native="flag = false" class="border-b-2 border-white hover:border-divider">
             作品紹介
           </NuxtLink>
         </div>
