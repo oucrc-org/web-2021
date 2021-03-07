@@ -73,7 +73,7 @@
             自己紹介
           </div>
           <p class="leading-8 mt-4 text-secondary tracking-widest">
-            {{ member.intro !== void(0) ? member.intro :'なし' }}
+            <span v-html="member.intro !== void(0) ? member.intro :'なし'"></span>
           </p>
           <!-- ▲ 自己紹介 -->
 
@@ -187,3 +187,9 @@ export default {
   }
 }
 </script>
+
+<style>
+a {
+  @apply text-blue-600
+}
+</style>
