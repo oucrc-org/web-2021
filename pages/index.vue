@@ -20,6 +20,10 @@
           <img class="h-full object-cover w-full" style="object-position: 50% 100%"
                src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
         </NuxtLink>
+        <a href="https://i10jan-api.herokuapp.com/v1.1" class="swiper-slide block">
+          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
+               src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">
+        </a>
       </div>
       <div class="swiper-button-next swiper-button-white"></div>
       <div class="swiper-button-prev swiper-button-white"></div>
