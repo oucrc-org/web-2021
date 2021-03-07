@@ -55,13 +55,13 @@
         </div>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard href="/article?category=noi18t4xa3" category="プログラミング"
+          <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
                        :img-path="require('@/assets/images/cover-programming.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?category=2_x0e6wfbu" category="電子工作"
+          <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
                        :img-path="require('@/assets/images/cover-electronic.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/article?category=dtm" category="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
+          <ArticleCard href="/articles?category=dtm" category="DTM" :img-path="require('@/assets/images/cover-dtm.png')"
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
         </div>
         <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
@@ -76,7 +76,7 @@
     <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
         <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
-        <a href="#">
+        <a href="news/l99fk47dvp6">
           <img
             class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
             src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
