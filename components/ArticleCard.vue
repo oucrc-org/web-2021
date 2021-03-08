@@ -20,7 +20,7 @@
       <h3 class="font-semibold leading-8 mt-4 px-3 text-left text-lg text-secondary tracking-widest"
           :class="{'overflow-hidden' : !ignoreAbridgement}">
         <span class="block"
-              :style="{'display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3' : !ignoreAbridgement}">
+              :style="ignoreAbridgement ? '' : {display: '-webkit-box','-webkit-box-orient': 'vertical','-webkit-line-clamp': 3}">
           {{ description }}
         </span>
       </h3>
