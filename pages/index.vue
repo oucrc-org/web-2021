@@ -12,7 +12,7 @@
     <!-- ▼ ヒーローエリア -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <NuxtLink to="news" class="swiper-slide block">
+        <NuxtLink to="#" class="swiper-slide block">
           <img class="h-full object-cover w-full" style="object-position: 50% 100%"
                src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
         </NuxtLink>
