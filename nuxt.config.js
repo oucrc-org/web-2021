@@ -70,7 +70,13 @@ export default {
   build: {},
 
   generate: {
-    fallback: true
+    exclude: [
+      /^\/articles/,
+      /^\/members/,
+      /^\/news/,
+      /^\/health/
+    ],
+    // fallback: true
   },
 
   tailwindcss: {
