@@ -191,7 +191,7 @@ export default {
     promiseArticles.then(response => {
       this.articles = response.data;
       this.currentPageNum = currentPageNum;
-      this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
+      this.arrayJumpTo = getArrayJumpTo(response.data.totalCount, 9);
     }).catch(e => {
       error({
         statusCode: e.response.status,
@@ -273,7 +273,7 @@ export default {
       return Promise.resolve({
         articles: articles.data,
         currentPageNum: currentPageNum,
-        arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
+        arrayJumpTo: getArrayJumpTo(articles.data.totalCount, 9),
         categories: categories.data,
         serieses: serieses.data,
       })
@@ -281,21 +281,8 @@ export default {
   },
 };
 
-function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
-  const arrayJumpTo = [];
-  for (let i = currentPageNum, j = 1; i >= 1; i -= j, j *= 2) {
-    arrayJumpTo.unshift(i);
-  }
-  if (arrayJumpTo[0] !== 1) {
-    arrayJumpTo.unshift(1);
-  }
-  for (let i = currentPageNum, j = 1; (i += j) <= totalCount / countPerPage; j *= 2) {
-    arrayJumpTo.push(i);
-  }
-  if (arrayJumpTo[arrayJumpTo.length - 1] < Math.ceil(totalCount / countPerPage)) {
-    arrayJumpTo.push(Math.ceil(totalCount / countPerPage));
-  }
-  return arrayJumpTo;
+function getArrayJumpTo(totalCount, countPerPage) {
+  return [...Array(Math.ceil(totalCount / countPerPage)).keys()].map(i => ++i);
 }
 </script>
 

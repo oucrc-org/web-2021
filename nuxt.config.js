@@ -75,8 +75,7 @@ export default {
       /^\/members/,
       /^\/news/,
       /^\/health/
-    ],
-    // fallback: true
+    ]
   },
 
   tailwindcss: {
