@@ -13,8 +13,8 @@
           <NuxtLink to="/join" class="border-b-2 border-white hover:border-divider">入部フォーム</NuxtLink>
         </nav>
       </div>
-      <div class="h-auto flex flex-row">
-        <button v-on:click="flag = !flag">
+      <div class="h-auto flex flex-row ">
+        <button class="focus:outline-none" v-on:click="flag = !flag">
           <img v-if="!flag" src="~/assets/images/hamburger.svg" width="18" height="18" alt="メニュー"
                class="m-2 block md:hidden">
           <img v-if="flag" src="~/assets/images/cancel.svg" width="18" height="18" alt="キャンセル" class="m-2 md:hidden">
