@@ -88,6 +88,11 @@ export default {
 </style>
 
 <style module>
+.article{
+  word-break: break-all;
+  line-break: loose;
+}
+
 .article img {
   @apply block mx-auto my-5 w-full
 }
@@ -145,6 +150,7 @@ export default {
 }
 
 .article a {
+  line-break: anywhere;
   @apply text-blue-600
 }
 
