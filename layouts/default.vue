@@ -27,7 +27,18 @@ html {
   box-sizing: border-box;
   min-height: 100vh;
   position: relative;
-  padding-bottom: 400px;
+}
+
+@media (min-width: 768px) {
+  html{
+    padding-bottom: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  html{
+    padding-bottom: 200px;
+  }
 }
 
 *,
