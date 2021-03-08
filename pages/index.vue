@@ -196,7 +196,7 @@ export default {
 
 @media (max-width: 640px) {
   .swiper-wrapper {
-    height: 45vh;
+    height: 40vh;
   }
 }
 
