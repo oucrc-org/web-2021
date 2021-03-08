@@ -62,16 +62,17 @@
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
           <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
-                       :img-path="require('@/assets/images/cover-programming.png')"
+                       :img-path="require('@/assets/images/cover-programming.png')" :ignoreAbridgement=true
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
-                       :img-path="require('@/assets/images/cover-electronic.png')"
-                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア" :img-path="require('@/assets/images/cover-dtm.png')"
-                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+                       :img-path="require('@/assets/images/cover-electronic.png')" :ignoreAbridgement=true
+                       description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
+          <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア"
+                       :img-path="require('@/assets/images/cover-dtm.png')" :ignoreAbridgement=true
+                       description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"></ArticleCard>
         </div>
-        <p class="font-semibold leading-7 mt-20 text-center text-lg text-secondary tracking-widest">
-          他にも、3Dモデルを作成したり<br class="sm:hidden">ゲーム大会を開いたりしています！
+        <p class="font-semibold leading-8 mt-20 text-center text-lg text-secondary tracking-widest">
+          他にも、<br class="sm:hidden">3Dプリンタで色々なものを制作したり<br class="sm:hidden">ゲーム大会を開いたりしています！
         </p>
       </div>
     </section>
@@ -102,7 +103,7 @@
           <div class="col-span-3">
             <News :notices="notices"/>
             <NuxtLink to="/news"
-                      class="block font-semibold lg:pb-0 pt-5 pr-2 text-right text-secondary tracking-widest">
+                      class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest">
               もっとみる
             </NuxtLink>
           </div>
