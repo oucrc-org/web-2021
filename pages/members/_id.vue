@@ -162,7 +162,6 @@ export default {
 
           /*二回目の処理の例外処理*/
         }).catch(function (e) {
-          console.log(e)
           error({
             statusCode: e.response.status,
             message: e.message
@@ -178,7 +177,6 @@ export default {
       }
       /*一回目処理のの例外処理*/
     }).catch(function (e) {
-      console.log(e)
       error({
         statusCode: e.response.status,
         message: e.message
