@@ -137,11 +137,11 @@ export default {
 }
 
 .article ol {
-  @apply list-decimal p-2
+  @apply list-decimal p-2 px-6
 }
 
 .article ul {
-  @apply list-disc p-2
+  @apply list-disc p-2 px-6
 }
 
 .article a {
