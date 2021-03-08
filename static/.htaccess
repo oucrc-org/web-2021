@@ -1,12 +1,15 @@
 <IfModule mod_rewrite.c>
 
-# RewriteEngineをOn、ドキュメントルートを設定する ---
 RewriteEngine on
 RewriteBase /
 
-# 404リダイレクト ---
+RewriteCond %{HTTP_HOST} ^www\.oucrc\.net
+RewriteRule (.*) https://oucrc.net/ [R=301,L]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^.*$ 404.html
+ErrorDocument 404 /200.html
 
 </IfModule>
