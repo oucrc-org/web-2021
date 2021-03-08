@@ -155,6 +155,6 @@ export default {
 }
 
 .article iframe {
-  @apply block m-auto
+  @apply block m-auto w-full
 }
 </style>
