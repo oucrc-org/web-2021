@@ -45,7 +45,6 @@ export default {
         timeUpdated: timeUpdated
       }
     }).catch(function (e) {
-      console.log(e.response.status)
       error({
         statusCode: e.response.status,
         message: e.message

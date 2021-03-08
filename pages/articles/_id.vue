@@ -194,7 +194,6 @@ export default {
 
           /*二回目の処理のエラーハンドリング*/
         }).catch(function (e) {
-          console.log(e)
           error({
             statusCode: e.response.status,
             message: e.message
@@ -212,7 +211,6 @@ export default {
 
       /*一回目の処理のエラーハンドリング*/
     }).catch(function (e) {
-      console.log(e)
       error({
         statusCode: e.response.status,
         message: e.message
