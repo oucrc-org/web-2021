@@ -35,7 +35,7 @@ export default {
       default: ''
     }
   },
-  created() {
+  mounted() {
     this.checked = this.checkQuery(this.id, this.name);
   },
   methods: {
