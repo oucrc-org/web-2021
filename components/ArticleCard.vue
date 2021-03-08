@@ -12,11 +12,15 @@
           {{ category }}
         </div>
       </div>
-      <h2 class="font-semibold leading-8 mt-6 overflow-hidden whitespace-no-wrap px-3 text-left text-2xl text-primary tracking-widest" style="text-overflow: ellipsis">
+      <h2
+        class="font-semibold leading-8 mt-6 overflow-hidden whitespace-no-wrap px-3 text-left text-2xl text-primary tracking-widest"
+        style="text-overflow: ellipsis">
         {{ title }}
       </h2>
-      <h3 class="font-semibold leading-8 mt-4 overflow-hidden px-3 text-left text-lg text-secondary tracking-widest">
-        <span class="block" style="display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3">
+      <h3 class="font-semibold leading-8 mt-4 px-3 text-left text-lg text-secondary tracking-widest"
+          :class="{'overflow-hidden' : !ignoreAbridgement}">
+        <span class="block"
+              :style="{'display: -webkit-box;-webkit-box-orient: vertical;-webkit-line-clamp: 3' : !ignoreAbridgement}">
           {{ description }}
         </span>
       </h3>
@@ -44,7 +48,9 @@ export default {
     },
     series: {
       type: Object,
-      default: () => {return {}}
+      default: () => {
+        return {}
+      }
     },
     category: {
       type: String,
@@ -62,6 +68,10 @@ export default {
       type: String,
       default: ''
     },
+    ignoreAbridgement: {
+      type: Boolean,
+      default: false
+    }
   }
 }
 </script>
