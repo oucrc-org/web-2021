@@ -4,7 +4,8 @@
     <div v-for="notice in notices.contents" :key="notice.id" class="border-b-2 border-divider text-secondary">
       <NuxtLink :to="'news/'+notice.id">
         <div class="text-lg text-left tracking-widest py-3 sm:py-5 pl-5">
-          <p class="inline-block overflow-hidden whitespace-no-wrap" style="text-overflow: ellipsis;width: 88%">
+          <p class="text-sm sm:text-base inline-block overflow-hidden pt-1 sm:pt-0 whitespace-no-wrap"
+             style="text-overflow: ellipsis;width: 88%">
             {{ notice.title }}
           </p>
           <div class="text-right float-right pr-5">
