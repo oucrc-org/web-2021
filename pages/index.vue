@@ -13,16 +13,25 @@
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <NuxtLink to="#" class="swiper-slide block">
-          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
-               src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
+          <picture>
+            <source type="image/webp" :srcset="require('@/assets/images/swiper/sakura.webp')">
+            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
+                 src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
+          </picture>
         </NuxtLink>
         <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">
-          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
-               src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
+          <picture>
+            <source type="image/webp" :srcset="require('@/assets/images/swiper/character.webp')">
+            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
+                 src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
+          </picture>
         </NuxtLink>
         <a href="https://i10jan-api.herokuapp.com/v1.1" class="swiper-slide block">
-          <img class="h-full object-cover w-full" style="object-position: 50% 100%"
-               src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">
+          <picture>
+            <source type="image/webp" :srcset="require('@/assets/images/swiper/i10jan.webp')">
+            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
+                 src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">
+          </picture>
         </a>
       </div>
       <div class="swiper-button-next swiper-button-white"></div>
@@ -62,13 +71,13 @@
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
           <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
-                       :img-path="require('@/assets/images/cover-programming.png')" :ignoreAbridgement=true
+                       :img-path="require('@/assets/images/cover-programming.jpg')" :ignoreAbridgement=true
                        description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
-                       :img-path="require('@/assets/images/cover-electronic.png')" :ignoreAbridgement=true
+                       :img-path="require('@/assets/images/cover-electronic.jpg')" :ignoreAbridgement=true
                        description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
           <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア"
-                       :img-path="require('@/assets/images/cover-dtm.png')" :ignoreAbridgement=true
+                       :img-path="require('@/assets/images/cover-dtm.jpg')" :ignoreAbridgement=true
                        description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"></ArticleCard>
         </div>
         <p class="font-semibold leading-8 mt-20 text-center text-lg text-secondary tracking-widest">
@@ -82,11 +91,17 @@
     <!-- ▼ 電算研の部室 -->
     <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
-        <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
+        <picture>
+          <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-label.webp')">
+          <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
+        </picture>
         <a href="news/l99fk47dvp6">
-          <img
-            class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
-            src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
+          <picture>
+            <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-button.webp')">
+            <img
+              class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
+              src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
+          </picture>
         </a>
       </div>
     </section>
@@ -98,7 +113,10 @@
       <div class="container mx-auto">
         <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
           <div class="col-span-2 image hidden lg:block text-center">
-            <img class="h-84 mx-auto" src="@/assets/images/dnsnkn_df.png" alt="キャラ">
+            <picture>
+              <source type="image/webp" :srcset="require('@/assets/images/dnsnkn_df.webp')">
+              <img class="h-84 mx-auto" src="@/assets/images/dnsnkn_df.png" alt="キャラ">
+            </picture>
           </div>
           <div class="col-span-3">
             <News :notices="notices"/>
