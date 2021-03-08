@@ -60,7 +60,7 @@ export default {
   // Google Analytics
   googleAnalytics: {
     id: 'G-7KXW9F58WD',
-    dev: true
+    dev: false
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
