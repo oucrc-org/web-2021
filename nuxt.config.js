@@ -53,12 +53,12 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/google-analytics',
+    '@nuxtjs/google-gtag',
     'cookie-universal-nuxt'
   ],
 
   // Google Analytics
-  googleAnalytics: {
+  'google-gtag': {
     id: 'G-7KXW9F58WD',
     dev: false
   },
