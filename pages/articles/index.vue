@@ -59,7 +59,7 @@
     </div>
 
     <!-- ページジャンパー -->
-    <div class="page-jumper">
+    <!-- <div class="page-jumper">
       <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }">
         <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
@@ -73,7 +73,7 @@
       <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }">
         <div class="text-subtext text-xl">&gt;</div>
       </NuxtLink>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -81,14 +81,15 @@
 import axios from "axios";
 
 export default {
-  watchQuery: ['p', 'keyword', 'category', 'series'],
+  // watchQuery: ['p', 'keyword', 'category', 'series'],
+  watchQuery: ['keyword', 'category', 'series'],
   data() {
     return {
-      currentPageNum: {
+      /*currentPageNum: {
         type: Number,
         default: 1
       },
-      arrayJumpTo: [],
+      arrayJumpTo: [],*/
       articles: {contents: []},
       categories: {contents: []},
       serieses: {contents: []},
@@ -139,7 +140,7 @@ export default {
     }
   },
   beforeRouteUpdate(to, from, next) {
-    const currentPageNum = +to.query.p || 1;
+    // const currentPageNum = +to.query.p || 1;
     const currentTime = new Date().toISOString();
     const url = 'https://oucrc.microcms.io/api/v1';
     const headers = {
@@ -148,8 +149,10 @@ export default {
     const promiseArticles = axios.get(url + '/article', {
       headers,
       params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
+        // limit: 9,
+        // offset: (currentPageNum - 1) * 9,
+        limit: 1000,
+        offset: 0,
         fields: 'id,title,category,image,body',
         orders: '-date,-createdAt',
         filters: [
@@ -190,8 +193,8 @@ export default {
     });
     promiseArticles.then(response => {
       this.articles = response.data;
-      this.currentPageNum = currentPageNum;
-      this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
+      // this.currentPageNum = currentPageNum;
+      // this.arrayJumpTo = getArrayJumpTo(currentPageNum, articles.data.totalCount, 9);
     }).catch(e => {
       error({
         statusCode: e.response.status,
@@ -201,7 +204,7 @@ export default {
     next();
   },
   asyncData({query}) {
-    const currentPageNum = +query.p || 1;
+    // const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
     const url = 'https://oucrc.microcms.io/api/v1';
     const headers = {
@@ -210,8 +213,10 @@ export default {
     const promiseArticles = axios.get(url + '/article', {
       headers,
       params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
+        // limit: 9,
+        // offset: (currentPageNum - 1) * 9,
+        limit: 1000,
+        offset: 0,
         fields: 'id,title,category,image,body',
         orders: '-date,-createdAt',
         filters: [
@@ -272,8 +277,8 @@ export default {
     ]).then(([articles, categories, serieses]) => {
       return Promise.resolve({
         articles: articles.data,
-        currentPageNum: currentPageNum,
-        arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
+        // currentPageNum: currentPageNum,
+        // arrayJumpTo: getArrayJumpTo(currentPageNum, articles.data.totalCount, 9),
         categories: categories.data,
         serieses: serieses.data,
       })
@@ -281,7 +286,7 @@ export default {
   },
 };
 
-function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
+/* function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
   const arrayJumpTo = [];
   for (let i = currentPageNum, j = 1; i >= 1; i -= j, j *= 2) {
     arrayJumpTo.unshift(i);
@@ -296,7 +301,7 @@ function getArrayJumpTo(currentPageNum, totalCount, countPerPage) {
     arrayJumpTo.push(Math.ceil(totalCount / countPerPage));
   }
   return arrayJumpTo;
-}
+} */
 </script>
 
 <style scoped>
