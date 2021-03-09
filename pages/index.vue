@@ -12,7 +12,7 @@
     <!-- ▼ ヒーローエリア -->
     <div class="swiper-container">
       <div class="swiper-wrapper">
-        <NuxtLink to="#" class="swiper-slide block">
+        <NuxtLink to="news/qbrftlmtqk" class="swiper-slide block">
           <picture>
             <source type="image/webp" :srcset="require('@/assets/images/swiper/sakura.webp')">
             <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
