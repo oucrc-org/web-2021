@@ -15,7 +15,7 @@
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.9.1",
     "nuxt": "^2.14.12",
-    "postcss": "^7.0.35",
+    "postcss": "^8.2.8",
     "tailwindcss": "^1.9.6"
   },
   "devDependencies": {
