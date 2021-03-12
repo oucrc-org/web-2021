@@ -74,12 +74,12 @@
         </fade-in>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <fade-in :forward="300">
+          <fade-in :forward="400">
             <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
                          :img-path="require('@/assets/images/cover-programming.jpg')" :ignoreAbridgement=true
                          description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           </fade-in>
-          <fade-in :forward="150">
+          <fade-in :forward="200">
             <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
                          :img-path="require('@/assets/images/cover-electronic.jpg')" :ignoreAbridgement=true
                          description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
@@ -126,11 +126,13 @@
     <section class="bg-white relative pb-16 pt-10 lg:pt-20 lg:py-20 z-20">
       <div class="container mx-auto">
         <div class="lg:grid grid-cols-5 gap-20 px-6 sm:px-10 lg:px-0">
-          <div class="col-span-2 image hidden lg:block text-center">
-            <picture>
-              <source type="image/webp" :srcset="require('@/assets/images/dnsnkn_df.webp')">
-              <img class="h-84 mx-auto" src="@/assets/images/dnsnkn_df.png" alt="キャラ">
-            </picture>
+          <div class="col-span-2 image text-center">
+            <NuxtLink to="/news/qbrftlmtqk">
+              <picture>
+                <!--              <source type="image/webp" :srcset="require('@/assets/images/dnsnkn_df.webp')">-->
+                <img src="@/assets/images/shinkan.png" alt="キャラ">
+              </picture>
+            </NuxtLink>
           </div>
           <div class="col-span-3">
             <fade-in>
