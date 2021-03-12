@@ -7,59 +7,8 @@
 
     <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-16 w-full z-0"></div>
 
-    <!--    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">-->
-
     <!-- ▼ ヒーローエリア -->
     <HeroArea/>
-
-    <!--    <div class="swiper-container">-->
-    <!--      <div class="swiper-wrapper">-->
-    <!--        <NuxtLink to="news/qbrftlmtqk" class="swiper-slide block">-->
-    <!--          <picture>-->
-    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/sakura.webp')">-->
-    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
-    <!--                 src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">-->
-    <!--          </picture>-->
-    <!--        </NuxtLink>-->
-    <!--        <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">-->
-    <!--          <picture>-->
-    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/character.webp')">-->
-    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
-    <!--                 src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">-->
-    <!--          </picture>-->
-    <!--        </NuxtLink>-->
-    <!--        <a href="https://i10jan-api.herokuapp.com/v1.1" class="swiper-slide block">-->
-    <!--          <picture>-->
-    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/i10jan.webp')">-->
-    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
-    <!--                 src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">-->
-    <!--          </picture>-->
-    <!--        </a>-->
-    <!--      </div>-->
-    <!--      <div class="swiper-button-next swiper-button-white"></div>-->
-    <!--      <div class="swiper-button-prev swiper-button-white"></div>-->
-    <!--      <div class="swiper-pagination swiper-pagination-white"></div>-->
-    <!--    </div>-->
-
-    <!--    <client-only>-->
-    <!--      <script>-->
-    <!--        var swiper = new Swiper('.swiper-container', {-->
-    <!--          autoplay: {-->
-    <!--            delay: 4000,-->
-    <!--            disableOnInteraction: false,-->
-    <!--          },-->
-    <!--          loop: true,-->
-    <!--          navigation: {-->
-    <!--            nextEl: '.swiper-button-next',-->
-    <!--            prevEl: '.swiper-button-prev',-->
-    <!--          },-->
-    <!--          pagination: {-->
-    <!--            el: '.swiper-pagination',-->
-    <!--            dynamicBullets: true,-->
-    <!--          }-->
-    <!--        })-->
-    <!--      </script>-->
-    <!--    </client-only>-->
     <!-- ▲ ヒーローエリア -->
 
 
@@ -150,9 +99,7 @@
 
 
     <!-- ▼ お問い合わせ -->
-    <section class="bg-white relative contact">
-      <Contact/>
-    </section>
+    <Contact/>
     <!-- ▲ お問い合わせ -->
 
   </div>
@@ -217,28 +164,6 @@ export default {
 </script>
 
 <style scoped>
-.swiper-wrapper {
-  height: 85vh;
-}
-
-@media (max-width: 1024px) {
-  .swiper-wrapper {
-    height: 65vh;
-  }
-}
-
-@media (max-width: 768px) {
-  .swiper-wrapper {
-    height: 55vh;
-  }
-}
-
-@media (max-width: 640px) {
-  .swiper-wrapper {
-    height: 40vh;
-  }
-}
-
 .oucrc-room-label {
   height: 40vh;
   top: 5vh;
@@ -251,11 +176,5 @@ export default {
 
 .parallax {
   background-image: url(@/assets/images/oucrc-room.jpg)
-}
-
-@media (min-width: 768px) {
-  .contact {
-    height: 80vh;
-  }
 }
 </style>
