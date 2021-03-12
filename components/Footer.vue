@@ -1,7 +1,11 @@
 <template>
   <div class="absolute bottom-0 bg-footer h-48 sm:h-64 w-full z-30">
     <NuxtLink to="/">
-      <img src="~/assets/images/common/oucrc-label-reverse.png" alt="岡山大学電子計算機研究会" class="h-10 sm:h-16 mt-16 sm:mt-20 mx-auto">
+      <picture>
+        <source type="image/webp" :srcset="require('~/assets/images/common/oucrc-label-reverse.webp')">
+        <img class="h-10 sm:h-16 mt-16 sm:mt-20 mx-auto"
+             v-lazy="require('~/assets/images/common/oucrc-label-reverse.png')" alt="岡山大学電子計算機研究会">
+      </picture>
     </NuxtLink>
     <div class="text-sm text-center text-white pt-12 sm:pt-20">&copy; 2021 OUCRC All rights reserved</div>
   </div>

@@ -6,11 +6,11 @@
       <NuxtLink to="/" class="m-2 flex flex-row items-center">
         <picture>
           <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-logo.webp')">
-          <img class="h-10 hidden md:block mr-2" src="@/assets/images/common/oucrc-logo.png" alt="ロゴ">
+          <img class="h-10 hidden md:block mr-2" v-lazy="require('@/assets/images/common/oucrc-logo.png')" alt="ロゴ">
         </picture>
         <picture>
           <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')">
-          <img class="h-8" src="@/assets/images/common/oucrc-label.png" alt="岡山大学電子計算機研究会">
+          <img class="h-8" v-lazy="require('@/assets/images/common/oucrc-label.png')" alt="岡山大学電子計算機研究会">
         </picture>
       </NuxtLink>
       <!-- ▲ ロゴ -->
@@ -31,9 +31,9 @@
       <!-- ▼ スマホ ハンバーガーメニュー -->
       <div class="h-auto flex flex-row ">
         <button class="focus:outline-none" v-on:click="flag = !flag" type="button">
-          <img v-if="!flag" src="~/assets/images/header/hamburger.svg" width="18" height="18" alt="メニュー"
+          <img v-if="!flag" v-lazy="require('~/assets/images/header/hamburger.svg')" width="18" height="18" alt="メニュー"
                class="m-2 block md:hidden">
-          <img v-if="flag" src="~/assets/images/header/close.svg" width="18" height="18" alt="キャンセル"
+          <img v-if="flag" v-lazy="require('~/assets/images/header/close.svg')" width="18" height="18" alt="キャンセル"
                class="m-2 md:hidden">
           <span class="hamburger">ハンバーガーメニュー</span>
         </button>

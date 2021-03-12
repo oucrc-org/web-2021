@@ -58,7 +58,7 @@
         <fade-in>
           <picture>
             <source type="image/webp" :srcset="require('@/assets/images/landing/oucrc-room-label.webp')">
-            <img class="oucrc-room-label absolute left-0" src="@/assets/images/landing/oucrc-room-label.png"
+            <img class="oucrc-room-label absolute left-0" v-lazy="require('@/assets/images/landing/oucrc-room-label.png')"
                  alt="電算研の部室">
           </picture>
         </fade-in>
@@ -67,7 +67,7 @@
             <source type="image/webp" :srcset="require('@/assets/images/landing/oucrc-room-button.webp')">
             <img
               class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
-              src="@/assets/images/landing/oucrc-room-button.png" alt="部室に何があるの？">
+              v-lazy="require('@/assets/images/landing/oucrc-room-button.png')" alt="部室に何があるの？">
           </picture>
         </a>
       </div>
@@ -83,7 +83,7 @@
             <NuxtLink to="/news/qbrftlmtqk">
               <picture>
                 <source type="image/webp" :srcset="require('@/assets/images/landing/shinkan.webp')">
-                <img src="@/assets/images/landing/shinkan.png" alt="キャラ">
+                <img v-lazy="require('@/assets/images/landing/shinkan.png')" alt="キャラ">
               </picture>
             </NuxtLink>
           </div>
