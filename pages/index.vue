@@ -7,82 +7,94 @@
 
     <div ref="parallax" class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-16 w-full z-0"></div>
 
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <!--    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">-->
 
     <!-- ▼ ヒーローエリア -->
-    <div class="swiper-container">
-      <div class="swiper-wrapper">
-        <NuxtLink to="news/qbrftlmtqk" class="swiper-slide block">
-          <picture>
-            <source type="image/webp" :srcset="require('@/assets/images/swiper/sakura.webp')">
-            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
-                 src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">
-          </picture>
-        </NuxtLink>
-        <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">
-          <picture>
-            <source type="image/webp" :srcset="require('@/assets/images/swiper/character.webp')">
-            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
-                 src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">
-          </picture>
-        </NuxtLink>
-        <a href="https://i10jan-api.herokuapp.com/v1.1" class="swiper-slide block">
-          <picture>
-            <source type="image/webp" :srcset="require('@/assets/images/swiper/i10jan.webp')">
-            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"
-                 src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">
-          </picture>
-        </a>
-      </div>
-      <div class="swiper-button-next swiper-button-white"></div>
-      <div class="swiper-button-prev swiper-button-white"></div>
-      <div class="swiper-pagination swiper-pagination-white"></div>
-    </div>
+    <HeroArea/>
 
-    <client-only>
-      <script>
-        var swiper = new Swiper('.swiper-container', {
-          autoplay: {
-            delay: 4000,
-            disableOnInteraction: false,
-          },
-          loop: true,
-          navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-          },
-          pagination: {
-            el: '.swiper-pagination',
-            dynamicBullets: true,
-          }
-        })
-      </script>
-    </client-only>
+    <!--    <div class="swiper-container">-->
+    <!--      <div class="swiper-wrapper">-->
+    <!--        <NuxtLink to="news/qbrftlmtqk" class="swiper-slide block">-->
+    <!--          <picture>-->
+    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/sakura.webp')">-->
+    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
+    <!--                 src="@/assets/images/swiper/sakura.jpg" alt="新歓のお知らせ">-->
+    <!--          </picture>-->
+    <!--        </NuxtLink>-->
+    <!--        <NuxtLink to="news/lp3g8w6b4l3" class="swiper-slide block">-->
+    <!--          <picture>-->
+    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/character.webp')">-->
+    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
+    <!--                 src="@/assets/images/swiper/character.jpg" alt="電算研キャラクター">-->
+    <!--          </picture>-->
+    <!--        </NuxtLink>-->
+    <!--        <a href="https://i10jan-api.herokuapp.com/v1.1" class="swiper-slide block">-->
+    <!--          <picture>-->
+    <!--            <source type="image/webp" :srcset="require('@/assets/images/swiper/i10jan.webp')">-->
+    <!--            <img class="h-full object-cover w-full" decoding="async" style="object-position: 50% 100%"-->
+    <!--                 src="@/assets/images/swiper/i10jan.jpg" alt="i10jan">-->
+    <!--          </picture>-->
+    <!--        </a>-->
+    <!--      </div>-->
+    <!--      <div class="swiper-button-next swiper-button-white"></div>-->
+    <!--      <div class="swiper-button-prev swiper-button-white"></div>-->
+    <!--      <div class="swiper-pagination swiper-pagination-white"></div>-->
+    <!--    </div>-->
+
+    <!--    <client-only>-->
+    <!--      <script>-->
+    <!--        var swiper = new Swiper('.swiper-container', {-->
+    <!--          autoplay: {-->
+    <!--            delay: 4000,-->
+    <!--            disableOnInteraction: false,-->
+    <!--          },-->
+    <!--          loop: true,-->
+    <!--          navigation: {-->
+    <!--            nextEl: '.swiper-button-next',-->
+    <!--            prevEl: '.swiper-button-prev',-->
+    <!--          },-->
+    <!--          pagination: {-->
+    <!--            el: '.swiper-pagination',-->
+    <!--            dynamicBullets: true,-->
+    <!--          }-->
+    <!--        })-->
+    <!--      </script>-->
+    <!--    </client-only>-->
     <!-- ▲ ヒーローエリア -->
 
 
     <!-- ▼ 電子計算機研究会とは -->
     <section class="bg-white border-t-2 py-32 relative w-full">
       <div class="container mx-auto">
-        <div class="divide-y divide-divider mb-20 px-4 sm:px-24 md:px-40 lg:px-64 xl:px-96">
-          <h2 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
-          <p class="pt-5 text-center sm:text-lg text-secondary tracking-widest">何をしているところなの？</p>
-        </div>
+        <fade-in>
+          <div class="divide-y divide-divider mb-20 px-4 sm:px-24 md:px-40 lg:px-64 xl:px-96">
+            <h2 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">電子計算機研究会とは</h2>
+            <p class="pt-5 text-center sm:text-lg text-secondary tracking-widest">何をしているところなの？</p>
+          </div>
+        </fade-in>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
-                       :img-path="require('@/assets/images/cover-programming.jpg')" :ignoreAbridgement=true
-                       description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
-          <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
-                       :img-path="require('@/assets/images/cover-electronic.jpg')" :ignoreAbridgement=true
-                       description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
-          <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア"
-                       :img-path="require('@/assets/images/cover-dtm.jpg')" :ignoreAbridgement=true
-                       description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"></ArticleCard>
+          <fade-in :forward="300">
+            <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
+                         :img-path="require('@/assets/images/cover-programming.jpg')" :ignoreAbridgement=true
+                         description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
+          </fade-in>
+          <fade-in :forward="150">
+            <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
+                         :img-path="require('@/assets/images/cover-electronic.jpg')" :ignoreAbridgement=true
+                         description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
+          </fade-in>
+          <fade-in>
+            <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア"
+                         :img-path="require('@/assets/images/cover-dtm.jpg')" :ignoreAbridgement=true
+                         description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"></ArticleCard>
+          </fade-in>
         </div>
-        <p class="font-semibold leading-8 mt-20 text-center text-lg text-secondary tracking-widest">
-          他にも、<br class="sm:hidden">3Dプリンタで色々なものを制作したり<br class="sm:hidden">ゲーム大会を開いたりしています！
-        </p>
+        <fade-in>
+          <p class="font-semibold leading-8 mt-20 text-center text-lg text-secondary tracking-widest">
+            他にも、<br class="sm:hidden">3Dプリンタで色々なものを制作したり<br class="sm:hidden">ゲーム大会を開いたりしています！
+          </p>
+        </fade-in>
       </div>
     </section>
     <!-- ▲ 電子計算機研究会とは -->
@@ -91,10 +103,12 @@
     <!-- ▼ 電算研の部室 -->
     <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
-        <picture>
-          <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-label.webp')">
-          <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
-        </picture>
+        <fade-in>
+          <picture>
+            <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-label.webp')">
+            <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
+          </picture>
+        </fade-in>
         <a href="news/l99fk47dvp6">
           <picture>
             <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-button.webp')">
@@ -119,11 +133,13 @@
             </picture>
           </div>
           <div class="col-span-3">
-            <News :notices="notices"/>
-            <NuxtLink to="/news"
-                      class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest">
-              もっとみる
-            </NuxtLink>
+            <fade-in>
+              <News :notices="notices"/>
+              <NuxtLink to="/news"
+                        class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest">
+                もっとみる
+              </NuxtLink>
+            </fade-in>
           </div>
         </div>
       </div>
@@ -142,6 +158,7 @@
 
 <script>
 import Contact from "~/components/Contact";
+import HeroArea from "~/components/HeroArea";
 import axios from "axios";
 
 export default {
@@ -180,11 +197,12 @@ export default {
     })
   },
   components: {
-    Contact
+    Contact,
+    HeroArea
   },
   methods: {
     handleScroll() {
-      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 1200 : 900) - (window.scrollY / 2) + 'px'
+      this.$refs.parallax.style.top = (this.$refs.parallax.clientWidth < 640 ? 1400 : 900) - (window.scrollY / 2) + 'px'
     }
   },
   beforeMount() {
