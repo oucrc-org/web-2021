@@ -77,6 +77,14 @@ export default {
       type: String,
       default: ''
     }
+  },
+  head() {
+    return {
+      script: [
+        {src: 'https://polyfill.io/v3/polyfill.min.js?features=es6', mode: 'client'},
+        {src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'}
+      ]
+    }
   }
 }
 </script>
@@ -88,7 +96,7 @@ export default {
 </style>
 
 <style module>
-.article{
+.article {
   word-break: break-all;
   line-break: loose;
 }

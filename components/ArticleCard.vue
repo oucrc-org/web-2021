@@ -3,9 +3,12 @@
     <NuxtLink v-bind:to="href"
               class="inline-block transform hover:scale-101 transition duration-500 ease-in-out w-full">
       <div class="relative">
-        <img v-if="imgPath !== null" class="object-cover shadow-lg h-56 w-full" :src="imgPath" v-bind:alt="category">
+        <picture v-if="imgPath !== null">
+          <source v-if="webpPath" type="image/webp" :srcset="webpPath">
+          <img class="object-cover shadow-lg h-56 w-full" :src="imgPath" v-bind:alt="category">
+        </picture>
         <img v-else class="object-cover shadow-lg h-56 w-full" src="@/assets/images/cover.png" alt="NoImage">
-        <img class="absolute bottom-0 h-20 right-0" src="@/assets/images/polygon.svg" alt="Polygon">
+        <img class="absolute bottom-0 h-20 right-0" src="@/assets/images/common/polygon.svg" alt="Polygon">
         <div v-if="category !== null"
              class="absolute bg-primary font-bold py-2 px-5 text-center text-sm text-white tracking-widest"
              style="left: -8px;top: 10px">
@@ -61,6 +64,10 @@ export default {
       default: null
     },
     imgPath: {
+      type: String,
+      default: null
+    },
+    webpPath: {
       type: String,
       default: null
     },
