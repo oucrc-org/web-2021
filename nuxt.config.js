@@ -48,6 +48,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    ['@nuxtjs/google-fonts', {display: 'block', download: true, inject: true}],
     '@nuxtjs/google-gtag',
     'cookie-universal-nuxt'
   ],

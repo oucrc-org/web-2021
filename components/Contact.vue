@@ -1,7 +1,7 @@
 <template>
   <section class="contact bg-white relative">
     <div id="map" class="overflow-hidden">
-      <iframe class="md:absolute w-full z-0" title="GoogleMap"
+      <iframe class="md:absolute w-full z-0" title="GoogleMap" style="pointer-events:none"
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2319.864736986123!2d133.9248861920379!3d34.685396222423485!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554066d34a8412f%3A0x59f13aab8699ff49!2z44CSNzAwLTAwODIg5bKh5bGx55yM5bKh5bGx5biC5YyX5Yy65rSl5bO25Lit77yS5LiB55uu77yRIOagoeWPi-S8muaWh-WMluezu-OCr-ODqeODluajnw!5e0!3m2!1sja!2sjp!4v1614782882747!5m2!1sja!2sjp"
               frameborder="0" allowfullscreen loading="lazy"></iframe>
     </div>
