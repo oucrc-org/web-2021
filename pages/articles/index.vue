@@ -13,7 +13,8 @@
                class="appearance-none block bg-highlight w-full px-8 py-3 placeholder-heading rounded-full text-secondary text-sm"
                placeholder="キーワードを入力">
         <NuxtLink :to="searchQueryString">
-          <img src="~/assets/images/search.svg" alt="検索" class="absolute h-6 top-0 right-0 mr-5 mt-3 cursor-pointer">
+          <img v-lazy="require('~/assets/images/article/search.svg')" alt="検索"
+               class="absolute h-6 top-0 right-0 mr-5 mt-3 cursor-pointer">
         </NuxtLink>
       </div>
       <div class="mt-10">
