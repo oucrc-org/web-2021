@@ -29,13 +29,18 @@
           <NuxtLink :to="`/members/${article.name.id}`" class="col-span-4">
             <div v-if="article.name.avatar !== void(0)"
                  class="inline-block pl-8 row-end-2">
-              <img
-                :src="article.name.avatar.url"
-                class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
+              <picture>
+                <source type="image/webp" :srcset="article.name.avatar.url+'?fm=webp'">
+                <img :src="article.name.avatar.url"
+                  class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
+              </picture>
             </div>
             <div v-else>
-              <img class="object-cover shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
-                   src="@/assets/images/member.png" alt="メンバーアイコン">
+              <picture>
+                <source type="image/webp" :srcset="require('@/assets/images/member/member.webp')">
+                <img class="object-cover shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32 m-auto"
+                     v-lazy="require('@/assets/images/member/member.jpg')" alt="メンバーアイコン">
+              </picture>
             </div>
           </NuxtLink>
           <!-- ▲ メンバーアイコン -->
@@ -49,17 +54,17 @@
             <div class="lg:text-left xl:pl-3 pr-1">
               <a v-if="article.name.twitter !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://twitter.com/${article.name.twitter.replace(/@/g,'')}`">
-                <img src="@/assets/images/sns-twitter.png" alt="Twitter"
+                <img v-lazy="require('@/assets/images/member/sns-twitter.png')" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a v-if="article.name.github !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://github.com/${article.name.github.replace(/@/g,'')}`">
-                <img src="@/assets/images/sns-github.png" alt="GitHub"
+                <img v-lazy="require('@/assets/images/member/sns-github.png')" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a v-if="article.name.youtube !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://www.youtube.com/user/${article.name.youtube}`">
-                <img src="@/assets/images/sns-youtube.png" alt="YouTube"
+                <img v-lazy="require('@/assets/images/member/sns-youtube.png')" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
             </div>

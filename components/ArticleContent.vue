@@ -3,10 +3,16 @@
 
     <!-- ▼ トップ画像 -->
     <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
-      <img :src="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important" alt="トップ画像"/>
+      <picture>
+        <source type="image/webp" :srcset="article.image.url+'?fm=webp'">
+        <img v-lazy="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important" alt="トップ画像"/>
+      </picture>
     </div>
     <div v-else>
-      <img src="@/assets/images/cover.png" class="block m-auto w-full" alt="トップ画像"/>
+      <picture>
+        <source type="image/webp" :srcset="require('@/assets/images/article/cover.webp')">
+        <img v-lazy="require('@/assets/images/article/cover.jpg')" class="block m-auto w-full" alt="トップ画像"/>
+      </picture>
     </div>
     <!-- ▲ トップ画像 -->
 
@@ -34,7 +40,7 @@
       <NuxtLink :to="`/articles?category=${category.id}`" v-if="category !== null"
                 class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
-          <img class="pt-2" src="@/assets/images/category.svg" style="margin: 0 !important" alt="カテゴリー">
+          <img class="pt-2" v-lazy="require('@/assets/images/article/category.svg')" style="margin: 0 !important" alt="カテゴリー">
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ category.category }}</span>
       </NuxtLink>
@@ -42,7 +48,7 @@
       <NuxtLink :to="`/articles?series=${series.id}`" v-if="series !== null"
                 class="bg-blockquote inline-block rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
-          <img class="pt-2" src="@/assets/images/series.svg" style="margin: 0 !important" alt="シリーズ">
+          <img class="pt-2" v-lazy="require('@/assets/images/article/series.svg')" style="margin: 0 !important" alt="シリーズ">
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ series.series }}</span>
       </NuxtLink>

@@ -8,7 +8,7 @@
       <fieldset>
         <legend class="text-primary text-2xl">体温を入力してください</legend>
 
-        <img class="mt-16 mx-auto" src="@/assets/images/health2.png" width="200" height="200" alt="Icon">
+        <img class="mt-16 mx-auto" src="@/assets/images/health/health2.png" width="200" height="200" alt="Icon">
 
         <div>
           <input v-model="temperature" type="number" max="38" min="35" step="0.1"
@@ -31,7 +31,7 @@
       <fieldset>
         <legend class="text-primary text-2xl">あなたのニックネームを選択してください</legend>
 
-        <img class="mt-16 mx-auto" src="@/assets/images/health1.png" width="200" height="200" alt="Icon">
+        <img class="mt-16 mx-auto" src="@/assets/images/health/health1.png" width="200" height="200" alt="Icon">
 
         <div>
           <select v-model="memberKey" class="bg-blockquote mt-8 px-5 py-2 text-primary w-64">

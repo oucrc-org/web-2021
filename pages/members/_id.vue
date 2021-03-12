@@ -16,14 +16,18 @@
 
           <!-- ▼ メンバーアイコン -->
           <div v-if="member.avatar !== void(0)" class="col-span-4 inline-block lg:pl-8 row-end-2">
-            <img
-              :src="member.avatar.url"
-              class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="取得に失敗しました">
+            <picture>
+              <source type="image/webp" :srcset="member.avatar.url+'?fm=webp'">
+              <img :src="member.avatar.url"
+                   class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="取得に失敗しました">
+            </picture>
           </div>
           <div v-else class="col-span-4 inline-block lg:pl-8 row-end-2">
-            <img
-              src="@/assets/images/member.png"
-              class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32" alt="メンバーアイコン">
+            <picture>
+              <source type="image/webp" :srcset="require('@/assets/images/member/member.webp')">
+              <img class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32"
+                   v-lazy="require('@/assets/images/member/member.jpg')" alt="メンバーアイコン">
+            </picture>
           </div>
           <!-- ▲ メンバーアイコン -->
 
@@ -37,17 +41,17 @@
             <div class="lg:text-left lg:pl-6 xl:pl-12">
               <a v-if="member.twitter !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://twitter.com/${member.twitter.replace(/@/g,'')}`">
-                <img src="@/assets/images/sns-twitter.png" alt="Twitter"
+                <img v-lazy="require('@/assets/images/member/sns-twitter.png')" alt="Twitter"
                      class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a v-if="member.github !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://github.com/${member.github.replace(/@/g,'')}`">
-                <img src="@/assets/images/sns-github.png" alt="GitHub"
+                <img v-lazy="require('@/assets/images/member/sns-github.png')" alt="GitHub"
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a v-if="member.youtube !== void(0)" target="_blank" rel="noopener noreferrer"
                  :href="`https://www.youtube.com/channel/${member.youtube}`">
-                <img src="@/assets/images/sns-youtube.png" alt="YouTube"
+                <img v-lazy="require('@/assets/images/member/sns-youtube.png')" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
             </div>
@@ -84,9 +88,10 @@
       <!-- ▼ 自己紹介画像 -->
       <div v-if="member.introImage !== void(0)" class="my-32">
         <Title label="自己紹介画像" class="mb-10"/>
-        <img
-          :src="member.introImage.url"
-          class="w-full" alt="取得に失敗しました">
+        <picture>
+          <source type="image/webp" :srcset="member.introImage.url+'?fm=webp'">
+          <img class="w-full" v-lazy="member.introImage.url" alt="取得に失敗しました">
+        </picture>
       </div>
       <!-- ▲ 自己紹介画像 -->
 
