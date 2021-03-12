@@ -1,7 +1,7 @@
 <template>
   <section class="contact bg-white relative">
     <div id="map" class="overflow-hidden">
-      <iframe class="md:absolute w-full z-0"
+      <iframe class="md:absolute w-full z-0" title="GoogleMap"
               src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2319.864736986123!2d133.9248861920379!3d34.685396222423485!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3554066d34a8412f%3A0x59f13aab8699ff49!2z44CSNzAwLTAwODIg5bKh5bGx55yM5bKh5bGx5biC5YyX5Yy65rSl5bO25Lit77yS5LiB55uu77yRIOagoeWPi-S8muaWh-WMluezu-OCr-ODqeODluajnw!5e0!3m2!1sja!2sjp!4v1614782882747!5m2!1sja!2sjp"
               frameborder="0" allowfullscreen loading="lazy"></iframe>
     </div>
@@ -13,14 +13,14 @@
         <hr class="line">
 
         <div class="text-left mb-6 mt-8 px-3 sm:px-8">
-          <img class="inline h-6" src="@/assets/images/contact-mail.svg" alt="Mail">
+          <img class="inline h-6" src="@/assets/images/landing/contact-mail.svg" alt="Mail">
           <a href="mailto:oucrc.master@gmail.com" class="font-semibold ml-4 text-secondary tracking-widest">
             oucrc.master@gmail.com
           </a>
         </div>
 
         <div class="text-left my-6 px-3 sm:px-8">
-          <img class="inline h-6" src="@/assets/images/contact-twitter.svg" alt="Twitter">
+          <img class="inline h-6" src="@/assets/images/landing/contact-twitter.svg" alt="Twitter">
           <a href="https://twitter.com/oucrc?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" class="font-semibold ml-4 text-secondary tracking-widest"
              target="_blank" rel="noopener noreferrer">
             @oucrc
@@ -28,7 +28,7 @@
         </div>
 
         <div class="text-left mb-8 mt-6 px-3 sm:px-8">
-          <img class="inline h-6" src="@/assets/images/contact-google-form.svg" alt="GoogleForm">
+          <img class="inline h-6" src="@/assets/images/landing/contact-google-form.svg" alt="GoogleForm">
           <NuxtLink to="join" class="font-semibold ml-4 text-secondary tracking-widest">
             Google Form
           </NuxtLink>

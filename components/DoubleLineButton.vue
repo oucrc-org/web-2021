@@ -1,6 +1,6 @@
 <template>
 	<p class="double-line-button transform hover:scale-105 transition duration-500 ease-in-out">
-		<img v-if="hasRightArrow" src="@/assets/images/next.png" alt=">">
+		<img v-if="hasRightArrow" class="pt-1" src="@/assets/images/common/article-link.svg" alt=">">
 		<span class="mr-1 tracking-widest">{{ label }}</span>
 	</p>
 </template>

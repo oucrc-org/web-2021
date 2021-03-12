@@ -8,7 +8,7 @@
 export default {
   name: 'FadeIn',
   props: {
-    forward: {
+    delay: {
       type: Number,
       default: 0
     }
@@ -19,16 +19,16 @@ export default {
     };
   },
   beforeMount() {
-    window.addEventListener("scroll", this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll);
   },
   beforeDestroy() {
-    window.removeEventListener("scroll", this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll);
   },
   methods: {
     handleScroll() {
       if (!this.visible) {
-        var top = this.$el.getBoundingClientRect().top;
-        this.visible = top < window.innerHeight + this.forward;
+        const top = this.$el.getBoundingClientRect().top;
+        this.visible = top < window.innerHeight - this.delay;
       }
     }
   }
@@ -37,7 +37,7 @@ export default {
 
 <style>
 .fadeIn {
-  animation: fadeIn 2s;
+  animation: fadeIn 2s forwards;
 }
 @keyframes fadeIn {
   0% {

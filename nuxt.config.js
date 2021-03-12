@@ -30,13 +30,8 @@ export default {
       {rel: 'preconnect', href: 'https://fonts.gstatic.com'},
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap'
+        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap'
       }
-    ],
-    script: [
-      {src: 'https://polyfill.io/v3/polyfill.min.js?features=es6', mode: 'client'},
-      {src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML'},
-      {src: 'https://unpkg.com/swiper/swiper-bundle.min.js'}
     ]
   },
 

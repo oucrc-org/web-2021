@@ -23,19 +23,22 @@
         </fade-in>
 
         <div class="grid sm:grid-cols-3 gap-16 px-5">
-          <fade-in :forward="400">
+          <fade-in class="opacity-0">
             <ArticleCard href="/articles?category=noi18t4xa3" category="プログラミング"
-                         :img-path="require('@/assets/images/cover-programming.jpg')" :ignoreAbridgement=true
+                         :imgPath="require('@/assets/images/landing/cover-programming.jpg')" :ignoreAbridgement=true
+                         :webpPath="require('@/assets/images/landing/cover-programming.webp')"
                          description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"></ArticleCard>
           </fade-in>
-          <fade-in :forward="200">
+          <fade-in class="opacity-0" :delay="150">
             <ArticleCard href="/articles?category=2_x0e6wfbu" category="電子工作"
-                         :img-path="require('@/assets/images/cover-electronic.jpg')" :ignoreAbridgement=true
+                         :img-path="require('@/assets/images/landing/cover-electronic.jpg')" :ignoreAbridgement=true
+                         :webpPath="require('@/assets/images/landing/cover-electronic.webp')"
                          description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"></ArticleCard>
           </fade-in>
-          <fade-in>
+          <fade-in class="opacity-0" :delay="300">
             <ArticleCard href="articles?category=ls-ivl76nq2" category="ガジェット/ハードウェア"
-                         :img-path="require('@/assets/images/cover-dtm.jpg')" :ignoreAbridgement=true
+                         :img-path="require('@/assets/images/landing/cover-gadget.jpg')" :ignoreAbridgement=true
+                         :webpPath="require('@/assets/images/landing/cover-gadget.webp')"
                          description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"></ArticleCard>
           </fade-in>
         </div>
@@ -54,16 +57,17 @@
       <div class="container h-full relative mx-auto">
         <fade-in>
           <picture>
-            <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-label.webp')">
-            <img class="oucrc-room-label absolute left-0" src="@/assets/images/oucrc-room-label.png" alt="電算研の部室">
+            <source type="image/webp" :srcset="require('@/assets/images/landing/oucrc-room-label.webp')">
+            <img class="oucrc-room-label absolute left-0" src="@/assets/images/landing/oucrc-room-label.png"
+                 alt="電算研の部室">
           </picture>
         </fade-in>
         <a href="news/l99fk47dvp6">
           <picture>
-            <source type="image/webp" :srcset="require('@/assets/images/oucrc-room-button.webp')">
+            <source type="image/webp" :srcset="require('@/assets/images/landing/oucrc-room-button.webp')">
             <img
               class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
-              src="@/assets/images/oucrc-room-button.png" alt="部室に何があるの？">
+              src="@/assets/images/landing/oucrc-room-button.png" alt="部室に何があるの？">
           </picture>
         </a>
       </div>
@@ -78,8 +82,8 @@
           <div class="col-span-2 image text-center">
             <NuxtLink to="/news/qbrftlmtqk">
               <picture>
-                <!--              <source type="image/webp" :srcset="require('@/assets/images/dnsnkn_df.webp')">-->
-                <img src="@/assets/images/shinkan.png" alt="キャラ">
+                <source type="image/webp" :srcset="require('@/assets/images/landing/shinkan.webp')">
+                <img src="@/assets/images/landing/shinkan.png" alt="キャラ">
               </picture>
             </NuxtLink>
           </div>
@@ -175,6 +179,6 @@ export default {
 }
 
 .parallax {
-  background-image: url(@/assets/images/oucrc-room.jpg)
+  background-image: url(@/assets/images/landing/oucrc-room.jpg)
 }
 </style>

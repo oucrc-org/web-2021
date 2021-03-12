@@ -1,10 +1,22 @@
 <template>
-  <div>
-    <div id="header" class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-50">
+  <header>
+    <div class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-50">
+
+      <!-- ▼ ロゴ -->
       <NuxtLink to="/" class="m-2 flex flex-row items-center">
-        <img src="~/assets/images/oucrc-logo-small.png" alt="ロゴ" class="h-10 hidden md:block mr-2">
-        <img src="~/assets/images/oucrc-label-small.png" alt="岡山大学電子計算機研究会" class="h-8">
+        <picture>
+          <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-logo.webp')">
+          <img class="h-10 hidden md:block mr-2" src="@/assets/images/common/oucrc-logo.png" alt="ロゴ">
+        </picture>
+        <picture>
+          <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')">
+          <img class="h-8" src="@/assets/images/common/oucrc-label.png" alt="岡山大学電子計算機研究会">
+        </picture>
       </NuxtLink>
+      <!-- ▲ ロゴ -->
+
+
+      <!-- ▼ PC ナビゲーション -->
       <div class="hidden md:flex flex-grow justify-end">
         <nav id="navigation" class="self-center h-full">
           <NuxtLink to="/" class="border-b-2 border-white hover:border-divider" exact>ホーム</NuxtLink>
@@ -13,15 +25,26 @@
           <NuxtLink to="/join" class="border-b-2 border-white hover:border-divider">入部フォーム</NuxtLink>
         </nav>
       </div>
+      <!-- ▲ PC ナビゲーション -->
+
+
+      <!-- ▼ スマホ ハンバーガーメニュー -->
       <div class="h-auto flex flex-row ">
-        <button class="focus:outline-none" v-on:click="flag = !flag">
-          <img v-if="!flag" src="~/assets/images/hamburger.svg" width="18" height="18" alt="メニュー"
+        <button class="focus:outline-none" v-on:click="flag = !flag" type="button">
+          <img v-if="!flag" src="~/assets/images/header/hamburger.svg" width="18" height="18" alt="メニュー"
                class="m-2 block md:hidden">
-          <img v-if="flag" src="~/assets/images/cancel.svg" width="18" height="18" alt="キャンセル" class="m-2 md:hidden">
+          <img v-if="flag" src="~/assets/images/header/close.svg" width="18" height="18" alt="キャンセル"
+               class="m-2 md:hidden">
+          <span class="hamburger">ハンバーガーメニュー</span>
         </button>
       </div>
+      <!-- ▲ スマホ ハンバーガーメニュー -->
+
     </div>
+
     <div class="navbar fixed text-center text-xl z-40" v-bind:class="{show: flag}">
+
+      <!-- ▼ スマホ ナビゲーション -->
       <nav class="self-center h-full">
         <div class="py-5">
           <NuxtLink to="/" v-on:click.native="flag = false" class="border-b-2 border-white hover:border-divider" exact>
@@ -29,7 +52,8 @@
           </NuxtLink>
         </div>
         <div class="py-5">
-          <NuxtLink to="/articles" v-on:click.native="flag = false" class="border-b-2 border-white hover:border-divider">
+          <NuxtLink to="/articles" v-on:click.native="flag = false"
+                    class="border-b-2 border-white hover:border-divider">
             作品紹介
           </NuxtLink>
         </div>
@@ -44,8 +68,10 @@
           </NuxtLink>
         </div>
       </nav>
+      <!-- ▲ スマホ ナビゲーション -->
+
     </div>
-  </div>
+  </header>
 </template>
 
 <script>
@@ -69,6 +95,18 @@ export default {
 
 .navbar {
   @apply bg-white font-bold hidden w-full h-full py-64 top-0 left-0 opacity-90
+}
+
+.hamburger {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 .show {

@@ -3,12 +3,18 @@
     <div class="absolute bg-repeat bg-white h-full w-full"></div>
     <div id="heroArea" class="relative w-full" style="height: 95vh"/>
     <div class="absolute pt-56 sm:pt-72 text-center top-0 w-full">
-      <img class="fadeIn2s h-12 sm:h-20 md:h-24 mx-auto" src="@/assets/images/oucrc-label.png" alt="電子計算機研究会">
+      <picture>
+        <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')">
+        <img class="fadeIn2s h-12 sm:h-20 md:h-24 mx-auto" src="@/assets/images/common/oucrc-label.png" alt="岡山大学電子計算機研究会">
+      </picture>
       <h2 class="fadeIn4s mt-4 sm:mt-8 text-lg sm:text-2xl tracking-widest">
         つくりたいものをつくる
       </h2>
     </div>
-    <img class="fadeIn2s1s absolute bottom-0 h-32 mx-auto left-0 right-0" src="@/assets/images/scroll.png" alt="Scroll">
+    <picture>
+      <source type="image/webp" :srcset="require('@/assets/images/landing/scroll.webp')">
+      <img class="fadeIn2s1s absolute bottom-0 h-40 mx-auto left-0 right-0" src="@/assets/images/landing/scroll.png" alt="Scroll">
+    </picture>
   </section>
 </template>
 
@@ -26,17 +32,17 @@ export default {
 
 <style scoped>
 .bg-repeat {
-  background-image: url(@/assets/images/bg-repeat.jpg);
-  background-size: 99.6px 65.3px;
+  background-image: url(@/assets/images/landing/bg-repeat.svg);
+  background-size: 96px 64px;
   background-position: left top;
 }
 
 .fadeIn2s {
-  animation: fadeIn 2s;
+  animation: fadeIn 2s forwards;
 }
 
 .fadeIn4s {
-  animation: fadeIn 4s;
+  animation: fadeIn 4s forwards;
 }
 
 .fadeIn2s1s {
