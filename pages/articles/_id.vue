@@ -63,7 +63,7 @@
                      class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
               <a v-if="article.name.youtube !== void(0)" target="_blank" rel="noopener noreferrer"
-                 :href="`https://www.youtube.com/user/${article.name.youtube}`">
+                 :href="`https://www.youtube.com/channel/${article.name.youtube}`">
                 <img v-lazy="require('@/assets/images/member/sns-youtube.png')" alt="YouTube"
                      class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out">
               </a>
