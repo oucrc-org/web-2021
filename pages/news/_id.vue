@@ -28,10 +28,10 @@ export default {
       timeUpdated: '',
     }
   },
-  asyncData({params, error}) {
-    return axios.get(`https://oucrc.microcms.io/api/v1/news/${params.id}`, {
+  asyncData({params, error, $config}) {
+    return axios.get(`${$config.API_URL}/news/${params.id}`, {
       headers: {
-        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+        'X-API-KEY': $config.X_API_KEY
       }
     }).then(response => {
       const options = {
