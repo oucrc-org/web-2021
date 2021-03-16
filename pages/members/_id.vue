@@ -137,21 +137,21 @@ export default {
     }
   },
 
-  asyncData({params, error}) {
+  asyncData({params, error, $config}) {
 
     /*一回目：メンバー情報の取得*/
-    return axios.get(`https://oucrc.microcms.io/api/v1/member/${params.id}`, {
+    return axios.get(`${$config.API_URL}/member/${params.id}`, {
       headers: {
-        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+        'X-API-KEY': $config.X_API_KEY
       }
       /*一回目のコールバック*/
     }).then(response => {
 
       /*メンバーのIDが取得出来た時*/
       if (response.data.id !== void (0)) {
-        return axios.get('https://oucrc.microcms.io/api/v1/article', {
+        return axios.get(`${$config.API_URL}/article`, {
           headers: {
-            'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+            'X-API-KEY': $config.X_API_KEY
           },
           params: {
             limit: 10000,

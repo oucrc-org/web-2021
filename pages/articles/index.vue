@@ -139,7 +139,7 @@ export default {
       }).join('&')
     }
   },
-  beforeRouteUpdate(to, from, next) {
+  /*beforeRouteUpdate(to, from, next) {
     const currentPageNum = +to.query.p || 1;
     const currentTime = new Date().toISOString();
     const url = 'https://oucrc.microcms.io/api/v1';
@@ -200,13 +200,13 @@ export default {
       })
     })
     next();
-  },
-  asyncData({query}) {
+  },*/
+  asyncData({query, $config}) {
     const currentPageNum = +query.p || 1;
     const currentTime = new Date().toISOString();
-    const url = 'https://oucrc.microcms.io/api/v1';
+    const url = $config.API_URL;
     const headers = {
-      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
+      "X-API-KEY": $config.X_API_KEY,
     };
     const promiseArticles = axios.get(url + '/article', {
       headers,
