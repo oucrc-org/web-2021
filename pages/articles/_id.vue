@@ -158,11 +158,11 @@ export default {
       }
     },
   },
-  asyncData({params, error}) {
+  asyncData({params, error, $config}) {
     /*一度目の処理*/
-    return axios.get(`https://oucrc.microcms.io/api/v1/article/${params.id}`, {
+    return axios.get(`${$config.API_URL}/article/${params.id}`, {
       headers: {
-        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+        'X-API-KEY': $config.X_API_KEY
       }
     }).then(response => {
 
@@ -178,9 +178,9 @@ export default {
       if (response.data.name !== null) {
 
         /*二回目の処理*/
-        return axios.get('https://oucrc.microcms.io/api/v1/article', {
+        return axios.get(`${$config.API_URL}/article`, {
           headers: {
-            'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+            'X-API-KEY': $config.X_API_KEY
           },
           params: {
             filters: `name[equals]${response.data.name.id}[and]id[not_equals]${response.data.id}`,

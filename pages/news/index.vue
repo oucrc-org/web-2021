@@ -31,15 +31,15 @@ export default {
       }
     }
   },
-  asyncData() {
+  asyncData({ $config }) {
     const currentTime = new Date().toISOString()
-    return axios.get('https://oucrc.microcms.io/api/v1/news?' + Object.entries({
+    return axios.get(`${$config.API_URL}/news?` + Object.entries({
       fields: 'id,title',
       orders: 'important,-date,-createdAt',
       filters: 'date[less_than]' + currentTime
     }).map(([key, value]) => key + '=' + value).join('&'), {
       headers: {
-        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+        'X-API-KEY': $config.X_API_KEY
       }
     }).then(response => {
       return {

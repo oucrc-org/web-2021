@@ -57,10 +57,10 @@ export default {
       this.years = Array.from(yearSet).sort((a, b) => b - a)
     }
   },
-  asyncData({ error }) {
-    return axios.get('https://oucrc.microcms.io/api/v1/member', {
+  asyncData({ error, $config }) {
+    return axios.get(`${$config.API_URL}/member`, {
       headers: {
-        'X-API-KEY': '6d1b79a2-58de-49aa-bb5c-d2828e0d7d47'
+        'X-API-KEY': $config.X_API_KEY
       },
       params: {
         limit: 10000,
