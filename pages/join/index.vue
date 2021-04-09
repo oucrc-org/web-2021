@@ -53,6 +53,10 @@
         </div>
 
         <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer"/>
+
+        <p class="mt-16 leading-7 text-sm">フォームから送信できない場合は、<a
+          href="https://docs.google.com/forms/d/e/1FAIpQLSds9xqdBsruaabapqvRkaW1gV10pv9lOJNasLCv5CHDZokdwQ/viewform"
+          class="font-bold text-blue-500" target="_blank" rel="noopener noreferrer">こちら</a>から送信をお願いします。</p>
       </form>
     </section>
   </div>
