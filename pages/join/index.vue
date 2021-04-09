@@ -86,7 +86,7 @@ export default {
   },
   methods: {
     submitForm() {
-      if (!this.form.studentNumber.match(/^[0-9]{8}$/)) {
+      if (!this.form.studentNumber.match(/^[a-zA-Z0-9]{8}$/)) {
         this.valid.studentNumber = false
       }
       // HTML5と同レベルのValidation（RFC非準拠）
