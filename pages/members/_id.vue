@@ -6,11 +6,11 @@
 
     <section class="container mx-auto px-3 pt-16 lg:pt-0">
       <!-- ▼ 記事一覧じゃない方(flexに変えました) -->
-      <div class="flex flex-col md:flex-row mt-12 md:mt-20 justify-between px-6">
+      <div class="flex flex-col md:flex-row mt-16 md:mt-20 justify-between px-6">
         <div class="lg:pl-8 pr-6">
-          <div class="flex justify-center">
+          <div class="flex justify-between">
             <!-- ▼ メンバーアイコン -->
-            <div class="w-32 xl:w-36 mb-8">
+            <div class="w-24 xl:w-36 mb-4 md:mr-8">
               <div v-if="member.avatar !== void 0" class="">
                 <picture>
                   <source type="image/webp" :srcset="member.avatar.url + '?fm=webp'" />
@@ -30,8 +30,8 @@
             <!-- ▲ メンバーアイコン -->
 
             <!-- ▼ SNSリンク -->
-            <div class="px-8 w-64 mx-auto mt-2 text-center">
-              <p v-if="member.enteryear !== void 0" class="bg-highlight inline-block px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
+            <div class="mt-2 text-center">
+              <p v-if="member.enteryear !== void 0" class="bg-highlight inline-block md:w-40 px-6 py-1 rounded-lg text-secondary text-sm tracking-widest">
                 {{ member.enteryear }}年度 入部
               </p>
               <div class="flex items-center justify-around">
@@ -129,15 +129,6 @@ export default {
       },
     }
   },
-  head() {
-    // issue #161
-    return {
-        meta: [
-          {property: 'og:image', content: this.member.avatar.url ?? null,}
-        ],
-    }
-  },
-
   asyncData({ params, error, $config }) {
     /*一回目：メンバー情報の取得*/
     return axios
