@@ -129,15 +129,6 @@ export default {
       },
     }
   },
-  head() {
-    // issue #161
-    return {
-        meta: [
-          {property: 'og:image', content: this.member.avatar.url ?? null,}
-        ],
-    }
-  },
-
   asyncData({ params, error, $config }) {
     /*一回目：メンバー情報の取得*/
     return axios
