@@ -135,6 +135,14 @@ export default {
       timeUpdated: ''
     }
   },
+  head() {
+    // issue #161
+    return {
+        meta: [
+          {property: 'og:image', content: this.article.image.url ?? null,}
+        ],
+    }
+  },
   mounted() {
     this.renderMathJax()
   },
