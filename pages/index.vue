@@ -132,14 +132,15 @@ export default {
     const currentTime = new Date().toISOString()
     return axios.get(`${ $config.API_URL }/news?` + Object.entries({
       limit: 3,
-      fields: 'id,title',
-      orders: 'important,-date,-createdAt',
+      fields: 'id,title,important,date',
+      orders: '-important,-date,-createdAt',
       filters: 'date[less_than]' + currentTime
     }).map(([key, value]) => key + '=' + value).join('&'), {
       headers: {
         'X-API-KEY': $config.X_API_KEY
       }
     }).then(response => {
+      console.log(response.data)
       return {
         notices: response.data
       }
