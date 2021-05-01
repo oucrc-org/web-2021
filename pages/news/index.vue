@@ -35,7 +35,7 @@ export default {
     const currentTime = new Date().toISOString()
     return axios.get(`${$config.API_URL}/news?` + Object.entries({
       fields: 'id,title',
-      orders: 'important,-date,-createdAt',
+      orders: '-important,-date,-createdAt',
       filters: 'date[less_than]' + currentTime
     }).map(([key, value]) => key + '=' + value).join('&'), {
       headers: {
