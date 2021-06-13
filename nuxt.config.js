@@ -67,14 +67,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
-  generate: {
-    exclude: [
-      /^\/articles/,
-      /^\/members/,
-      /^\/news/,
-      /^\/health/
-    ]
-  },
+  generate: {},
 
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
