@@ -7,16 +7,7 @@
 
     <!-- 絞り込みツール -->
     <Title label="絞り込み" class="mt-16"/>
-    <form @submit.prevent @change="updateSearchLink" name="search" class="md:mx-32 my-8">
-      <div class="relative">
-        <input type="search" name="keyword"
-               class="appearance-none block bg-highlight w-full px-8 py-3 placeholder-heading rounded-full text-secondary text-sm"
-               placeholder="キーワードを入力">
-        <NuxtLink :to="searchQueryString">
-          <img v-lazy="require('~/assets/images/article/search.svg')" alt="検索"
-               class="absolute h-6 top-0 right-0 mr-5 mt-3 cursor-pointer">
-        </NuxtLink>
-      </div>
+    <form @submit.prevent name="search" class="md:mx-32 my-8">
       <div class="mt-10">
         <LabeledCheckbox
           v-for="category in categories.contents"
@@ -61,17 +52,17 @@
 
     <!-- ページジャンパー -->
     <div class="page-jumper">
-      <NuxtLink v-if="currentPageNum > 1" :to="{ query: appendQuery({p: currentPageNum - 1}) }">
+      <NuxtLink v-if="currentPageNum > 1" :to="{name: listType, params: {p: currentPageNum - 1}}">
         <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
       <NuxtLink v-for="pageNum in arrayJumpTo"
                 :key="'jumper' + pageNum"
-                :to="{ query: appendQuery({p: pageNum}) }">
+                :to="{name: listType, params: {p: pageNum}}">
         <div class="text-xl" :class="[ pageNum === currentPageNum ? 'text-primary' : 'text-subtext' ]">
           {{ pageNum }}
         </div>
       </NuxtLink>
-      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{ query: appendQuery({p: currentPageNum + 1}) }">
+      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{name: listType, params: {p: currentPageNum + 1}}">
         <div class="text-subtext text-xl">&gt;</div>
       </NuxtLink>
     </div>
@@ -96,7 +87,8 @@ export default {
       searchQueryString: {
         type: String,
         default: ''
-      }
+      },
+      listType: this.$route.name === 'articles' ? 'article' : this.$route.name
     };
   },
   methods: {
@@ -109,9 +101,6 @@ export default {
     updateSearchLink() {
       const elementsSearchForm = document.forms.search.elements;
       const searchQuery = {};
-      if (typeof elementsSearchForm.keyword.value !== 'undefined' && elementsSearchForm.keyword.value !== '') {
-        searchQuery.keyword = elementsSearchForm.keyword.value;
-      }
       const categories = [];
       for (const category of elementsSearchForm.category) {
         if (category.checked) {
@@ -139,75 +128,20 @@ export default {
       }).join('&')
     }
   },
-  /*beforeRouteUpdate(to, from, next) {
-    const currentPageNum = +to.query.p || 1;
-    const currentTime = new Date().toISOString();
-    const url = 'https://oucrc.microcms.io/api/v1';
-    const headers = {
-      "X-API-KEY": "6d1b79a2-58de-49aa-bb5c-d2828e0d7d47",
-    };
-    const promiseArticles = axios.get(url + '/article', {
-      headers,
-      params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body',
-        orders: '-date,-createdAt',
-        filters: [
-          `date[less_than]${currentTime}`,
-          ...(() => {
-            const searchQuery = [];
-            if ('keyword' in to.query && to.query.keyword !== null) {
-              searchQuery.push(
-                to.query.keyword.split(/\s+/)
-                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                  .join('[and]')
-              )
-            }
-            if ('category' in to.query) {
-              if (typeof to.query.category === 'string') {
-                to.query.category = [to.query.category]
-              }
-              searchQuery.push(
-                to.query.category
-                  .map(id => `category[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            if ('series' in to.query) {
-              if (typeof to.query.series === 'string') {
-                to.query.series = [to.query.series]
-              }
-              searchQuery.push(
-                to.query.series
-                  .map(id => `series[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            return searchQuery;
-          })()
-        ].join('[and]')
-      }
-    });
-    promiseArticles.then(response => {
-      this.articles = response.data;
-      this.currentPageNum = currentPageNum;
-      this.arrayJumpTo = getArrayJumpTo(response.data.totalCount, 9);
-    }).catch(e => {
-      error({
-        statusCode: e.response.status,
-        message: e.message
-      })
-    })
-    next();
-  },*/
-  asyncData({query, $config}) {
-    const currentPageNum = +query.p || 1;
+  asyncData({params, $config}) {
+    const currentPageNum = +params.p || 1;
     const currentTime = new Date().toISOString();
     const url = $config.API_URL;
     const headers = {
       "X-API-KEY": $config.X_API_KEY,
     };
+    const searchQuery = [];
+    if ('category' in params) {
+      searchQuery.push(`category[equals]${params.category}`);
+    }
+    if ('series' in params) {
+      searchQuery.push(`series[equals]${params.series}`);
+    }
     const promiseArticles = axios.get(url + '/article', {
       headers,
       params: {
@@ -217,37 +151,7 @@ export default {
         orders: '-date,-createdAt',
         filters: [
           `date[less_than]${currentTime}`,
-          ...(() => {
-            const searchQuery = [];
-            if ('keyword' in query && query.keyword !== null) {
-              searchQuery.push(
-                query.keyword.split(/\s+/)
-                  .map(w => `body[contains]${w}[or]title[contains]${w}`)
-                  .join('[and]')
-              )
-            }
-            if ('category' in query) {
-              if (typeof query.category === 'string') {
-                query.category = [query.category]
-              }
-              searchQuery.push(
-                query.category
-                  .map(id => `category[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            if ('series' in query) {
-              if (typeof query.series === 'string') {
-                query.series = [query.series]
-              }
-              searchQuery.push(
-                query.series
-                  .map(id => `series[equals]${id}`)
-                  .join('[or]')
-              )
-            }
-            return searchQuery;
-          })()
+          ...searchQuery
         ].join('[and]')
       }
     });
@@ -283,7 +187,7 @@ export default {
 };
 
 function getArrayJumpTo(totalCount, countPerPage) {
-  return [...Array(Math.ceil(totalCount / countPerPage)).keys()].map(i => ++i);
+  return [...Array(Math.ceil(totalCount / countPerPage)).keys()].map(i => i + 1);
 }
 </script>
 

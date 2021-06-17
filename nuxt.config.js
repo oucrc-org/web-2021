@@ -1,9 +1,18 @@
+import axios from 'axios'
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
   router: {
-    linkActiveClass: 'active'
+    linkActiveClass: 'active',
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: '/articles/p/:p',
+        component: resolve(__dirname, 'pages/articles/index.vue'),
+        name: 'article'
+      });
+    }
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -67,7 +76,27 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
-  generate: {},
+  generate: {
+    async routes() {
+      const limit = 9;
+      const headers = {
+        "X-API-KEY": process.env.X_API_KEY,
+      };
+      const range = function* (start, end) {
+        while (start < end) {
+          yield start++;
+        }
+      }
+
+      const articles = await axios
+        .get(process.env.API_URL + '/article?limit=0', {
+          headers
+        }).then(res =>
+          [...range(0, Math.ceil(res.data.totalCount / limit))].map(i => ({route: `/articles/p/${i + 1}`}))
+        );
+      return articles
+    }
+  },
 
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
