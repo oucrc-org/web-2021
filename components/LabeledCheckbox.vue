@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     checkQuery(id, kind) {
-      let value = kind === 'category' ? this.$route.query.category : this.$route.query.series
+      let value = kind === 'category' ? this.$route.params.categoryId : this.$route.params.seriesId
       if (value === 'undefined' || value === void (0)) {
         return false
       } else if (typeof (value) === 'string') {
