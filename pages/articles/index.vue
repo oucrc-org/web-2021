@@ -15,7 +15,7 @@
           :id="category.id"
           :label="category.category"
           name="category"
-          @search="updateSearchLink();$router.push(String(searchQueryString))"
+          @search="$router.push({name: 'category', params: {categoryId: category.id}})"
           :value="category.id"/>
       </div>
       <div class="mt-4">
@@ -25,7 +25,7 @@
           :id="series.id"
           :label="series.series"
           name="series"
-          @search="updateSearchLink();$router.push(String(searchQueryString))"
+          @search="$router.push({name: 'series', params: {seriesId: series.id}})"
           :value="series.id"/>
       </div>
     </form>
@@ -62,7 +62,7 @@
           {{ pageNum }}
         </div>
       </NuxtLink>
-      <NuxtLink v-if="currentPageNum <= articles.totalCount / 9" :to="{name: listType, params: {p: currentPageNum + 1}}">
+      <NuxtLink v-if="currentPageNum < Math.ceil(articles.totalCount / 9)" :to="{name: listType, params: {p: currentPageNum + 1}}">
         <div class="text-subtext text-xl">&gt;</div>
       </NuxtLink>
     </div>
@@ -73,7 +73,6 @@
 import axios from "axios";
 
 export default {
-  watchQuery: ['p', 'keyword', 'category', 'series'],
   data() {
     return {
       currentPageNum: {
@@ -84,49 +83,8 @@ export default {
       articles: {contents: []},
       categories: {contents: []},
       serieses: {contents: []},
-      searchQueryString: {
-        type: String,
-        default: ''
-      },
-      listType: this.$route.name === 'articles' ? 'article' : this.$route.name
+      listType: this.$route.name === 'articles' ? 'article' : this.$route.name,
     };
-  },
-  methods: {
-    appendQuery(newQuery) {
-      return {
-        ...this.$route.query,
-        ...newQuery
-      }
-    },
-    updateSearchLink() {
-      const elementsSearchForm = document.forms.search.elements;
-      const searchQuery = {};
-      const categories = [];
-      for (const category of elementsSearchForm.category) {
-        if (category.checked) {
-          categories.push(category.value);
-        }
-      }
-      if (categories.length) {
-        searchQuery.category = categories;
-      }
-      const serieses = [];
-      for (const series of elementsSearchForm.series) {
-        if (series.checked) {
-          serieses.push(series.value);
-        }
-      }
-      if (serieses.length) {
-        searchQuery.series = serieses;
-      }
-      this.searchQueryString = '?' + Object.entries(searchQuery).map(([k, v]) => {
-        if (typeof v === 'object') {
-          return v.map(u => `${k}=${u}`).join('&')
-        } else {
-          return `${k}=${v}`
-        }
-      }).join('&')
-    }
   },
   asyncData({params, $config}) {
     const currentPageNum = +params.p || 1;
@@ -136,11 +94,11 @@ export default {
       "X-API-KEY": $config.X_API_KEY,
     };
     const searchQuery = [];
-    if ('category' in params) {
-      searchQuery.push(`category[equals]${params.category}`);
+    if ('categoryId' in params) {
+      searchQuery.push(`category[equals]${params.categoryId}`);
     }
-    if ('series' in params) {
-      searchQuery.push(`series[equals]${params.series}`);
+    if ('seriesId' in params) {
+      searchQuery.push(`series[equals]${params.seriesId}`);
     }
     const promiseArticles = axios.get(url + '/article', {
       headers,
