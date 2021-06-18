@@ -1,9 +1,30 @@
+import axios from 'axios'
+import {sortRoutes} from '@nuxt/utils'
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
   router: {
-    linkActiveClass: 'active'
+    linkActiveClass: 'active',
+    extendRoutes(routes, resolve) {
+      routes.push({
+        path: '/articles/p/:p',
+        component: resolve(__dirname, 'pages/articles/index.vue'),
+        name: 'article'
+      },
+      {
+        path: '/articles/category/:categoryId/:p?',
+        component: resolve(__dirname, 'pages/articles/index.vue'),
+        name: 'category'
+      },
+      {
+        path: '/articles/series/:seriesId/:p?',
+        component: resolve(__dirname, 'pages/articles/index.vue'),
+        name: 'series'
+      });
+      sortRoutes(routes);
+    }
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -67,7 +88,68 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
-  generate: {},
+  generate: {
+    async routes() {
+      const limit = 9;
+      const headers = {
+        "X-API-KEY": process.env.X_API_KEY,
+      };
+      const range = function* (start, end) {
+        while (start < end) {
+          yield start++;
+        }
+      }
+
+      const articleArray = await axios.get(process.env.API_URL + '/article', {
+        headers,
+        params: {
+          limit: 1000,
+          fields: 'id,category.id,series.id',
+          depth: 0
+        }
+      }).then(({ data }) => data.contents.map(v => {
+        return [v.id, (v.category === null ? null : v.category.id), (v.series === null ? null : v.series.id)]
+      }));
+
+      const categoryArray = await axios.get(process.env.API_URL + '/category', {
+        headers,
+        params: {
+          limit: 100,
+          fields: 'id'
+        }
+      }).then(({ data }) => data.contents.map(content => content.id));
+
+      const seriesArray = await axios.get(process.env.API_URL + '/series', {
+        headers,
+        params: {
+          limit: 100,
+          fields: 'id'
+        }
+      }).then(({ data }) => data.contents.map(content => content.id));
+
+      const countArticlesByCategory = Object.fromEntries(categoryArray.map(id => [id, 0]));
+      const countArticlesBySeries = Object.fromEntries(seriesArray.map(id => [id, 0]));
+
+      articleArray.forEach(([_, category, series]) => {
+        if (category in countArticlesByCategory) {
+          countArticlesByCategory[category]++;
+        }
+        if (series in countArticlesBySeries) {
+          countArticlesBySeries[series]++;
+        }
+      });
+
+      return [
+        ...[...range(0, Math.ceil(articleArray.length / limit))].map(i => ({ route: `/articles/p/${i + 1}` })),
+        ...Object.entries(countArticlesByCategory).map(([k, v]) => {
+          return [...range(0, Math.ceil(v / limit))].map(i => ({ route: `/articles/category/${k}/${i + 1}` }));
+        }).flat(),
+        ...Object.entries(countArticlesBySeries).map(([k, v]) => {
+          return [...range(0, Math.ceil(v / limit))].map(i => ({ route: `/articles/series/${k}/${i + 1}` }));
+        }).flat()
+      ];
+    }
+  },
 
   tailwindcss: {
     cssPath: '~/assets/css/tailwind.css',
