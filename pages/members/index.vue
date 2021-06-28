@@ -22,7 +22,7 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32">
           <div v-bind:key="content.id" v-for="content in members">
             <MemberIndexCard
-              :href="`members/${content.id}`"
+              :href="`/members/${content.id}`"
               :img-path="content.avatar !== void 0 ? content.avatar.url : null"
               :name="content.name"
               :status="content.status"
