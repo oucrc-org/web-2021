@@ -62,14 +62,14 @@
                  alt="電算研の部室">
           </picture>
         </fade-in>
-        <a href="news/l99fk47dvp6">
+        <NuxtLink to="/news/l99fk47dvp6">
           <picture>
             <source type="image/webp" :srcset="require('@/assets/images/landing/oucrc-room-button.webp')">
             <img
               class="oucrc-room-button absolute right-0 shadow-2xl transform hover:scale-105 transition duration-500 ease-in-out"
               v-lazy="require('@/assets/images/landing/oucrc-room-button.png')" alt="部室に何があるの？">
           </picture>
-        </a>
+        </NuxtLink>
       </div>
     </section>
     <!-- ▲ 電算研の部室 -->

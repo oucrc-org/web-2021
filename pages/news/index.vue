@@ -33,13 +33,15 @@ export default {
   },
   asyncData({ $config }) {
     const currentTime = new Date().toISOString()
-    return axios.get(`${$config.API_URL}/news?` + Object.entries({
-      fields: 'id,title',
-      orders: '-important,-date,-createdAt',
-      filters: 'date[less_than]' + currentTime
-    }).map(([key, value]) => key + '=' + value).join('&'), {
+    return axios.get(`${$config.API_URL}/news`, {
       headers: {
         'X-API-KEY': $config.X_API_KEY
+      },
+      params: {
+        limit: 1000,
+        fields: 'id,title',
+        orders: '-important,-date,-createdAt',
+        filters: `date[less_than]${currentTime}`
       }
     }).then(response => {
       return {
