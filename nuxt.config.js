@@ -110,7 +110,7 @@ export default {
           depth: 0
         }
       }).then(({ data }) => data.contents.map(v => {
-        return [v.id, (v.category === null ? null : v.category.id), (v.series === null ? null : v.series.id)]
+        return [v.id, v.category?.id, v.series?.id]
       }));
 
       const categoryArray = await axios.get(process.env.API_URL + '/category', {
@@ -142,6 +142,8 @@ export default {
       });
 
       return [
+        ...categoryArray.map(key => ({route: `/articles/category/${key}`})),
+        ...seriesArray.map(key => ({route: `/articles/series/${key}`})),
         ...[...range(0, Math.ceil(articleArray.length / limit))].map(i => ({ route: `/articles/p/${i + 1}` })),
         ...Object.entries(countArticlesByCategory).map(([k, v]) => {
           return [...range(0, Math.ceil(v / limit))].map(i => ({ route: `/articles/category/${k}/${i + 1}` }));
