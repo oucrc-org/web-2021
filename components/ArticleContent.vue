@@ -5,7 +5,8 @@
     <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
       <picture>
         <source type="image/webp" :srcset="article.image.url+'?fm=webp'">
-        <img v-lazy="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important" alt="トップ画像"/>
+        <img v-lazy="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"
+             alt="トップ画像"/>
       </picture>
     </div>
     <div v-else>
@@ -40,7 +41,8 @@
       <NuxtLink :to="`/articles?category=${category.id}`" v-if="category !== null"
                 class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
-          <img class="pt-2" v-lazy="require('@/assets/images/article/category.svg')" style="margin: 0 !important" alt="カテゴリー">
+          <img class="pt-2" v-lazy="require('@/assets/images/article/category.svg')" style="margin: 0 !important"
+               alt="カテゴリー">
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ category.category }}</span>
       </NuxtLink>
@@ -48,12 +50,32 @@
       <NuxtLink :to="`/articles?series=${series.id}`" v-if="series !== null"
                 class="bg-blockquote inline-block rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
-          <img class="pt-2" v-lazy="require('@/assets/images/article/series.svg')" style="margin: 0 !important" alt="シリーズ">
+          <img class="pt-2" v-lazy="require('@/assets/images/article/series.svg')" style="margin: 0 !important"
+               alt="シリーズ">
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ series.series }}</span>
       </NuxtLink>
     </div>
     <!-- ▲ タグ -->
+
+    <!-- ▼ ランキング -->
+    <div class="mx-8 sm:mx-16 my-8">
+      <div v-for="(value) in ranking" :key="value.id" class="inline-block">
+        <div v-if="value.data.includes(article.id)" :class="value.bg_class"
+             class="sm:inline-block mb-3 sm:mr-4 rounded-lg pb-3 pt-1 px-4 tracking-widest">
+        <span class="inline-block h-6 w-5">
+          <svg xmlns="http://www.w3.org/2000/svg" class="mt-3" :class="value.text_class" fill="currentColor"
+               viewBox="0 0 200 145.218"><path
+            d="M112.159,265.46v.028L62.307,323.72l-39.689-40V378.5H201.724V283.719l-39.689,40-49.852-58.232v-.028l-.012.014ZM16.519,387.2a4.338,4.338,0,0,0-4.348,4.348v14.782a4.338,4.338,0,0,0,4.348,4.348h191.3a4.338,4.338,0,0,0,4.348-4.348V391.547a4.338,4.338,0,0,0-4.348-4.348Z"
+            transform="translate(-12.171 -265.459)"/></svg>
+        </span>
+          <span class="align-top inline-block ml-2 pl-2 pt-2 text-sm"
+                :class="value.text_class">{{ value.title }}<span
+            class="font-bold ml-1">{{ value.data.indexOf(article.id) + 1 }}位</span></span>
+        </div>
+      </div>
+    </div>
+    <!-- ▲ ランキング -->
 
 
     <!-- ▼ 記事本文 -->
@@ -82,6 +104,54 @@ export default {
     timeUpdated: {
       type: String,
       default: ''
+    }
+  },
+  data() {
+    return {
+      ranking: {
+        views: {
+          title: '2021年アクセスランキング:',
+          bg_class: 'bg-yellow-100',
+          text_class: 'text-yellow-500',
+          data: ['zc-pub38s', 'o2ql0oomqfd', 'e6vkrz4uqtt']
+        },
+        technology: {
+          title: '2021年技術記事:',
+          bg_class: 'bg-green-100',
+          text_class: 'text-green-500',
+          data: ['', '', '']
+        },
+        interesting: {
+          title: '2021年おもしろ記事:',
+          bg_class: 'bg-pink-100',
+          text_class: 'text-pink-500',
+          data: ['', '', '']
+        },
+        beginner: {
+          title: '2021年初心者記事:',
+          bg_class: 'bg-blue-100',
+          text_class: 'text-blue-500',
+          data: ['', '', '']
+        },
+        series_technology: {
+          title: '2021年技術シリーズ:',
+          bg_class: 'bg-green-100',
+          text_class: 'text-green-500',
+          data: ['', '', '']
+        },
+        series_interesting: {
+          title: '2021年おもしろシリーズ:',
+          bg_class: 'bg-pink-100',
+          text_class: 'text-pink-500',
+          data: ['', '', '']
+        },
+        series_beginner: {
+          title: '2021年初心者シリーズ:',
+          bg_class: 'bg-blue-100',
+          text_class: 'text-blue-500',
+          data: ['', '', '']
+        }
+      }
     }
   },
   head() {
