@@ -102,6 +102,20 @@
         </div>
         <!-- ▲ この人が書いた記事 -->
 
+        <!-- ▼ 最新のオススメ記事 -->
+        <div v-if="recommendArticles.contents !== void(0) && recommendArticles.contents.length"
+             class="pt-24 mx-8 sm:mx-10 text-center">
+          <Title label="最新のオススメ記事"/>
+          <div v-for="otherArticle in recommendArticles.contents" :key="`otherarticle-${otherArticle.id}`">
+            <ArticleCard :href="`/articles/${otherArticle.id}`"
+                         :category="otherArticle.category !== void(0) ? otherArticle.category.category : null" class="py-8"
+                         :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
+                         :description="otherArticle.title"
+            />
+          </div>
+        </div>
+        <!-- ▲ 最新のオススメ記事 -->
+
       </section>
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
@@ -132,6 +146,7 @@ export default {
     return {
       article: 'There are no data',
       otherArticles: 'No',
+      recommendArticles: 'No',
       timeUpdated: ''
     }
   },
@@ -184,18 +199,39 @@ export default {
           },
           params: {
             filters: `name[equals]${response.data.name.id}[and]id[not_equals]${response.data.id}`,
-            limit: 4
+            limit: 3
           }
 
           /*二回目の処理のコールバック*/
         }).then(res => {
 
-          /*返り値*/
-          return {
-            article: response.data,
-            otherArticles: res.data,
-            timeUpdated: timeUpdated
-          }
+          return axios.get(`${$config.API_URL}/article`, {
+            headers: {
+              'X-API-KEY': $config.X_API_KEY
+            },
+            params: {
+              filters: `id[not_equals]${response.data.id}`,
+              limit: 4
+            }
+
+            /*三回目の処理のコールバック*/
+          }).then(recommends => {
+
+            /*返り値*/
+            return {
+              article: response.data,
+              otherArticles: res.data,
+              recommendArticles: recommends.data,
+              timeUpdated: timeUpdated
+            }
+
+            /*三回目の処理のエラーハンドリング*/
+          }).catch(function (e) {
+            error({
+              statusCode: e.response.status,
+              message: e.message
+            })
+          })
 
           /*二回目の処理のエラーハンドリング*/
         }).catch(function (e) {
