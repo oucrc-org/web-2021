@@ -1,0 +1,10 @@
+code, .MathJax_Display {
+  overflow: scroll;
+  -ms-overflow-style: none;
+  //noinspection CssUnknownProperty
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
