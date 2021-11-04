@@ -4,7 +4,15 @@ code, .MathJax_Display {
   //noinspection CssUnknownProperty
   scrollbar-width: none;
 
+  $scrollbar-broadness: 5px;
+
   &::-webkit-scrollbar {
-    display: none;
+    width: $scrollbar-broadness;
+    height: $scrollbar-broadness;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: $scrollbar-broadness;
+    background-color: #949597;
   }
 }
