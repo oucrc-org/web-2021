@@ -119,37 +119,37 @@ export default {
           title: '2021年技術記事:',
           bg_class: 'bg-green-100',
           text_class: 'text-green-500',
-          data: ['', '', '']
+          data: ['vbp0hni4l', '66dakcrrl', 'wlb6a8w9m']
         },
         interesting: {
           title: '2021年おもしろ記事:',
           bg_class: 'bg-pink-100',
           text_class: 'text-pink-500',
-          data: ['', '', '']
+          data: ['3cv3mk166ude', 'vbp0hni4l', 'uqj8wl-ldpg2']
         },
         beginner: {
           title: '2021年初心者記事:',
           bg_class: 'bg-blue-100',
           text_class: 'text-blue-500',
-          data: ['', '', '']
+          data: ['sov344416', 'zlu04tkzslcw', 'wd1erphyov8']
         },
         series_technology: {
           title: '2021年技術シリーズ:',
           bg_class: 'bg-green-100',
           text_class: 'text-green-500',
-          data: ['', '', '']
+          data: ['h_19frtxx7c', 'cfykct7kadve', '']
         },
         series_interesting: {
           title: '2021年おもしろシリーズ:',
           bg_class: 'bg-pink-100',
           text_class: 'text-pink-500',
-          data: ['', '', '']
+          data: ['qpwi_a2-8o', 'r_vu3w1g5', 'ti_xc21a7']
         },
         series_beginner: {
           title: '2021年初心者シリーズ:',
           bg_class: 'bg-blue-100',
           text_class: 'text-blue-500',
-          data: ['', '', '']
+          data: ['wnkvw5pd8b1', 'cfykct7kadve', 'h_19frtxx7c']
         }
       }
     }
