@@ -1,0 +1,18 @@
+code, .MathJax_Display {
+  overflow: scroll;
+  -ms-overflow-style: none;
+  //noinspection CssUnknownProperty
+  scrollbar-width: none;
+
+  $scrollbar-broadness: 5px;
+
+  &::-webkit-scrollbar {
+    width: $scrollbar-broadness;
+    height: $scrollbar-broadness;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: $scrollbar-broadness;
+    background-color: #949597;
+  }
+}
