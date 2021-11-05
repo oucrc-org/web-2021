@@ -38,7 +38,7 @@
 
     <!-- ▼ タグ -->
     <div class="mx-8 sm:mx-16 my-8">
-      <NuxtLink :to="`/articles?category=${category.id}`" v-if="category !== null"
+      <NuxtLink :to="`/articles/category/${category.id}`" v-if="category !== null"
                 class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
           <img class="pt-2" v-lazy="require('@/assets/images/article/category.svg')" style="margin: 0 !important"
@@ -47,7 +47,7 @@
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{ category.category }}</span>
       </NuxtLink>
 
-      <NuxtLink :to="`/articles?series=${series.id}`" v-if="series !== null"
+      <NuxtLink :to="`/articles/series/${series.id}`" v-if="series !== null"
                 class="bg-blockquote inline-block rounded-lg pb-2 px-4">
         <span class="inline-block h-6 w-6">
           <img class="pt-2" v-lazy="require('@/assets/images/article/series.svg')" style="margin: 0 !important"

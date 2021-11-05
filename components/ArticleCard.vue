@@ -34,7 +34,7 @@
         </span>
       </h3>
       <div class="mt-3 text-left">
-        <NuxtLink :to="`/articles?series=${series.id}`" v-if="typeof series.series !== 'undefined'"
+        <NuxtLink :to="`/articles/series/${series.id}`" v-if="typeof series.series !== 'undefined'"
                   class="bg-blockquote inline-block mb-3 mr-4 rounded-lg pb-2 px-4 transform hover:scale-105 transition duration-500 ease-in-out">
           <span class="inline-block h-6 w-6">
             <img class="pt-2" v-lazy="require('@/assets/images/article/series.svg')" style="margin: 0 !important"
