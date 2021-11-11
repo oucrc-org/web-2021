@@ -102,7 +102,7 @@
               class="py-6"
               :href="`/articles/${article.id}`"
               :series="article.series != null ? article.series : {}"
-              :category="article.category !== void 0 ? article.category.category : null"
+              :category="article.category !== null ? article.category.category : null"
               :img-path="article.image !== void 0 ? article.image.url : null"
               :title="article.title !== void 0 ? article.title : null"
               :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
