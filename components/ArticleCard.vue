@@ -5,8 +5,8 @@
       <div class="relative">
         <picture v-if="imgPath !== null">
           <source v-if="webpPath" type="image/webp" :srcset="webpPath">
-          <source v-else type="image/webp" :srcset="imgPath+'?fm=webp'">
-          <img class="object-cover shadow-lg h-56 w-full" v-lazy="imgPath" v-bind:alt="category">
+          <source v-else type="image/webp" :srcset="`${imgPath}?fm=webp${imgMaxWidth > 0 ? '&w=' + imgMaxWidth : ''}`">
+          <img class="object-cover shadow-lg h-56 w-full" v-lazy="`${imgPath}${imgMaxWidth > 0 ? '?w=' + imgMaxWidth : ''}`" v-bind:alt="category">
         </picture>
         <picture v-else>
           <source type="image/webp" :srcset="require('@/assets/images/article/cover.webp')">
@@ -77,6 +77,10 @@ export default {
     webpPath: {
       type: String,
       default: null
+    },
+    imgMaxWidth: {
+      type: Number,
+      default: 0
     },
     description: {
       type: String,
