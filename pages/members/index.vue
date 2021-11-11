@@ -23,7 +23,7 @@
           <div v-bind:key="content.id" v-for="content in members">
             <MemberIndexCard
               :href="`/members/${content.id}`"
-              :img-path="content.avatar !== void 0 ? content.avatar.url : null"
+              :img-path="typeof content.avatar !== 'undefined' ? content.avatar.url : null"
               :name="content.name"
               :status="content.status"
             />
