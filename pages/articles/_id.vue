@@ -30,8 +30,8 @@
             <div v-if="article.name.avatar !== void(0)"
                  class="inline-block pl-8 row-end-2">
               <picture>
-                <source type="image/webp" :srcset="article.name.avatar.url+'?fm=webp'">
-                <img :src="article.name.avatar.url"
+                <source type="image/webp" :srcset="`${article.name.avatar.url}?fm=webp&w=128`">
+                <img :src="`${article.name.avatar.url}?w=128`"
                   class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32" alt="取得に失敗しました">
               </picture>
             </div>
@@ -97,6 +97,7 @@
                          :category="otherArticle.category !== null ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
+                         :img-max-width="575"
             />
           </div>
         </div>
@@ -111,6 +112,7 @@
                          :category="otherArticle.category !== null ? otherArticle.category.category : null" class="py-8"
                          :img-path="otherArticle.image !== void(0) ? otherArticle.image.url : null"
                          :description="otherArticle.title"
+                         :img-max-width="575"
             />
           </div>
         </div>
