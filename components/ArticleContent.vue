@@ -2,10 +2,10 @@
   <section class="bg-white lg:col-span-2 row-span-2 mb-2 md:mb-32 pb-20 lg:shadow-xl" :class="$style.article">
 
     <!-- ▼ トップ画像 -->
-    <div v-if="typeof article.image !== 'undefined' && article.image !== 'null'">
+    <div v-if="typeof article.image !== 'undefined' && article.image !== null">
       <picture>
-        <source type="image/webp" :srcset="article.image.url+'?fm=webp'">
-        <img v-lazy="article.image.url" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"
+        <source type="image/webp" :srcset="`${article.image.url}?fm=webp${article.image.width > 1008 ? '&w=1008' : ''}`">
+        <img v-lazy="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`" class="h-64 sm:h-96 md:h-120 object-cover" style="margin: 0!important"
              alt="トップ画像"/>
       </picture>
     </div>
