@@ -73,16 +73,10 @@ export default {
   methods: {
     check() {
       this.invalid = Object.values(this.valid).some(x => !x)
-      console.debug(Object.values(this.valid))
-    },
-    confirm() {
-      if (!window.confirm('送信してもよろしいですか？')) {
-        return false
-      }
     },
     submitForm() {
-      if(!this.confirm()) {
-        return
+      if (!window.confirm('送信してもよろしいですか？')) {
+        return false
       }
       const url = 'https://docs.google.com/forms/u/0/d/e/' + this.formId + '/formResponse'
 
@@ -111,17 +105,21 @@ export default {
   mounted(){
     this.resizeTextarea();
   },
+  // それぞれチェックしないとボタンのinvalidを更新できない
   watch: {
     'form.name': function(value) {
-      this.valid.name = value.length > 0
+      this.valid.name = new RegExp(/^.{1,20}$/).test(value)
+      this.check()
     },
     'form.email': function(value) {
       // HTML5と同レベルのValidation（RFC非準拠）
       this.valid.email = value.length > 0 && new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(value)
+      this.check()
     },
     'form.body': function(value) {
       this.valid.body = new RegExp(/^.{20,500}$/).test(value)
       this.resizeTextarea()
+      this.check()
     }
   }
 }
