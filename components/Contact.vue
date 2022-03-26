@@ -29,15 +29,8 @@
 
         <div class="text-left mb-8 mt-6 px-3 sm:px-8">
           <img class="inline h-6" v-lazy="require('@/assets/images/landing/contact-google-form.svg')" alt="GoogleForm">
-          <NuxtLink to="join" class="font-semibold ml-4 text-secondary tracking-widest">
-            入部申し込み
-          </NuxtLink>
-        </div>
-
-        <div class="text-left mb-8 mt-6 px-3 sm:px-8">
-          <img class="inline h-6" v-lazy="require('@/assets/images/landing/contact-google-form.svg')" alt="GoogleForm">
           <NuxtLink to="contact" class="font-semibold ml-4 text-secondary tracking-widest">
-            その他お問い合わせ
+            お問い合わせフォーム
           </NuxtLink>
         </div>
 
