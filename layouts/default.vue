@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="min-h-screen flex flex-col">
     <Header />
-    <Nuxt class="pt-16" />
+    <Nuxt class="flex-grow pt-16" />
     <Footer />
   </div>
 </template>
@@ -27,18 +27,6 @@ html {
   box-sizing: border-box;
   min-height: 100vh;
   position: relative;
-}
-
-@media (min-width: 768px) {
-  html{
-    padding-bottom: 400px;
-  }
-}
-
-@media (max-width: 768px) {
-  html{
-    padding-bottom: 200px;
-  }
 }
 
 *,

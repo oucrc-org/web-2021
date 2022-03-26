@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute bottom-0 bg-footer h-48 sm:h-64 w-full z-30">
+  <div class="bg-footer h-48 sm:h-64 w-full z-30 flex-grow-0">
     <NuxtLink to="/">
       <picture>
         <source type="image/webp" :srcset="require('~/assets/images/common/oucrc-label-reverse.webp')">
