@@ -1,5 +1,5 @@
 <template>
-  <div class="container mb-32 mx-auto px-10">
+  <div class="container mx-auto px-10">
 
     <OGPSetter
       title="お問い合わせ"
@@ -21,15 +21,18 @@
             <label for="email" class="text-left block">返信用メールアドレス *</label>
             <input id="email" v-model="form.email" type="email" :name="formName.email" required
                    placeholder="example@okayama-u.ac.jp" class="inputbox" :class="{'invalid': !valid.email}">
-            <div class="py-1 text-sm" v-if="form.email.length > 0 && !valid.email">有効なメールアドレスを入力して下さい。</div>
           </div>
           <div class="my-4">
             <label for="body" class="text-left block">お問い合わせ内容 *</label>
             <textarea id="body" v-model="form.body" type="text" :name="formName.body" placeholder="お問い合わせ内容をご記入下さい。"
-                  required class="inputbox" />
+                  required class="inputbox" ref="bodyTextarea" :style="{height: textareaHeight}" />
+          </div>
+          <div class="flex flex-col gap-3 mt-4 text-left">
+            <ValidationIndicator :condition="valid.name" label="お名前(1~20文字)" />
+            <ValidationIndicator :condition="valid.email" label="返信用メールアドレス" />
+            <ValidationIndicator :condition="valid.body" label="本文(20~500文字)" />
           </div>
         </div>
-
         <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" :disabled="invalid" />
 
         <p class="mt-16 leading-7 text-sm">フォームから送信できない場合は、<a
@@ -63,7 +66,8 @@ export default {
         email: false,
         body: false,
       },
-      invalid: true
+      invalid: true,
+      textareaHeight: '80px'
     }
   },
   methods: {
@@ -96,21 +100,28 @@ export default {
         this.$router.push('/')
         return true
       })
+    },
+    resizeTextarea(){
+      this.textareaHeight = "auto";
+      this.$nextTick(()=>{
+        this.textareaHeight = this.$refs.bodyTextarea.scrollHeight + 'px';
+      })
     }
+  },
+  mounted(){
+    this.resizeTextarea();
   },
   watch: {
     'form.name': function(value) {
       this.valid.name = value.length > 0
-      this.check()
     },
     'form.email': function(value) {
       // HTML5と同レベルのValidation（RFC非準拠）
-      this.valid.email = new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(value)
-      this.check()
+      this.valid.email = value.length > 0 && new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(value)
     },
     'form.body': function(value) {
-      this.valid.body = new RegExp(/^.{1,500}$/).test(value)
-      this.check()
+      this.valid.body = new RegExp(/^.{20,500}$/).test(value)
+      this.resizeTextarea()
     }
   }
 }
@@ -118,7 +129,7 @@ export default {
 
 <style scoped>
 .inputbox {
-  @apply border-b border-black border-solid leading-10 text-center w-full tracking-widest placeholder-divider
+  @apply border-b border-black border-solid leading-10 w-full tracking-widest placeholder-divider
 }
 
 input.inputbox:placeholder-shown {
