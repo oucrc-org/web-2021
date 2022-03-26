@@ -1,8 +1,8 @@
 <template>
-	<p class="double-line-button transform hover:scale-105 transition duration-500 ease-in-out">
+	<button class="double-line-button transform hover:scale-105 transition duration-500 ease-in-out">
 		<img v-if="hasRightArrow" class="pt-1" v-lazy="require('@/assets/images/common/article-link.svg')" alt=">">
 		<span class="mr-1 tracking-widest">{{ label }}</span>
-	</p>
+	</button>
 </template>
 
 <script>
@@ -28,5 +28,10 @@ export default {
 
 .double-line-button > img {
 	@apply absolute bottom-0 h-4 mr-2 my-auto right-0 top-0
+}
+
+.double-line-button:disabled {
+	cursor: not-allowed;
+	opacity: 0.5;
 }
 </style>

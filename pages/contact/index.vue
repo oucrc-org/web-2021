@@ -14,23 +14,23 @@
         <div class="max-w-xs mx-auto flex-col">
           <div class="my-4">
             <label for="name" class="text-left block">お名前 *</label>
-            <input id="name" v-model="form.realName" type="text" :name="this.formName.name" required
-                   placeholder="電算 太郎" class="inputbox">
+            <input id="name" v-model="form.name" type="text" :name="formName.name" required
+                   placeholder="電算 太郎" class="inputbox" />
           </div>
           <div class="my-4">
             <label for="email" class="text-left block">返信用メールアドレス *</label>
-            <input id="email" v-model="form.email" type="email" :name="this.formName.email" required
-                   placeholder="example@okayama-u.ac.jp" class="inputbox" :class="{'invalid': !valid.email}"
-                   @change="valid.email = true">
+            <input id="email" v-model="form.email" type="email" :name="formName.email" required
+                   placeholder="example@okayama-u.ac.jp" class="inputbox" :class="{'invalid': !valid.email}">
+            <div class="py-1 text-sm" v-if="form.email.length > 0 && !valid.email">有効なメールアドレスを入力して下さい。</div>
           </div>
           <div class="my-4">
-            <label for="comment" class="text-left block">お問い合わせ内容 *</label>
-            <textarea id="comment" v-model="form.comment" type="text" :name="this.formName.body" placeholder="お問い合わせ内容をご記入下さい。"
+            <label for="body" class="text-left block">お問い合わせ内容 *</label>
+            <textarea id="body" v-model="form.body" type="text" :name="formName.body" placeholder="お問い合わせ内容をご記入下さい。"
                   required class="inputbox" />
           </div>
         </div>
 
-        <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" />
+        <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" :disabled="invalid" />
 
         <p class="mt-16 leading-7 text-sm">フォームから送信できない場合は、<a
           :href="'https://docs.google.com/forms/d/e/' + formId + '/viewform'"
@@ -59,28 +59,25 @@ export default {
         body: ''
       },
       valid: {
-        email: false
-      }
+        name: false,
+        email: false,
+        body: false,
+      },
+      invalid: true
     }
   },
   methods: {
-    validate() {
-      const valid = this.valid
-      // HTML5と同レベルのValidation（RFC非準拠）
-      if (!this.form.email.match(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)) {
-        valid.email = false
-        alert('メールアドレスを正しく入力して下さい。')
-      }
-      if (Object.values(valid).some(x => !x)) {
-        return false
-      }
+    check() {
+      this.invalid = Object.values(this.valid).some(x => !x)
+      console.debug(Object.values(this.valid))
+    },
+    confirm() {
       if (!window.confirm('送信してもよろしいですか？')) {
         return false
       }
     },
     submitForm() {
-      const validate = this.validate()
-      if(!validate) {
+      if(!this.confirm()) {
         return
       }
       const url = 'https://docs.google.com/forms/u/0/d/e/' + this.formId + '/formResponse'
@@ -99,6 +96,21 @@ export default {
         this.$router.push('/')
         return true
       })
+    }
+  },
+  watch: {
+    'form.name': function(value) {
+      this.valid.name = value.length > 0
+      this.check()
+    },
+    'form.email': function(value) {
+      // HTML5と同レベルのValidation（RFC非準拠）
+      this.valid.email = new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(value)
+      this.check()
+    },
+    'form.body': function(value) {
+      this.valid.body = new RegExp(/^.{1,500}$/).test(value)
+      this.check()
     }
   }
 }
