@@ -12,14 +12,14 @@
 
         <hr class="line">
 
-        <div class="text-left mb-6 mt-8 px-3 sm:px-8">
+        <div class="text-left mb-6 mt-8">
           <img class="inline h-6" v-lazy="require('@/assets/images/landing/contact-mail.svg')" alt="Mail">
           <a href="mailto:oucrc.master@gmail.com" class="font-semibold ml-4 text-secondary tracking-widest">
             oucrc.master@gmail.com
           </a>
         </div>
 
-        <div class="text-left my-6 px-3 sm:px-8">
+        <div class="text-left my-6">
           <img class="inline h-6" v-lazy="require('@/assets/images/landing/contact-twitter.svg')" alt="Twitter">
           <a href="https://twitter.com/oucrc?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" class="font-semibold ml-4 text-secondary tracking-widest"
              target="_blank" rel="noopener noreferrer">
@@ -27,23 +27,23 @@
           </a>
         </div>
 
-        <div class="text-left mb-8 mt-6 px-3 sm:px-8">
+        <div class="text-left mb-8 mt-6">
           <img class="inline h-6" v-lazy="require('@/assets/images/landing/contact-google-form.svg')" alt="GoogleForm">
-          <NuxtLink to="join" class="font-semibold ml-4 text-secondary tracking-widest">
-            Google Form
+          <NuxtLink to="contact" class="font-semibold ml-4 text-secondary tracking-widest">
+            お問い合わせはこちら
           </NuxtLink>
         </div>
 
         <hr class="line">
 
-        <div class="text-left mt-8 px-3 sm:px-8">
+        <div class="text-left mt-8">
           <p class="font-bold text-secondary tracking-widest">岡山大学 サークル BOX棟（2F 209)</p>
           <p class="mt-2 text-xs text-secondary tracking-widest">2階へ上がって右の奥にあります</p>
         </div>
 
         <a
           href="https://www.google.com/maps/place/%E3%80%92700-0082+%E5%B2%A1%E5%B1%B1%E7%9C%8C%E5%B2%A1%E5%B1%B1%E5%B8%82%E5%8C%97%E5%8C%BA%E6%B4%A5%E5%B3%B6%E4%B8%AD%EF%BC%92%E4%B8%81%E7%9B%AE%EF%BC%91+%E6%A0%A1%E5%8F%8B%E4%BC%9A%E6%96%87%E5%8C%96%E7%B3%BB%E3%82%AF%E3%83%A9%E3%83%96%E6%A3%9F/@34.6853962,133.9248862,17.5z/data=!4m5!3m4!1s0x3554066d34a8412f:0x59f13aab8699ff49!8m2!3d34.6854759!4d133.9246382"
-          class="inline-block" target="_blank" rel="noopener noreferrer">
+          class="inline-block text-center" target="_blank" rel="noopener noreferrer">
           <DoubleLineButton label="Google Mapでみる" class="mb-8 mt-12 text-sm"/>
         </a>
       </div>
@@ -58,11 +58,11 @@
 }
 
 .form {
-  @apply md:absolute bg-white md:mt-40 px-6 sm:px-10 md:shadow-2xl text-center z-10
+  @apply md:absolute left-0 h-full bg-white pt-8 px-6 sm:px-10 md:shadow-2xl z-10
 }
 
 .form-title {
-  @apply font-bold text-3xl text-center mb-10 mt-12 text-secondary tracking-wider
+  @apply font-bold text-3xl mb-10 mt-12 text-secondary tracking-wider
 }
 
 .line {
