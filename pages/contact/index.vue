@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-10">
-    <Title label="お問い合わせフォーム" class="mt-16" />
+    <Heading label="お問い合わせフォーム" class="mt-16" />
 
     <section class="text-center tracking-widest mt-8">
       <form @submit.prevent="submitForm" action="">
@@ -11,7 +11,7 @@
               id="name"
               v-model="form.name"
               type="text"
-              :name="formName.name"
+              name="name"
               required
               placeholder="電算 太郎"
               class="inputbox"
@@ -23,7 +23,7 @@
               id="email"
               v-model="form.email"
               type="email"
-              :name="formName.email"
+              name="email"
               required
               placeholder="example@okayama-u.ac.jp"
               class="inputbox"
@@ -36,7 +36,7 @@
               id="body"
               v-model="form.body"
               type="text"
-              :name="formName.body"
+              name="body"
               placeholder="お問い合わせ内容をご記入下さい。"
               required
               class="inputbox"
@@ -59,7 +59,7 @@
 
         <p class="mt-16 leading-7 text-sm">
           フォームから送信できない場合は、<a
-            :href="'https://docs.google.com/forms/d/e/' + formId + '/viewform'"
+            :href="'https://docs.google.com/forms/d/e/1FAIpQLSfnY2gyQ5P2lVdMZri-vudGDYwUHHtZ0yo7_2Cg4aeqs7VjJw/viewform'"
             class="font-bold text-blue-500"
             target="_blank"
             rel="noopener noreferrer"
@@ -72,13 +72,11 @@
 </template>
 
 <script setup lang="ts">
+useSeoMeta({
+  title: 'お問い合わせ',
+  description: 'OUCRC（岡山大学電子計算機研究会）のお問い合わせフォームです！',
+})
 const router = useRouter()
-const formId = '1FAIpQLSfnY2gyQ5P2lVdMZri-vudGDYwUHHtZ0yo7_2Cg4aeqs7VjJw'
-const formName = {
-  name: 'entry.514745000',
-  email: 'entry.821989733',
-  body: 'entry.1197263570',
-}
 const form = ref({
   name: '',
   email: '',
@@ -90,32 +88,35 @@ const valid = ref({
   body: false,
 })
 const bodyTextAreaRef = ref<HTMLTextAreaElement>()
-let invalid = Object.values(valid.value).some((x) => !x)
+let invalid = ref(true)
 const textareaHeight = ref('80px')
 const check = () => {
-  invalid = Object.values(valid.value).some((x) => !x)
+  invalid.value = Object.values(valid.value).some((x) => !x)
 }
 const submitForm = async () => {
   if (!window.confirm('送信してもよろしいですか？')) {
     return false
   }
-  const url = 'https://docs.google.com/forms/u/0/d/e/' + formId + '/formResponse'
-
   // 変数をkeyにするためappend
   const params = new URLSearchParams()
-  params.append(formName.name, form.value.name)
-  params.append(formName.email, form.value.email)
-  params.append(formName.body, form.value.body)
-  return await fetch(`${url}?${params.toString()}`, {
+  params.append('name', form.value.name)
+  params.append('email', form.value.email)
+  params.append('body', form.value.body)
+  return await fetch(`/api/contact?${params.toString()}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-  }).finally(() => {
-    window.alert('お問い合わせが完了しました。')
-    router.push('/')
-    return true
   })
+    .then(() => {
+      window.alert('お問い合わせが完了しました。')
+      router.push('/')
+      return true
+    })
+    .catch((e) => {
+      window.alert('申し訳ありません。失敗しました')
+      console.error(e)
+    })
 }
 const resizeTextarea = () => {
   textareaHeight.value = 'auto'
@@ -128,8 +129,7 @@ onMounted(() => {
   resizeTextarea()
 })
 
-// それぞれチェックしないとボタンのinvalidを更新できない
-watch(form, (newValue) => {
+watch(form.value, (newValue) => {
   valid.value.name = new RegExp(/^.{1,20}$/).test(newValue.name)
 
   valid.value.email =
@@ -141,11 +141,6 @@ watch(form, (newValue) => {
   valid.value.body = new RegExp(/^.{20,500}$/).test(newValue.body)
   resizeTextarea()
   check()
-})
-
-useSeoMeta({
-  title: 'お問い合わせ',
-  description: 'OUCRC（岡山大学電子計算機研究会）のお問い合わせフォームです！',
 })
 </script>
 

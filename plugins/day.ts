@@ -1,4 +1,3 @@
-import { defineNuxtPlugin } from '#imports'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ja'
 import utc from 'dayjs/plugin/utc'

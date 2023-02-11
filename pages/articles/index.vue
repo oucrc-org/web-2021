@@ -1,7 +1,10 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
     <!-- 絞り込みツール -->
-    <Title label="絞り込み" class="mt-16" />
+    <Heading label="絞り込み" class="mt-16" />
+    <NuxtLink v-if="$route.params.categoryId || $route.params.seriesId" to="/articles">
+      <a class="bg-gray-200 p-4 rounded-md font-bold">一覧に戻る</a>
+    </NuxtLink>
     <form @submit.prevent name="search" class="md:mx-32 my-8">
       <div v-if="categories" class="mt-10">
         <LabeledCheckbox
@@ -33,19 +36,14 @@
       class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
     >
       <div class="container mx-auto">
-        <Title label="最新の投稿" class="mb-4" />
+        <Heading label="最新の投稿" class="mb-4" />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
             v-for="article in articles.contents"
             :key="article.id"
             class="py-6"
+            :article="article"
             :href="`/articles/${article.id}`"
-            :series="article.series != null ? article.series : {}"
-            :category="article.category !== null ? article.category.category : null"
-            :img-path="article.image !== void 0 ? article.image.url : null"
-            :img-max-width="559"
-            :title="article.title !== void 0 ? article.title : null"
-            :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
           />
         </div>
       </div>
@@ -107,7 +105,7 @@ const currentTime = new Date().toISOString()
 const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article', {
   params: {
     limit: 9,
-    offset: (currentPageNum - 1) * 9,
+    offset: currentPageNum - 1 > 0 ? (currentPageNum - 1) * 9 : 0,
     fields: 'id,title,category,image,body',
     orders: '-date,-createdAt',
     filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),

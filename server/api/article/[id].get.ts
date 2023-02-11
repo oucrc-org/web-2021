@@ -1,12 +1,21 @@
 import client from '~/server/micro-cms'
+import { Article } from '~/types/micro-cms'
+import { addHljsClassToHtml } from '~/composables/highlight'
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id
+  console.log(typeof id)
   if (typeof id === 'string') {
-    return await client.get({
+    const data = await client.get<Article>({
       endpoint: 'article',
       contentId: id,
     })
+    const body = await addHljsClassToHtml(data.body)
+    return {
+      ...data,
+      // HTMLのコードにhljsクラスを追加する
+      body,
+    }
   } else {
     return null
   }

@@ -20,13 +20,10 @@
               </div>
               <div v-else class="lg:pl-8">
                 <picture>
-                  <source
-                    type="image/webp"
-                    :srcset="require('@/assets/images/member/member.webp')"
-                  />
+                  <source type="image/webp" srcset="/images/member/member.webp" />
                   <img
                     class="shadow-xl rounded-full object-cover h-24 xl:h-32 w-24 xl:w-32"
-                    v-lazy="require('@/assets/images/member/member.jpg')"
+                    src="/images/member/member.jpg"
                     alt="メンバーアイコン"
                   />
                 </picture>
@@ -50,7 +47,7 @@
                   :href="`https://twitter.com/${member.twitter.replace(/@/g, '')}`"
                 >
                   <img
-                    v-lazy="require('@/assets/images/member/sns-twitter.png')"
+                    src="/images/member/sns-twitter.png"
                     alt="Twitter"
                     class="inline mr-1 mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out"
                   />
@@ -62,7 +59,7 @@
                   :href="`https://github.com/${member.github.replace(/@/g, '')}`"
                 >
                   <img
-                    v-lazy="require('@/assets/images/member/sns-github.png')"
+                    src="/images/member/sns-github.png"
                     alt="GitHub"
                     class="inline mt-4 w-8 xl:w-10 transform hover:scale-110 transition duration-200 ease-in-out"
                   />
@@ -74,7 +71,7 @@
                   :href="`https://www.youtube.com/channel/${member.youtube}`"
                 >
                   <img
-                    v-lazy="require('@/assets/images/member/sns-youtube.png')"
+                    src="/images/member/sns-youtube.png"
                     alt="YouTube"
                     class="inline ml-2 mt-4 w-6 xl:w-8 transform hover:scale-110 transition duration-200 ease-in-out"
                   />
@@ -115,10 +112,10 @@
 
       <!-- ▼ 自己紹介画像 -->
       <div v-if="member && member.introImage" class="my-32">
-        <Title label="自己紹介画像" class="mb-10" />
+        <Heading label="自己紹介画像" class="mb-10" />
         <picture>
           <source type="image/webp" :srcset="member.introImage.url + '?fm=webp'" />
-          <img class="w-full" v-lazy="member.introImage.url" alt="取得に失敗しました" />
+          <img class="w-full" :src="member.introImage.url" alt="取得に失敗しました" />
         </picture>
       </div>
       <!-- ▲ 自己紹介画像 -->
@@ -129,18 +126,13 @@
         class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
       >
         <div class="container mx-auto">
-          <Title label="この人が書いた記事" class="mb-4" />
+          <Heading label="この人が書いた記事" class="mb-4" />
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <ArticleCard
               v-for="article in articles.contents"
               :key="`articlecard-${article.id}`"
+              :article="article"
               class="py-6"
-              :href="`/articles/${article.id}`"
-              :series="article.series != null ? article.series : {}"
-              :category="article.category !== null ? article.category.category : null"
-              :img-path="article.image !== void 0 ? article.image.url : null"
-              :title="article.title !== void 0 ? article.title : null"
-              :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
             />
           </div>
         </div>

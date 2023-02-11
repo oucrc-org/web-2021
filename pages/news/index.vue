@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { News } from '~~/types/micro-cms'
+import { News } from '~/types/micro-cms'
 const currentTime = new Date().toISOString()
 const { data: news } = useFetch<MicroCMSListResponse<News>>('/api/news', {
   params: {

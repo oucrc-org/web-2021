@@ -1,6 +1,6 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
-    <Title label="入部フォーム" class="mt-16" />
+    <Heading label="入部フォーム" class="mt-16" />
 
     <section class="text-center tracking-widest mt-8">
       <form @submit.prevent="submitForm" action="">
@@ -101,7 +101,12 @@
           </div>
         </div>
 
-        <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" />
+        <DoubleLineButton
+          label="送信"
+          @click.native="submitForm"
+          class="mt-16 cursor-pointer"
+          :disabled="invalid"
+        />
 
         <p class="mt-16 leading-7 text-sm">
           フォームから送信できない場合は、<a
@@ -122,7 +127,7 @@ useSeoMeta({
   title: '入部申込み',
   description: 'OUCRC（岡山大学電子計算機研究会）への入部申込みフォームです！',
 })
-
+let invalid = ref(true)
 const form = ref({
   studentNumber: '',
   realName: '',
@@ -138,8 +143,11 @@ const valid = ref({
   phone: false,
   nickname: false,
 })
+const check = () => {
+  invalid.value = Object.values(valid.value).some((x) => !x)
+}
 const router = useRouter()
-const submitForm = async () => {
+watch(form.value, () => {
   if (!form.value.studentNumber.match(/^[a-zA-Z0-9]{8}$/)) {
     valid.value.studentNumber = false
   }
@@ -155,6 +163,9 @@ const submitForm = async () => {
   if (form.value.nickname === '') {
     valid.value.nickname = false
   }
+  check()
+})
+const submitForm = async () => {
   if (Object.values(valid.value).some((x) => !x)) {
     return false
   }
@@ -162,27 +173,30 @@ const submitForm = async () => {
     return false
   }
 
-  const url =
-    'https://docs.google.com/forms/u/0/d/e/1FAIpQLSds9xqdBsruaabapqvRkaW1gV10pv9lOJNasLCv5CHDZokdwQ/formResponse'
   const params = new URLSearchParams({
-    'entry.1552183669': form.value.studentNumber,
-    'entry.514745000': form.value.realName,
-    'entry.821989733': form.value.email,
-    'entry.793184820': form.value.phone,
-    'entry.1050056731': form.value.nickname,
-    'entry.528663940': form.value.hobby,
-    'entry.1197263570': form.value.comment,
+    studentNumber: form.value.studentNumber,
+    realName: form.value.realName,
+    email: form.value.email,
+    phone: form.value.phone,
+    nickname: form.value.nickname,
+    hobby: form.value.hobby,
+    comment: form.value.comment,
   })
-  return await fetch(`${url}?${params.toString()}`, {
+  return await fetch(`/api/join?${params.toString()}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-  }).finally(() => {
-    window.alert('申込みが完了しました。')
-    router.push('/')
-    return true
   })
+    .then(() => {
+      window.alert('申込みが完了しました。')
+      router.push('/')
+      return true
+    })
+    .catch((e) => {
+      window.alert('申し訳ありません。失敗しました')
+      console.error(e)
+    })
 }
 </script>
 

@@ -6,12 +6,8 @@
     <!-- ▼ トップ画像 -->
     <div>
       <picture>
-        <source type="image/webp" :srcset="require('@/assets/images/news/cover.webp')" />
-        <img
-          v-lazy="require('@/assets/images/news/cover.jpg')"
-          class="block m-auto w-full"
-          alt="トップ画像"
-        />
+        <source type="image/webp" srcset="/images/news/cover.webp" />
+        <img src="/images/news/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
       </picture>
     </div>
     <!-- ▲ トップ画像 -->
@@ -45,7 +41,7 @@ interface Props {
 }
 const props = defineProps<Props>()
 </script>
-<script>
+<script lang="ts">
 export default {
   name: 'NewsContent',
 }

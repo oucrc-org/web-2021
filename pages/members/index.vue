@@ -1,6 +1,6 @@
 <template>
   <div class="container mx-auto px-10">
-    <Title label="部員一覧" class="mt-16" />
+    <Heading label="部員一覧" class="mt-16" />
     <section class="mb-8">
       <!-- membersByYearはcomputed内で生成しています。keyが年度です -->
       <!-- forと同時にifを使うと構文上まずいです -->
@@ -19,7 +19,11 @@
           <div v-bind:key="content.id" v-for="content in members">
             <MemberIndexCard
               :href="`/members/${content.id}`"
-              :img-path="typeof content.avatar !== 'undefined' ? content.avatar.url : null"
+              :img-path="
+                typeof content.avatar !== 'undefined'
+                  ? content.avatar.url
+                  : '/images/common/oucrc-logo.webp'
+              "
               :name="content.name"
               :status="content.status"
             />
@@ -60,7 +64,7 @@ Object.keys(allMembers)
   })
   .forEach((a) => {
     // ソート防止のため空白を付ける
-    membersByYear[a.toString()] = allMembers[Number(a)]
+    membersByYear[a.toString() + ' '] = allMembers[Number(a)]
   })
 
 useSeoMeta({
