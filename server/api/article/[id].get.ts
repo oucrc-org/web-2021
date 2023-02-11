@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       endpoint: 'article',
       contentId: id,
     })
-    const body = await addHljsClassToHtml(data.body)
+    const body = addHljsClassToHtml(data.body)
     return {
       ...data,
       // HTMLのコードにhljsクラスを追加する

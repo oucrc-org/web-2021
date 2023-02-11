@@ -156,9 +156,10 @@ const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article
     filters: `name[equals]${member.value?.id}`,
   },
 })
-useSeoMeta({
-  title: member.value?.name,
+useOG({
+  title: member.value?.name ?? '',
   description: member.value?.status,
+  ogImage: member.value?.avatar?.url,
 })
 </script>
 

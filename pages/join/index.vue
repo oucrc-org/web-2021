@@ -123,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-useSeoMeta({
+useOG({
   title: '入部申込み',
   description: 'OUCRC（岡山大学電子計算機研究会）への入部申込みフォームです！',
 })

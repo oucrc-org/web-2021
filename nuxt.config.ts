@@ -55,6 +55,11 @@ export default defineNuxtConfig({
           name: 'google-site-verification',
           content: 'gUJca8xJ_QAdQ02BNBQRL7jCS53EgM8BWQZqA7zbSQU',
         },
+        {
+          property: 'og:image',
+          content:
+            "'https://images.microcms-assets.io/assets/9db8326938b34b1381d6805cc5e10b04/e4434ebf7e8a426aaaa71f16dea02a74/cover.jpg'",
+        },
       ],
       link: [
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
