@@ -163,7 +163,7 @@ useOG({
   description: () =>
     data?.value?.article?.body
       .slice(0, 200)
-      .replace(/<br>/g, '\n')
+      .replace(/<br>/g, '')
       .replace(/<[^<>]+>/g, '')
       .replace(/\n/g, ''),
   ogImage: () => data?.value?.article?.image?.url,
