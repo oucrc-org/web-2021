@@ -5,15 +5,33 @@ import { addHljsClassToHtml } from '~/composables/highlight'
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id
   if (typeof id === 'string') {
-    const data = await client.get<Article>({
+    const article = await client.get<Article>({
       endpoint: 'article',
       contentId: id,
     })
-    const body = addHljsClassToHtml(data.body)
+    const body = addHljsClassToHtml(article.body)
+    const otherArticles = await client.getList({
+      endpoint: 'article',
+      queries: {
+        filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
+        limit: 3,
+      },
+    })
+    const recommendArticles = await client.getList({
+      endpoint: 'article',
+      queries: {
+        filters: `id[not_equals]${article.id}`,
+        limit: 4,
+      },
+    })
     return {
-      ...data,
-      // HTMLのコードにhljsクラスを追加する
-      body,
+      article: {
+        ...article,
+        // HTMLのコードにhljsクラスを追加する
+        body,
+      },
+      otherArticles,
+      recommendArticles,
     }
   } else {
     return null

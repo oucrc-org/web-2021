@@ -154,28 +154,24 @@ import type { Article } from '../../types/micro-cms'
 import { MicroCMSListResponse } from 'microcms-js-sdk'
 
 const { params } = useRoute()
-const { data: article } = useFetch<Article>(`/api/article/${params.id}`)
-const { data: otherArticles } = useFetch<MicroCMSListResponse<Article>>(`/api/article`, {
-  params: {
-    filters: `name[equals]${article.value?.name.id}[and]id[not_equals]${article.value?.id}`,
-    limit: 3,
-  },
-})
-const { data: recommendArticles } = useFetch<MicroCMSListResponse<Article>>(`/api/article`, {
-  params: {
-    filters: `id[not_equals]${article.value?.id}`,
-    limit: 4,
-  },
-})
+const { data } = useFetch<{
+  article: Article
+  otherArticles: MicroCMSListResponse<Article>
+  recommendArticles: MicroCMSListResponse<Article>
+}>(`/api/article/${params.id}`)
+const article = data.value?.article
+const otherArticles = data.value?.otherArticles
+const recommendArticles = data.value?.recommendArticles
+
 useOG({
-  title: () => article.value?.title,
+  title: () => article?.title,
   description: () =>
-    article.value?.body
+    article?.body
       .slice(0, 200)
       .replace(/<br>/g, '\n')
       .replace(/<[^<>]+>/g, '')
       .replace(/\n/g, ''),
-  ogImage: () => article.value?.image?.url,
+  ogImage: () => article?.image?.url,
 })
 const renderMathJax = () => {
   if (window.MathJax) {

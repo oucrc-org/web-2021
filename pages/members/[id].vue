@@ -149,17 +149,16 @@ import { MicroCMSListResponse } from 'microcms-js-sdk'
 import { Article, Member } from '~~/types/micro-cms'
 const { params } = useRoute()
 
-const { data: member } = useFetch<Member>(`/api/member/${params.id}`)
-const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article', {
-  params: {
-    limit: 12,
-    filters: `name[equals]${member.value?.id}`,
-  },
-})
+const { data } = useFetch<{ member: Member; articles: MicroCMSListResponse<Article> }>(
+  `/api/member/${params.id}`
+)
+const member = data.value?.member
+const articles = data.value?.articles
+
 useOG({
-  title: () => member.value?.name,
-  description: () => member.value?.status,
-  ogImage: () => member.value?.avatar?.url,
+  title: () => member?.name,
+  description: () => member?.status,
+  ogImage: () => member?.avatar?.url,
 })
 </script>
 
