@@ -89,6 +89,9 @@ export default defineNuxtConfig({
         },
       ],
     },
+    pageTransition: {
+      duration: 300,
+    },
   },
 
   modules: ['@nuxtjs/tailwindcss'],

@@ -1,7 +1,7 @@
 <template>
   <header>
     <div
-      class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-50"
+      class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-40"
     >
       <!-- ▼ ロゴ -->
       <NuxtLink to="/" class="m-2 flex flex-row items-center">

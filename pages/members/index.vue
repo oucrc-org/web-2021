@@ -2,8 +2,6 @@
   <div class="container mx-auto px-10">
     <Heading label="部員一覧" class="mt-16" />
     <section class="mb-8">
-      <!-- membersByYearはcomputed内で生成しています。keyが年度です -->
-      <!-- forと同時にifを使うと構文上まずいです -->
       <div v-for="(members, key) in membersByYear" :key="`join-year-${key}`">
         <div class="mb-12 mt-20 relative text-center">
           <div class="border-b border-heading pt-3"></div>
@@ -32,40 +30,16 @@
       </div>
     </section>
   </div>
+  <Loading v-if="pending" />
 </template>
 
 <script setup lang="ts">
-import { MicroCMSListResponse } from 'microcms-js-sdk'
-import type { Member } from '~/types/micro-cms'
-const { data: members } = useFetch<MicroCMSListResponse<Member>>('/api/member', {
+const { pending, data: membersByYear } = useFetch('/api/member', {
   params: {
-    limit: 10000,
+    limit: 1000,
     fields: 'id,name,avatar,enteryear,status',
   },
 })
-
-/**
- * @example
- * ```ts
- * {年: [部員,部員,...],年: [部員,部員,...],...}
- * ```
- */
-const allMembers: Record<number, Member[]> = {}
-let membersByYear: Record<string, Member[]> = {}
-members.value?.contents.forEach((member) => {
-  if (!allMembers[member['enteryear']]) {
-    allMembers[member['enteryear']] = []
-  }
-  allMembers[member['enteryear']].push(member)
-})
-Object.keys(allMembers)
-  .sort((a, b) => {
-    return Number(b) - Number(a)
-  })
-  .forEach((a) => {
-    // ソート防止のため空白を付ける
-    membersByYear[a.toString() + ' '] = allMembers[Number(a)]
-  })
 
 useOG({
   title: '部員一覧',

@@ -29,10 +29,8 @@
 </template>
 
 <script setup lang="ts">
-import { MicroCMSListResponse } from 'microcms-js-sdk'
-import type { News } from '~/types/micro-cms'
 const currentTime = new Date().toISOString()
-const { data: news } = useFetch<MicroCMSListResponse<News>>('/api/news', {
+const { data: news } = useFetch('/api/news', {
   params: {
     limit: 1000,
     fields: 'id,title',
