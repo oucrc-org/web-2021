@@ -6,9 +6,9 @@
       <a class="bg-gray-200 p-4 rounded-md font-bold">一覧に戻る</a>
     </NuxtLink>
     <form @submit.prevent name="search" class="md:mx-32 my-8">
-      <div v-if="categories" class="mt-10">
+      <div v-if="data?.categories" class="mt-10">
         <LabeledCheckbox
-          v-for="category in categories.contents"
+          v-for="category in data?.categories.contents"
           :key="`checkbox-${category.id}`"
           :id="category.id"
           :label="category.category"
@@ -17,9 +17,9 @@
           :value="category.id"
         />
       </div>
-      <div v-if="serieses" class="mt-4">
+      <div v-if="data?.serieses" class="mt-4">
         <LabeledCheckbox
-          v-for="series in serieses.contents"
+          v-for="series in data?.serieses.contents"
           :key="`checkbox-${series.id}`"
           :id="series.id"
           :label="series.series"
@@ -36,7 +36,7 @@
         <Heading label="最新の投稿" class="mb-4" />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
-            v-for="article in articles?.contents"
+            v-for="article in data?.articles?.contents"
             :key="article.id"
             class="py-6"
             :article="article"
@@ -55,8 +55,8 @@
         <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
       <NuxtLink
-        v-if="articles?.totalCount"
-        v-for="pageNum in getArrayJumpTo(articles?.totalCount, 9)"
+        v-if="data?.articles?.totalCount"
+        v-for="pageNum in getArrayJumpTo(data?.articles?.totalCount, 9)"
         :key="'jumper' + pageNum"
         :to="{ name: listType, params: { p: pageNum } }"
       >
@@ -68,7 +68,7 @@
         </div>
       </NuxtLink>
       <NuxtLink
-        v-if="articles && currentPageNum < Math.ceil(articles.totalCount / 9)"
+        v-if="data?.articles && currentPageNum < Math.ceil(data?.articles.totalCount / 9)"
         :to="{ name: listType, params: { p: currentPageNum + 1 } }"
       >
         <div class="text-subtext text-xl">&gt;</div>
@@ -106,9 +106,6 @@ const { pending, data } = useFetch('/api/article', {
     filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
   },
 })
-const articles = data.value?.articles
-const categories = data.value?.categories
-const serieses = data.value?.serieses
 let title = '記事一覧'
 if (params.categoryId || params.seriesId) {
   title += ` 絞り込み結果`

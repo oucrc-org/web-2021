@@ -1,131 +1,125 @@
 <template>
-  <section
-    class="bg-white lg:col-span-2 row-span-2 mb-2 md:mb-32 pb-20 lg:shadow-xl"
-    :class="$style.article"
-  >
-    <!-- ▼ トップ画像 -->
-    <div v-if="article.image && article.image.width">
-      <picture>
-        <source
-          type="image/webp"
-          :srcset="`${article.image.url}?fm=webp${article.image.width > 1008 ? '&w=1008' : ''}`"
-        />
+  <!-- ▼ トップ画像 -->
+  <div v-if="article.image && article.image.width">
+    <picture>
+      <source
+        type="image/webp"
+        :srcset="`${article.image.url}?fm=webp${article.image.width > 1008 ? '&w=1008' : ''}`"
+      />
+      <img
+        :src="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
+        class="h-64 sm:h-96 md:h-120 object-cover"
+        style="margin: 0 !important"
+        alt="トップ画像"
+      />
+    </picture>
+  </div>
+  <div v-else>
+    <picture>
+      <source type="image/webp" srcset="/images/article/cover.webp" />
+      <img src="/images/article/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
+    </picture>
+  </div>
+  <!-- ▲ トップ画像 -->
+
+  <!-- ▼ タイトル -->
+  <div class="font-bold mt-6 mx-8 sm:mx-16 text-4xl sm:text-5xl tracking-wider">
+    {{ article.title.replace(/　/g, ' ') }}
+  </div>
+  <!-- ▲ タイトル -->
+
+  <!-- ▼ サブテキスト -->
+  <div class="mb-8 mt-6 mx-8 sm:mx-16">
+    <p
+      v-if="typeof article.name !== 'undefined' && article.name !== null"
+      class="sm:text-lg text-secondary tracking-widest overflow-hidden"
+    >
+      執筆者: {{ article.name.name }}
+    </p>
+    <p class="sm:text-lg text-secondary tracking-widest">
+      最終更新: {{ $dayjs(article.updatedAt).format('YYYY/MM/DD') }}
+    </p>
+  </div>
+  <!-- ▲ サブテキスト -->
+
+  <!-- ▼ タグ -->
+  <div class="mx-8 sm:mx-16 my-8">
+    <NuxtLink
+      :to="`/articles/category/${article.category.id}`"
+      v-if="article.category !== null"
+      class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4"
+    >
+      <span class="inline-block h-6 w-6">
         <img
-          :src="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
-          class="h-64 sm:h-96 md:h-120 object-cover"
+          class="pt-2"
+          src="/images/article/category.svg"
           style="margin: 0 !important"
-          alt="トップ画像"
+          alt="カテゴリー"
         />
-      </picture>
-    </div>
-    <div v-else>
-      <picture>
-        <source type="image/webp" srcset="/images/article/cover.webp" />
-        <img src="/images/article/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
-      </picture>
-    </div>
-    <!-- ▲ トップ画像 -->
+      </span>
+      <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
+        article.category.category
+      }}</span>
+    </NuxtLink>
 
-    <!-- ▼ タイトル -->
-    <div class="font-bold mt-6 mx-8 sm:mx-16 text-4xl sm:text-5xl tracking-wider">
-      {{ article.title.replace(/　/g, ' ') }}
-    </div>
-    <!-- ▲ タイトル -->
+    <NuxtLink
+      :to="`/articles/series/${article.series.id}`"
+      v-if="article.series !== null"
+      class="bg-blockquote inline-block rounded-lg pb-2 px-4"
+    >
+      <span class="inline-block h-6 w-6">
+        <img
+          class="pt-2"
+          src="/images/article/series.svg"
+          style="margin: 0 !important"
+          alt="シリーズ"
+        />
+      </span>
+      <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
+        article.series.series
+      }}</span>
+    </NuxtLink>
+  </div>
+  <!-- ▲ タグ -->
 
-    <!-- ▼ サブテキスト -->
-    <div class="mb-8 mt-6 mx-8 sm:mx-16">
-      <p
-        v-if="typeof article.name !== 'undefined' && article.name !== null"
-        class="sm:text-lg text-secondary tracking-widest overflow-hidden"
+  <!-- ▼ ランキング -->
+  <div class="mx-8 sm:mx-16 my-8">
+    <div v-for="[key, value] in Object.entries(ranking)" :key="key" class="inline-block">
+      <div
+        v-if="value.data.includes(article.id)"
+        :class="value.bg_class"
+        class="sm:inline-block mb-3 sm:mr-4 rounded-lg pb-3 pt-1 px-4 tracking-widest"
       >
-        執筆者: {{ article.name.name }}
-      </p>
-      <p class="sm:text-lg text-secondary tracking-widest">
-        最終更新: {{ $dayjs(article.updatedAt).format('YYYY/MM/DD') }}
-      </p>
-    </div>
-    <!-- ▲ サブテキスト -->
-
-    <!-- ▼ タグ -->
-    <div class="mx-8 sm:mx-16 my-8">
-      <NuxtLink
-        :to="`/articles/category/${article.category.id}`"
-        v-if="article.category !== null"
-        class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4"
-      >
-        <span class="inline-block h-6 w-6">
-          <img
-            class="pt-2"
-            src="/images/article/category.svg"
-            style="margin: 0 !important"
-            alt="カテゴリー"
-          />
-        </span>
-        <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
-          article.category.category
-        }}</span>
-      </NuxtLink>
-
-      <NuxtLink
-        :to="`/articles/series/${article.series.id}`"
-        v-if="article.series !== null"
-        class="bg-blockquote inline-block rounded-lg pb-2 px-4"
-      >
-        <span class="inline-block h-6 w-6">
-          <img
-            class="pt-2"
-            src="/images/article/series.svg"
-            style="margin: 0 !important"
-            alt="シリーズ"
-          />
-        </span>
-        <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
-          article.series.series
-        }}</span>
-      </NuxtLink>
-    </div>
-    <!-- ▲ タグ -->
-
-    <!-- ▼ ランキング -->
-    <div class="mx-8 sm:mx-16 my-8">
-      <div v-for="[key, value] in Object.entries(ranking)" :key="key" class="inline-block">
-        <div
-          v-if="value.data.includes(article.id)"
-          :class="value.bg_class"
-          class="sm:inline-block mb-3 sm:mr-4 rounded-lg pb-3 pt-1 px-4 tracking-widest"
-        >
-          <span class="inline-block h-6 w-5">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="mt-3"
-              :class="value.text_class"
-              fill="currentColor"
-              viewBox="0 0 200 145.218"
-            >
-              <path
-                d="M112.159,265.46v.028L62.307,323.72l-39.689-40V378.5H201.724V283.719l-39.689,40-49.852-58.232v-.028l-.012.014ZM16.519,387.2a4.338,4.338,0,0,0-4.348,4.348v14.782a4.338,4.338,0,0,0,4.348,4.348h191.3a4.338,4.338,0,0,0,4.348-4.348V391.547a4.338,4.338,0,0,0-4.348-4.348Z"
-                transform="translate(-12.171 -265.459)"
-              />
-            </svg>
-          </span>
-          <span class="align-top inline-block ml-2 pl-2 pt-2 text-sm" :class="value.text_class"
-            >{{ value.title
-            }}<span class="font-bold ml-1">{{ value.data.indexOf(article.id) + 1 }}位</span></span
+        <span class="inline-block h-6 w-5">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="mt-3"
+            :class="value.text_class"
+            fill="currentColor"
+            viewBox="0 0 200 145.218"
           >
-        </div>
+            <path
+              d="M112.159,265.46v.028L62.307,323.72l-39.689-40V378.5H201.724V283.719l-39.689,40-49.852-58.232v-.028l-.012.014ZM16.519,387.2a4.338,4.338,0,0,0-4.348,4.348v14.782a4.338,4.338,0,0,0,4.348,4.348h191.3a4.338,4.338,0,0,0,4.348-4.348V391.547a4.338,4.338,0,0,0-4.348-4.348Z"
+              transform="translate(-12.171 -265.459)"
+            />
+          </svg>
+        </span>
+        <span class="align-top inline-block ml-2 pl-2 pt-2 text-sm" :class="value.text_class"
+          >{{ value.title
+          }}<span class="font-bold ml-1">{{ value.data.indexOf(article.id) + 1 }}位</span></span
+        >
       </div>
     </div>
-    <!-- ▲ ランキング -->
+  </div>
+  <!-- ▲ ランキング -->
 
-    <!-- ▼ 記事本文 -->
-    <span
-      v-html="article.body"
-      class="block leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"
-    ></span>
-    <!-- ▲ 記事本文 -->
-  </section>
-  <!-- TODO: 任意の -->
-  <component is="script" src=""></component>
+  <!-- ▼ 記事本文 -->
+  <span
+    :class="$style.article"
+    v-html="article.body"
+    class="block leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"
+  ></span>
+  <!-- ▲ 記事本文 -->
 </template>
 <script setup lang="ts">
 import 'highlight.js/styles/androidstudio.css'

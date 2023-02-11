@@ -8,11 +8,11 @@
           <div class="flex justify-between">
             <!-- ▼ メンバーアイコン -->
             <div class="w-24 xl:w-36 mb-4 md:mr-8">
-              <div v-if="member?.avatar !== void 0" class="">
+              <div v-if="data?.member?.avatar" class="">
                 <picture>
-                  <source type="image/webp" :srcset="member?.avatar.url + '?fm=webp'" />
+                  <source type="image/webp" :srcset="data?.member?.avatar.url + '?fm=webp'" />
                   <img
-                    :src="member?.avatar.url"
+                    :src="data?.member?.avatar.url"
                     class="shadow-xl rounded-full object-cover"
                     alt="取得に失敗しました"
                   />
@@ -34,17 +34,17 @@
             <!-- ▼ SNSリンク -->
             <div class="mt-2 text-center">
               <p
-                v-if="member?.enteryear !== void 0"
+                v-if="data?.member?.enteryear !== void 0"
                 class="bg-highlight inline-block md:w-40 px-6 py-1 rounded-lg text-secondary text-sm tracking-widest"
               >
-                {{ member?.enteryear }}年度 入部
+                {{ data?.member?.enteryear }}年度 入部
               </p>
               <div class="flex items-center justify-around">
                 <a
-                  v-if="member?.twitter !== void 0"
+                  v-if="data?.member?.twitter"
                   target="_blank"
                   rel="noopener noreferrer"
-                  :href="`https://twitter.com/${member?.twitter.replace(/@/g, '')}`"
+                  :href="`https://twitter.com/${data?.member?.twitter.replace(/@/g, '')}`"
                 >
                   <img
                     src="/images/member/sns-twitter.png"
@@ -53,10 +53,10 @@
                   />
                 </a>
                 <a
-                  v-if="member?.github !== void 0"
+                  v-if="data?.member?.github"
                   target="_blank"
                   rel="noopener noreferrer"
-                  :href="`https://github.com/${member?.github.replace(/@/g, '')}`"
+                  :href="`https://github.com/${data?.member?.github.replace(/@/g, '')}`"
                 >
                   <img
                     src="/images/member/sns-github.png"
@@ -65,10 +65,10 @@
                   />
                 </a>
                 <a
-                  v-if="member?.youtube !== void 0"
+                  v-if="data?.member?.youtube"
                   target="_blank"
                   rel="noopener noreferrer"
-                  :href="`https://www.youtube.com/channel/${member?.youtube}`"
+                  :href="`https://www.youtube.com/channel/${data?.member?.youtube}`"
                 >
                   <img
                     src="/images/member/sns-youtube.png"
@@ -83,14 +83,11 @@
 
           <!-- ▼ メンバー名 -->
           <div class="">
-            <p
-              v-if="member?.name !== void 0"
-              class="font-bold text-3xl text-secondary tracking-widest"
-            >
-              {{ member?.name }}
+            <p class="font-bold text-3xl text-secondary tracking-widest">
+              {{ data?.member?.name }}
             </p>
-            <p v-if="member?.status !== void 0" class="text-lg text-subtext tracking-widest">
-              {{ member?.status }}
+            <p v-if="data?.member?.status !== void 0" class="text-lg text-subtext tracking-widest">
+              {{ data?.member?.status }}
             </p>
           </div>
           <!-- ▲ メンバー名 -->
@@ -104,32 +101,29 @@
             自己紹介
           </div>
           <p class="leading-8 mt-4 text-secondary tracking-widest" :class="$style.member">
-            <span v-html="member?.intro ?? 'なし'"></span>
+            <span v-html="data?.member?.intro ?? 'なし'"></span>
           </p>
           <!-- ▲ 自己紹介 -->
         </div>
       </div>
 
       <!-- ▼ 自己紹介画像 -->
-      <div v-if="member && member.introImage" class="my-32">
+      <div v-if="data?.member && data?.member.introImage" class="my-32">
         <Heading label="自己紹介画像" class="mb-10" />
         <picture>
-          <source type="image/webp" :srcset="member.introImage.url + '?fm=webp'" />
-          <img class="w-full" :src="member.introImage.url" alt="取得に失敗しました" />
+          <source type="image/webp" :srcset="data?.member.introImage.url + '?fm=webp'" />
+          <img class="w-full" :src="data?.member.introImage.url" alt="取得に失敗しました" />
         </picture>
       </div>
       <!-- ▲ 自己紹介画像 -->
 
       <!-- ▼ この人が書いた記事 -->
-      <div
-        v-if="articles && articles.contents.length"
-        class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
-      >
+      <div class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center">
         <div class="container mx-auto">
           <Heading label="この人が書いた記事" class="mb-4" />
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <ArticleCard
-              v-for="article in articles.contents"
+              v-for="article in data?.articles.contents"
               :key="`articlecard-${article.id}`"
               :article="article"
               class="py-6"
@@ -148,13 +142,11 @@
 <script setup lang="ts">
 const { params } = useRoute()
 const { pending, data } = useFetch(`/api/member/${params.id}`)
-const member = data.value?.member
-const articles = data.value?.articles
 
 useOG({
-  title: () => member?.name,
-  description: () => member?.status,
-  ogImage: () => member?.avatar?.url,
+  title: () => data?.value?.member?.name,
+  description: () => data?.value?.member?.status,
+  ogImage: () => data?.value?.member?.avatar?.url,
 })
 </script>
 
