@@ -36,7 +36,7 @@
 
 <script setup lang="ts">
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { Member } from '~/types/micro-cms'
+import type { Member } from '~/types/micro-cms'
 const { data: members } = useFetch<MicroCMSListResponse<Member>>('/api/member', {
   params: {
     limit: 10000,

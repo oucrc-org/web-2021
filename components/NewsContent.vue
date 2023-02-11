@@ -6,8 +6,8 @@
     <!-- ▼ トップ画像 -->
     <div>
       <picture>
-        <source type="image/webp" srcset="/images/news/cover.webp" />
-        <img src="/images/news/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
+        <source type="image/webp" srcset="/images/article/cover.webp" />
+        <img src="/images/article/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
       </picture>
     </div>
     <!-- ▲ トップ画像 -->
@@ -35,7 +35,7 @@
   </section>
 </template>
 <script setup lang="ts">
-import { News } from '~/types/micro-cms'
+import type { News } from '~/types/micro-cms'
 interface Props {
   news: News
 }

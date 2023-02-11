@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-import { News } from '~/types/micro-cms'
+import type { News } from '~/types/micro-cms'
 const { params } = useRoute()
 const { data: news } = useFetch<News>(`/api/news/${params.id}`)
 </script>

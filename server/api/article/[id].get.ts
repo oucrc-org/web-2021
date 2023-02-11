@@ -1,5 +1,5 @@
 import client from '~/server/micro-cms'
-import { Article } from '~/types/micro-cms'
+import type { Article } from '~/types/micro-cms'
 import { addHljsClassToHtml } from '~/composables/highlight'
 
 export default defineEventHandler(async (event) => {

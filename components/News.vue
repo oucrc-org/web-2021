@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { News } from '~/types/micro-cms'
+import type { News } from '~/types/micro-cms'
 
 interface Props {
   news: MicroCMSListResponse<News>
