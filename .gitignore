@@ -88,6 +88,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-# 2021-04-24 by sasigume
-.vscode/*

@@ -70,7 +70,7 @@ export default {
   css: ['@/assets/css/index.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~plugins/lazyload.js' }],
+  plugins: [{ src: '~plugins/day.js' }, { src: '~plugins/lazyload.js' }],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

@@ -217,7 +217,7 @@ export default {
       }
     },
   },
-  asyncData({ params, error, $config }) {
+  asyncData({ params, error, $config, $dayjs }) {
     /*一度目の処理*/
     return axios
       .get(`${$config.API_URL}/article/${params.id}`, {
@@ -225,83 +225,77 @@ export default {
           'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
         },
       })
-      .then((response) => {
-        /*最終更新時間の取得*/
-        const options = {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        }
-        const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
+      .then(({ data: article }) => {
+        /*最終更新時間*/
+        const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
 
-        /*名前が取得できたとき*/
-        if (response.data.name !== null) {
-          /*二回目の処理*/
+        // 名前が取得できたとき
+        if (article.name !== null) {
+          // その他の記事を取得
           return axios
             .get(`${$config.API_URL}/article`, {
               headers: {
                 'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
               },
               params: {
-                filters: `name[equals]${response.data.name.id}[and]id[not_equals]${response.data.id}`,
+                filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
                 limit: 3,
               },
 
               /*二回目の処理のコールバック*/
             })
-            .then((res) => {
+            .then(({ data: otherArticles }) => {
+              // おすすめ記事取得
               return axios
                 .get(`${$config.API_URL}/article`, {
                   headers: {
                     'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
                   },
                   params: {
-                    filters: `id[not_equals]${response.data.id}`,
+                    filters: `id[not_equals]${article.id}`,
                     limit: 4,
                   },
 
-                  /*三回目の処理のコールバック*/
+                  // 三回目の処理のコールバック
                 })
-                .then((recommends) => {
-                  /*返り値*/
+                .then(({ data: recommendArticles }) => {
                   return {
-                    article: response.data,
-                    otherArticles: res.data,
-                    recommendArticles: recommends.data,
-                    timeUpdated: timeUpdated,
+                    article,
+                    otherArticles,
+                    recommendArticles,
+                    timeUpdated,
                   }
 
-                  /*三回目の処理のエラーハンドリング*/
+                  //三回目の処理のエラーハンドリング
                 })
                 .catch(function (e) {
                   error({
-                    statusCode: e.response.status,
+                    statusCode: e.response?.status,
                     message: e.message,
                   })
                 })
 
-              /*二回目の処理のエラーハンドリング*/
+              //二回目の処理のエラーハンドリング
             })
             .catch(function (e) {
               error({
-                statusCode: e.response.status,
+                statusCode: e.response?.status,
                 message: e.message,
               })
             })
         } else {
-
-        /*名前が取得できなかったときの処理*/
+          //名前が取得できなかったときの処理
           return {
-            article: response.data,
-            timeUpdated: timeUpdated,
+            article,
+            timeUpdated,
           }
         }
 
-        /*一回目の処理のエラーハンドリング*/
+        //一回目の処理のエラーハンドリング
       })
       .catch(function (e) {
         error({
-          statusCode: e.response.status,
+          statusCode: e.response?.status,
           message: e.message,
         })
       })

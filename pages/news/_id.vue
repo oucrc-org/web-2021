@@ -26,7 +26,7 @@ export default {
       timeUpdated: '',
     }
   },
-  asyncData({ params, error, $config }) {
+  asyncData({ params, error, $config, $dayjs }) {
     return axios
       .get(`${$config.API_URL}/news/${params.id}`, {
         headers: {
@@ -34,12 +34,7 @@ export default {
         },
       })
       .then((response) => {
-        const options = {
-          year: 'numeric',
-          month: 'numeric',
-          day: 'numeric',
-        }
-        const timeUpdated = new Date(response.data.updatedAt).toLocaleDateString('ja-JP', options)
+        const timeUpdated = $dayjs(response.data.updatedAt).format('YYYY/MM/DD')
         return {
           article: response.data,
           timeUpdated: timeUpdated,
@@ -47,7 +42,7 @@ export default {
       })
       .catch(function (e) {
         error({
-          statusCode: e.response.status,
+          statusCode: e.response?.status,
           message: e.message,
         })
       })
