@@ -13,7 +13,7 @@ import type { News } from '~/types/micro-cms'
 const { params } = useRoute()
 const { data: news } = useFetch<News>(`/api/news/${params.id}`)
 useOG({
-  title: news.value?.title ?? '',
-  description: news.value?.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, ''),
+  title: () => news.value?.title ?? '',
+  description: () => news.value?.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, ''),
 })
 </script>

@@ -134,7 +134,7 @@
 import { MicroCMSListResponse } from 'microcms-js-sdk'
 import type { News } from '../types/micro-cms'
 
-useServerSeoMeta({ titleTemplate: null })
+useOG({ titleTemplate: null })
 const { data: news } = useAsyncData(async () => {
   const currentTime = new Date().toISOString()
   const response = await useFetch<MicroCMSListResponse<News>>(`/api/news`, {
