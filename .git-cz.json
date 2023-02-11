@@ -1,0 +1,4 @@
+{
+  "disableEmoji": true,
+  "format": "{type}{scope}: {emoji}{subject}"
+}

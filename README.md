@@ -1,26 +1,31 @@
-# web
+# web-2021
 
-OUCRCの公式サイトのソースコードです。\
-下の、公式の説明に従って環境構築してください。\
-環境が変わった場合は.envファイルの中身を変更してください。\
-（引き継ぎが大変なので.envファイルをプッシュしてもらっても構いません）\
+OUCRCの公式サイトのソースコードです。
+
+環境が変わった場合は.envファイルの中身を変更してください。
 また、metaデータの初期値はassets/mixins/const.jsにて変更可能です。
 
-## Build Setup
+## 環境構築
 
-```bash
-# install dependencies
-$ npm install
+Nuxt2なので、nuxt.comではなく[nuxtjs.org](https://nuxtjs.org/docs/get-started/installation)を参照してください。
 
-# serve with hot reload at localhost:3000
-$ npm run dev
-
-# build for production and launch server
-$ npm run build
-$ npm run start
-
-# generate static project
-$ npm run generate
+```sh
+npm i
+npm run dev
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+## コミット
+
+```sh
+npx git-cz
+```
+
+## 本番における動作確認
+
+```sh
+npm run build
+npm run start
+
+# 静的書き出し
+npm run generate
+```

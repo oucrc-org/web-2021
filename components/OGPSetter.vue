@@ -2,57 +2,56 @@
 
 <script>
 /*
-* 設定できるもの
-* title
-* type
-* description
-* url
-* image
-*
-* */
-
+ * 設定できるもの
+ * title
+ * type
+ * description
+ * url
+ * image
+ *
+ * */
 
 import Meta from '~/assets/mixins/meta'
 
 //HTMLタグを取り除く式
-const replace = (data) => data !== null ? data.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g,'').slice(0, 120) : null
+const replace = (data) =>
+  data !== null ? data.replace(/<("[^"]*"|'[^']*'|[^'">])*>/g, '').slice(0, 120) : null
 
-export default{
-
+export default {
   mixins: [Meta],
-  name: "OGPSetter",
+  name: 'OGPSetter',
   props: {
     title: {
       type: String,
-      default: null
+      default: null,
     },
     type: {
       type: String,
-      default: null
+      default: null,
     },
     description: {
       type: String,
-      default: null
+      default: null,
     },
     url: {
       type: String,
-      default: null
+      default: null,
     },
     image: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
   },
 
-  data(){
+  data() {
     return {
       meta: {
         title: replace(this.title),
         type: this.type,
         description: replace(this.description),
         url: this.url,
-        image: this.image
-      }
+        image: this.image,
+      },
     }
   },
 }

@@ -14,12 +14,16 @@
       <div v-for="(members, key) in membersByYear" :key="`join-year-${key}`">
         <div class="mb-12 mt-20 relative text-center">
           <div class="border-b border-heading pt-3"></div>
-          <h3 class="absolute bg-white font-bold inline-block mx-auto left-0 right-0 text-subtext top-0 tracking-widest w-64">
+          <h3
+            class="absolute bg-white font-bold inline-block mx-auto left-0 right-0 text-subtext top-0 tracking-widest w-64"
+          >
             {{ key }}年度入部 ({{ members.length }}人)
           </h3>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32">
+        <div
+          class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32"
+        >
           <div v-bind:key="content.id" v-for="content in members">
             <MemberIndexCard
               :href="`/members/${content.id}`"
@@ -35,7 +39,7 @@
 </template>
 
 <script>
-import axios from "axios"
+import axios from 'axios'
 
 export default {
   computed: {
@@ -45,10 +49,10 @@ export default {
       const allMembers = {}
       const result = {}
       this.members.contents.forEach((member) => {
-        if (!allMembers[member["enteryear"]]) {
-          allMembers[member["enteryear"]] = []
+        if (!allMembers[member['enteryear']]) {
+          allMembers[member['enteryear']] = []
         }
-        allMembers[member["enteryear"]].push(member)
+        allMembers[member['enteryear']].push(member)
       })
       Object.keys(allMembers)
         .sort((a, b) => {
@@ -66,11 +70,11 @@ export default {
     return axios
       .get(`${$config.API_URL}/member`, {
         headers: {
-          "X-API-KEY": $config.X_API_KEY,
+          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
         },
         params: {
           limit: 10000,
-          fields: "id,name,avatar,enteryear,status",
+          fields: 'id,name,avatar,enteryear,status',
         },
       })
       .then((response) => {

@@ -12,9 +12,7 @@
       <form @submit.prevent="submitForm" action="">
         <div class="max-w-xs mx-auto flex-col">
           <div class="my-4">
-            <label for="student-no" class="text-left block"
-              >学籍番号（半角）*</label
-            >
+            <label for="student-no" class="text-left block">学籍番号（半角）*</label>
             <input
               id="student-no"
               v-model="form.studentNumber"
@@ -42,9 +40,7 @@
             />
           </div>
           <div class="my-4">
-            <label for="email" class="text-left block"
-              >大学のメールアドレス（半角）*</label
-            >
+            <label for="email" class="text-left block">大学のメールアドレス（半角）*</label>
             <input
               id="email"
               v-model="form.email"
@@ -111,11 +107,7 @@
           </div>
         </div>
 
-        <DoubleLineButton
-          label="送信"
-          @click.native="submitForm"
-          class="mt-16 cursor-pointer"
-        />
+        <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" />
 
         <p class="mt-16 leading-7 text-sm">
           フォームから送信できない場合は、<a
@@ -132,19 +124,19 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
   data() {
     return {
       form: {
-        studentNumber: "",
-        realName: "",
-        email: "",
-        phone: "",
-        nickname: "",
-        hobby: "",
-        comment: "",
+        studentNumber: '',
+        realName: '',
+        email: '',
+        phone: '',
+        nickname: '',
+        hobby: '',
+        comment: '',
       },
       valid: {
         studentNumber: false,
@@ -152,12 +144,12 @@ export default {
         phone: false,
         nickname: false,
       },
-    };
+    }
   },
   methods: {
     submitForm() {
       if (!this.form.studentNumber.match(/^[a-zA-Z0-9]{8}$/)) {
-        this.valid.studentNumber = false;
+        this.valid.studentNumber = false
       }
       // HTML5と同レベルのValidation（RFC非準拠）
       if (
@@ -165,46 +157,46 @@ export default {
           /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         )
       ) {
-        this.valid.email = false;
+        this.valid.email = false
       }
       if (!this.form.phone.match(/^[0-9-()]{9,13}$/)) {
-        this.valid.phone = false;
+        this.valid.phone = false
       }
-      if (this.form.nickname === "") {
-        this.valid.nickname = false;
+      if (this.form.nickname === '') {
+        this.valid.nickname = false
       }
       if (Object.values(this.valid).some((x) => !x)) {
-        return false;
+        return false
       }
-      if (!window.confirm("送信してもよろしいですか？")) {
-        return false;
+      if (!window.confirm('送信してもよろしいですか？')) {
+        return false
       }
 
       const url =
-        "https://docs.google.com/forms/u/0/d/e/1FAIpQLSds9xqdBsruaabapqvRkaW1gV10pv9lOJNasLCv5CHDZokdwQ/formResponse";
+        'https://docs.google.com/forms/u/0/d/e/1FAIpQLSds9xqdBsruaabapqvRkaW1gV10pv9lOJNasLCv5CHDZokdwQ/formResponse'
       const params = new URLSearchParams({
-        "entry.1552183669": this.form.studentNumber,
-        "entry.514745000": this.form.realName,
-        "entry.821989733": this.form.email,
-        "entry.793184820": this.form.phone,
-        "entry.1050056731": this.form.nickname,
-        "entry.528663940": this.form.hobby,
-        "entry.1197263570": this.form.comment,
-      });
+        'entry.1552183669': this.form.studentNumber,
+        'entry.514745000': this.form.realName,
+        'entry.821989733': this.form.email,
+        'entry.793184820': this.form.phone,
+        'entry.1050056731': this.form.nickname,
+        'entry.528663940': this.form.hobby,
+        'entry.1197263570': this.form.comment,
+      })
       axios
         .post(url, params, {
           headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
         })
         .finally(() => {
-          window.alert("申込みが完了しました。");
-          this.$router.push("/");
-          return true;
-        });
+          window.alert('申込みが完了しました。')
+          this.$router.push('/')
+          return true
+        })
     },
   },
-};
+}
 </script>
 
 <style scoped>
