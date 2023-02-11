@@ -24,17 +24,18 @@
       />
     </picture>
   </section>
+  <Particles id="tsparticles" :particlesInit="particlesInit" :options="particleConfig" />
 </template>
-
-<script>
-import particles from '~/assets/js/particles.config'
-
+<script setup lang="ts">
+import particleConfig from '~/assets/js/particles.config'
+import { loadFull } from 'tsparticles'
+const particlesInit = async (engine: any) => {
+  await loadFull(engine)
+}
+</script>
+<script lang="ts">
 export default {
   name: 'HeroArea',
-  mounted() {
-    require('particles.js')
-    particlesJS('heroArea', particles.data)
-  },
 }
 </script>
 

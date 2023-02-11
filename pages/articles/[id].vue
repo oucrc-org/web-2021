@@ -1,28 +1,16 @@
 <template>
   <div class="container mx-auto">
-    <OGPSetter
-      :title="article.title"
-      :description="article.body"
-      :url="this.$route.path"
-      :image="typeof article.image !== 'undefined' ? article.image.url : null"
-    />
-
     <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16 pb-10">
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
-      <ArticleContent
-        :article="article"
-        :timeUpdated="timeUpdated"
-        :category="article.category"
-        :series="article.series"
-      />
+      <ArticleContent v-if="article" :article="article" />
 
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
 
       <section
-        v-if="article.name !== null"
+        v-if="article && article.name !== null"
         class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-16 md:px-24 lg:px-0 lg:shadow-xl"
       >
         <div class="grid grid-cols-9 gap-4 mt-12">
@@ -62,7 +50,7 @@
             </p>
             <div class="lg:text-left xl:pl-3 pr-1">
               <a
-                v-if="article.name.twitter !== void 0"
+                v-if="article.name.twitter"
                 target="_blank"
                 rel="noopener noreferrer"
                 :href="`https://twitter.com/${article.name.twitter.replace(/@/g, '')}`"
@@ -74,7 +62,7 @@
                 />
               </a>
               <a
-                v-if="article.name.github !== void 0"
+                v-if="article.name.github"
                 target="_blank"
                 rel="noopener noreferrer"
                 :href="`https://github.com/${article.name.github.replace(/@/g, '')}`"
@@ -86,7 +74,7 @@
                 />
               </a>
               <a
-                v-if="article.name.youtube !== void 0"
+                v-if="article.name.youtube"
                 target="_blank"
                 rel="noopener noreferrer"
                 :href="`https://www.youtube.com/channel/${article.name.youtube}`"
@@ -118,15 +106,9 @@
         <!-- ▲ メンバー情報 -->
 
         <!-- ▼ この人が書いた記事 -->
-        <div
-          v-if="otherArticles.contents !== void 0 && otherArticles.contents.length"
-          class="pt-24 mx-8 sm:mx-10 text-center"
-        >
+        <div v-if="otherArticles && otherArticles.length" class="pt-24 mx-8 sm:mx-10 text-center">
           <Title label="この人が書いた記事" />
-          <div
-            v-for="otherArticle in otherArticles.contents"
-            :key="`otherarticle-${otherArticle.id}`"
-          >
+          <div v-for="otherArticle in otherArticles" :key="`otherarticle-${otherArticle.id}`">
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
               :category="otherArticle.category !== null ? otherArticle.category.category : null"
@@ -141,14 +123,11 @@
 
         <!-- ▼ 最新のオススメ記事 -->
         <div
-          v-if="recommendArticles.contents !== void 0 && recommendArticles.contents.length"
+          v-if="recommendArticles && recommendArticles.length"
           class="pt-24 mx-8 sm:mx-10 text-center"
         >
           <Title label="最新のオススメ記事" />
-          <div
-            v-for="otherArticle in recommendArticles.contents"
-            :key="`otherarticle-${otherArticle.id}`"
-          >
+          <div v-for="otherArticle in recommendArticles" :key="`otherarticle-${otherArticle.id}`">
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
               :category="otherArticle.category !== null ? otherArticle.category.category : null"
@@ -171,28 +150,64 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/androidstudio.min.css"
     />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
-    <script>
-      window.setTimeout(function () {
-        hljs.initHighlighting()
-      }, 1000)
-    </script>
+    <component
+      :is="'script'"
+      src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"
+    ></component>
+    <component :is="'script'">
+      window.setTimeout(function () { hljs.initHighlighting() }, 1000)
+    </component>
 
     <!---------------------------------------------------  スクリプト  -------------------------------------------------->
   </div>
 </template>
-
-<script>
+<script setup lang="ts">
+import type { Article } from '../../types/micro-cms'
 import axios from 'axios'
-
+import { useAsyncData, useRoute, useRuntimeConfig } from '#imports'
+const config = useRuntimeConfig()
+const { params } = useRoute()
+const { data: article } = useFetch<Article>(`/api/articles/${params.id}`)
+const { data: otherArticles } = useAsyncData(async () => {
+  // 名前が取得できたとき
+  if (article.value?.name !== null) {
+    // その他の記事を取得
+    const response = await axios.get<Article[]>(`${config.API_URL}/article`, {
+      headers: {
+        'X-MICROCMS-API-KEY': config.MICROCMS_API_KEY,
+      },
+      params: {
+        filters: `name[equals]${article.value?.name.id}[and]id[not_equals]${article.value?.id}`,
+        limit: 3,
+      },
+    })
+    return response.data
+  }
+})
+const { data: recommendArticles } = useAsyncData(async () => {
+  // おすすめ記事取得
+  const response = await axios.get<Article[]>(`${config.API_URL}/article`, {
+    headers: {
+      'X-MICROCMS-API-KEY': config.MICROCMS_API_KEY,
+    },
+    params: {
+      filters: `id[not_equals]${article.value?.id}`,
+      limit: 4,
+    },
+    // 三回目の処理のコールバック
+  })
+  return response.data
+})
+</script>
+<script lang="ts">
+declare global {
+  interface Window {
+    MathJax: any
+  }
+}
 export default {
   data() {
-    return {
-      article: 'There are no data',
-      otherArticles: 'No',
-      recommendArticles: 'No',
-      timeUpdated: '',
-    }
+    return {}
   },
   mounted() {
     this.renderMathJax()
@@ -216,89 +231,6 @@ export default {
         window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
       }
     },
-  },
-  asyncData({ params, error, $config, $dayjs }) {
-    /*一度目の処理*/
-    return axios
-      .get(`${$config.API_URL}/article/${params.id}`, {
-        headers: {
-          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-        },
-      })
-      .then(({ data: article }) => {
-        /*最終更新時間*/
-        const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
-
-        // 名前が取得できたとき
-        if (article.name !== null) {
-          // その他の記事を取得
-          return axios
-            .get(`${$config.API_URL}/article`, {
-              headers: {
-                'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-              },
-              params: {
-                filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
-                limit: 3,
-              },
-
-              /*二回目の処理のコールバック*/
-            })
-            .then(({ data: otherArticles }) => {
-              // おすすめ記事取得
-              return axios
-                .get(`${$config.API_URL}/article`, {
-                  headers: {
-                    'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-                  },
-                  params: {
-                    filters: `id[not_equals]${article.id}`,
-                    limit: 4,
-                  },
-
-                  // 三回目の処理のコールバック
-                })
-                .then(({ data: recommendArticles }) => {
-                  return {
-                    article,
-                    otherArticles,
-                    recommendArticles,
-                    timeUpdated,
-                  }
-
-                  //三回目の処理のエラーハンドリング
-                })
-                .catch(function (e) {
-                  error({
-                    statusCode: e.response?.status,
-                    message: e.message,
-                  })
-                })
-
-              //二回目の処理のエラーハンドリング
-            })
-            .catch(function (e) {
-              error({
-                statusCode: e.response?.status,
-                message: e.message,
-              })
-            })
-        } else {
-          //名前が取得できなかったときの処理
-          return {
-            article,
-            timeUpdated,
-          }
-        }
-
-        //一回目の処理のエラーハンドリング
-      })
-      .catch(function (e) {
-        error({
-          statusCode: e.response?.status,
-          message: e.message,
-        })
-      })
   },
 }
 </script>

@@ -1,7 +1,5 @@
 <template>
   <div id="app">
-    <OGPSetter :url="this.$route.path" />
-
     <div
       ref="parallax"
       class="parallax bg-no-repeat bg-center bg-cover h-full fixed left-0 top-16 w-full z-0"
@@ -120,7 +118,7 @@
           </div>
           <div class="col-span-3">
             <fade-in>
-              <News :notices="notices" />
+              <News v-if="news" :news="news" />
               <NuxtLink
                 to="/news"
                 class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest"
@@ -140,67 +138,32 @@
   </div>
 </template>
 
-<script>
-import Contact from '~/components/Contact'
-import HeroArea from '~/components/HeroArea'
-import axios from 'axios'
+<script setup lang="ts">
+import { useAsyncData, useFetch } from '#imports'
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+import { ref } from 'vue'
+import type { News } from '../types/micro-cms'
 
-export default {
-  /*お知らせを取ってくる処理系統*/
-  data() {
-    return {
-      notices: {
-        contents: [],
-      },
-    }
-  },
-  head() {
-    return {
-      titleTemplate: null,
-    }
-  },
-  asyncData({ $config }) {
-    const currentTime = new Date().toISOString()
-    return axios
-      .get(`${$config.API_URL}/news`, {
-        headers: {
-          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-        },
-        params: {
-          limit: 3,
-          fields: 'id,title,important,date',
-          orders: '-important,-date,-createdAt',
-          filters: 'date[less_than]' + currentTime,
-        },
-      })
-      .then((response) => {
-        return {
-          notices: response.data,
-        }
-      })
-      .catch(function () {
-        return {
-          notices: null,
-        }
-      })
-  },
-  components: {
-    Contact,
-    HeroArea,
-  },
-  methods: {
-    handleScroll() {
-      this.$refs.parallax.style.top =
-        (this.$refs.parallax.clientWidth < 640 ? 1400 : 900) - window.scrollY / 2 + 'px'
+useSeoMeta({
+  titleTemplate: null,
+})
+const { data: news } = useAsyncData(async () => {
+  const currentTime = new Date().toISOString()
+  const response = await useFetch<MicroCMSListResponse<News>>(`/api/news`, {
+    params: {
+      limit: 3,
+      fields: 'id,title,important,date',
+      orders: '-important,-date,-createdAt',
+      filters: 'date[less_than]' + currentTime,
     },
-  },
-  beforeMount() {
-    window.addEventListener('scroll', this.handleScroll)
-  },
-  beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
-  },
-}
+  })
+  return response.data.value
+})
+const parallaxRef = ref<HTMLDivElement>()
+const parallaxTop =
+  (parallaxRef.value?.clientWidth && parallaxRef.value?.clientWidth < 640 ? 1400 : 900) -
+  window.scrollY / 2 +
+  'px'
 </script>
 
 <style scoped>
@@ -215,6 +178,8 @@ export default {
 }
 
 .parallax {
+  /* パララックス効果を動的CSSで実現 */
+  top: v-bind(parallaxTop);
   background-image: url(@/assets/images/landing/oucrc-room.jpg);
 }
 </style>
