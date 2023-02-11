@@ -16,7 +16,7 @@
         <div
           class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-10 px-4 sm:px-12 xl:px-32"
         >
-          <div v-bind:key="content.id" v-for="content in members.contents">
+          <div v-bind:key="content.id" v-for="content in members">
             <MemberIndexCard
               :href="`/members/${content.id}`"
               :img-path="typeof content.avatar !== 'undefined' ? content.avatar.url : null"
@@ -39,34 +39,29 @@ const { data: members } = useFetch<MicroCMSListResponse<Member>>('/api/member', 
     fields: 'id,name,avatar,enteryear,status',
   },
 })
-/* entryyearごとにメンバーの配列を分けることで、v-ifを発火させる必要性をなくしています
-        さらにmembers.lengthで年度ごとに人数を取得できます */
-const membersByYear = () => {
-  /**
-   * @example
-   * ```ts
-   * {年: [部員,部員,...],年: [部員,部員,...],...}
-   * ```
-   */
-  const allMembers: Record<number, Member[]> = {}
-  const result: Record<string, Member[]> = {}
-  members.value?.contents.forEach((member) => {
-    if (!allMembers[member['enteryear']]) {
-      allMembers[member['enteryear']] = []
-    }
-    allMembers[member['enteryear']].push(member)
-  })
-  Object.keys(allMembers)
-    .sort((a, b) => {
-      return Number(b) - Number(a)
-    })
-    .forEach((a) => {
-      // ソート防止のため空白を付ける
-      result[` ${a}`] = allMembers[a]
-    })
 
-  return result
-}
+/**
+ * @example
+ * ```ts
+ * {年: [部員,部員,...],年: [部員,部員,...],...}
+ * ```
+ */
+const allMembers: Record<number, Member[]> = {}
+let membersByYear: Record<string, Member[]> = {}
+members.value?.contents.forEach((member) => {
+  if (!allMembers[member['enteryear']]) {
+    allMembers[member['enteryear']] = []
+  }
+  allMembers[member['enteryear']].push(member)
+})
+Object.keys(allMembers)
+  .sort((a, b) => {
+    return Number(b) - Number(a)
+  })
+  .forEach((a) => {
+    // ソート防止のため空白を付ける
+    membersByYear[a.toString()] = allMembers[Number(a)]
+  })
 
 useSeoMeta({
   title: '部員一覧',

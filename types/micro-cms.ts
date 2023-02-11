@@ -8,8 +8,10 @@ export type Series = { series: string } & MicroCMSListContent
 
 export type Member = {
   name: string
+  intro: string
   enteryear: number
   avatar?: MicroCMSImage
+  introImage?: MicroCMSImage
   twitter?: string
   github?: string
   youtube?: string

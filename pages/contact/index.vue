@@ -1,11 +1,5 @@
 <template>
   <div class="container mx-auto px-10">
-    <OGPSetter
-      title="お問い合わせ"
-      description="OUCRC（岡山大学電子計算機研究会）のお問い合わせフォームです！"
-      :url="this.$route.path"
-    />
-
     <Title label="お問い合わせフォーム" class="mt-16" />
 
     <section class="text-center tracking-widest mt-8">
@@ -77,92 +71,82 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios'
-
-export default {
-  data() {
-    return {
-      // お問合せフォーム
-      formId: '1FAIpQLSfnY2gyQ5P2lVdMZri-vudGDYwUHHtZ0yo7_2Cg4aeqs7VjJw',
-      formName: {
-        name: 'entry.514745000',
-        email: 'entry.821989733',
-        body: 'entry.1197263570',
-      },
-      form: {
-        name: '',
-        email: '',
-        body: '',
-      },
-      valid: {
-        name: false,
-        email: false,
-        body: false,
-      },
-      invalid: true,
-      textareaHeight: '80px',
-    }
-  },
-  methods: {
-    check() {
-      this.invalid = Object.values(this.valid).some((x) => !x)
-    },
-    submitForm() {
-      if (!window.confirm('送信してもよろしいですか？')) {
-        return false
-      }
-      const url = 'https://docs.google.com/forms/u/0/d/e/' + this.formId + '/formResponse'
-
-      // 変数をkeyにするためappend
-      const params = new URLSearchParams()
-      params.append(this.formName.name, this.form.name)
-      params.append(this.formName.email, this.form.email)
-      params.append(this.formName.body, this.form.body)
-      axios
-        .post(url, params, {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-        })
-        .finally(() => {
-          window.alert('お問い合わせが完了しました。')
-          this.$router.push('/')
-          return true
-        })
-    },
-    resizeTextarea() {
-      this.textareaHeight = 'auto'
-      this.$nextTick(() => {
-        this.textareaHeight = this.$refs.bodyTextarea.scrollHeight + 'px'
-      })
-    },
-  },
-  mounted() {
-    this.resizeTextarea()
-  },
-  // それぞれチェックしないとボタンのinvalidを更新できない
-  watch: {
-    'form.name': function (value) {
-      this.valid.name = new RegExp(/^.{1,20}$/).test(value)
-      this.check()
-    },
-    'form.email': function (value) {
-      // HTML5と同レベルのValidation（RFC非準拠）
-      this.valid.email =
-        value.length > 0 &&
-        new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(
-          value
-        )
-      this.check()
-    },
-    'form.body': function (value) {
-      this.valid.body = new RegExp(/^.{20,500}$/).test(value)
-      this.resizeTextarea()
-      this.check()
-    },
-  },
+<script setup lang="ts">
+const router = useRouter()
+const formId = '1FAIpQLSfnY2gyQ5P2lVdMZri-vudGDYwUHHtZ0yo7_2Cg4aeqs7VjJw'
+const formName = {
+  name: 'entry.514745000',
+  email: 'entry.821989733',
+  body: 'entry.1197263570',
 }
+const form = ref({
+  name: '',
+  email: '',
+  body: '',
+})
+const valid = ref({
+  name: false,
+  email: false,
+  body: false,
+})
+const bodyTextAreaRef = ref<HTMLTextAreaElement>()
+let invalid = Object.values(valid.value).some((x) => !x)
+const textareaHeight = ref('80px')
+const check = () => {
+  invalid = Object.values(valid.value).some((x) => !x)
+}
+const submitForm = async () => {
+  if (!window.confirm('送信してもよろしいですか？')) {
+    return false
+  }
+  const url = 'https://docs.google.com/forms/u/0/d/e/' + formId + '/formResponse'
+
+  // 変数をkeyにするためappend
+  const params = new URLSearchParams()
+  params.append(formName.name, form.value.name)
+  params.append(formName.email, form.value.email)
+  params.append(formName.body, form.value.body)
+  return await fetch(`${url}?${params.toString()}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  }).finally(() => {
+    window.alert('お問い合わせが完了しました。')
+    router.push('/')
+    return true
+  })
+}
+const resizeTextarea = () => {
+  textareaHeight.value = 'auto'
+  nextTick(() => {
+    textareaHeight.value = bodyTextAreaRef.value?.scrollHeight + 'px'
+  })
+}
+
+onMounted(() => {
+  resizeTextarea()
+})
+
+// それぞれチェックしないとボタンのinvalidを更新できない
+watch(form, (newValue) => {
+  valid.value.name = new RegExp(/^.{1,20}$/).test(newValue.name)
+
+  valid.value.email =
+    form.value.email.length > 0 &&
+    new RegExp(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/).test(
+      form.value.email
+    )
+
+  valid.value.body = new RegExp(/^.{20,500}$/).test(newValue.body)
+  resizeTextarea()
+  check()
+})
+
+useSeoMeta({
+  title: 'お問い合わせ',
+  description: 'OUCRC（岡山大学電子計算機研究会）のお問い合わせフォームです！',
+})
 </script>
 
 <style scoped>

@@ -106,9 +106,15 @@
         <!-- ▲ メンバー情報 -->
 
         <!-- ▼ この人が書いた記事 -->
-        <div v-if="otherArticles && otherArticles.length" class="pt-24 mx-8 sm:mx-10 text-center">
+        <div
+          v-if="otherArticles && otherArticles.contents.length"
+          class="pt-24 mx-8 sm:mx-10 text-center"
+        >
           <Title label="この人が書いた記事" />
-          <div v-for="otherArticle in otherArticles" :key="`otherarticle-${otherArticle.id}`">
+          <div
+            v-for="otherArticle in otherArticles.contents"
+            :key="`otherarticle-${otherArticle.id}`"
+          >
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
               :category="otherArticle.category !== null ? otherArticle.category.category : null"
@@ -123,11 +129,14 @@
 
         <!-- ▼ 最新のオススメ記事 -->
         <div
-          v-if="recommendArticles && recommendArticles.length"
+          v-if="recommendArticles && recommendArticles.contents.length"
           class="pt-24 mx-8 sm:mx-10 text-center"
         >
           <Title label="最新のオススメ記事" />
-          <div v-for="otherArticle in recommendArticles" :key="`otherarticle-${otherArticle.id}`">
+          <div
+            v-for="otherArticle in recommendArticles.contents"
+            :key="`otherarticle-${otherArticle.id}`"
+          >
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
               :category="otherArticle.category !== null ? otherArticle.category.category : null"
@@ -161,76 +170,52 @@
     <!---------------------------------------------------  スクリプト  -------------------------------------------------->
   </div>
 </template>
-<script setup lang="ts">
-import type { Article } from '../../types/micro-cms'
-import axios from 'axios'
-import { useAsyncData, useRoute, useRuntimeConfig } from '#imports'
-const config = useRuntimeConfig()
-const { params } = useRoute()
-const { data: article } = useFetch<Article>(`/api/articles/${params.id}`)
-const { data: otherArticles } = useAsyncData(async () => {
-  // 名前が取得できたとき
-  if (article.value?.name !== null) {
-    // その他の記事を取得
-    const response = await axios.get<Article[]>(`${config.API_URL}/article`, {
-      headers: {
-        'X-MICROCMS-API-KEY': config.MICROCMS_API_KEY,
-      },
-      params: {
-        filters: `name[equals]${article.value?.name.id}[and]id[not_equals]${article.value?.id}`,
-        limit: 3,
-      },
-    })
-    return response.data
-  }
-})
-const { data: recommendArticles } = useAsyncData(async () => {
-  // おすすめ記事取得
-  const response = await axios.get<Article[]>(`${config.API_URL}/article`, {
-    headers: {
-      'X-MICROCMS-API-KEY': config.MICROCMS_API_KEY,
-    },
-    params: {
-      filters: `id[not_equals]${article.value?.id}`,
-      limit: 4,
-    },
-    // 三回目の処理のコールバック
-  })
-  return response.data
-})
-</script>
+
 <script lang="ts">
 declare global {
   interface Window {
     MathJax: any
   }
 }
-export default {
-  data() {
-    return {}
+</script>
+
+<script setup lang="ts">
+import type { Article } from '../../types/micro-cms'
+import { useRoute } from '#imports'
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+
+const { params } = useRoute()
+const { data: article } = useFetch<Article>(`/api/articles/${params.id}`)
+const { data: otherArticles } = useFetch<MicroCMSListResponse<Article>>(`/api/article`, {
+  params: {
+    filters: `name[equals]${article.value?.name.id}[and]id[not_equals]${article.value?.id}`,
+    limit: 3,
   },
-  mounted() {
-    this.renderMathJax()
+})
+const { data: recommendArticles } = useFetch<MicroCMSListResponse<Article>>(`/api/article`, {
+  params: {
+    filters: `id[not_equals]${article.value?.id}`,
+    limit: 4,
   },
-  methods: {
-    renderMathJax() {
-      if (window.MathJax) {
-        window.MathJax.Hub.Config({
-          TeX: { equationNumbers: { autoNumber: 'AMS' } },
-          tex2jax: {
-            inlineMath: [
-              ['$', '$'],
-              ['\\(', '\\)'],
-            ],
-            processEscapes: true,
-          },
-          'HTML-CSS': { matchFontHeight: false },
-          displayAlign: 'center',
-          displayIndent: '2em',
-        })
-        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
-      }
-    },
-  },
+})
+
+const renderMathJax = () => {
+  if (window.MathJax) {
+    window.MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: 'AMS' } },
+      tex2jax: {
+        inlineMath: [
+          ['$', '$'],
+          ['\\(', '\\)'],
+        ],
+        processEscapes: true,
+      },
+      'HTML-CSS': { matchFontHeight: false },
+      displayAlign: 'center',
+      displayIndent: '2em',
+    })
+    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
+  }
 }
+onMounted(() => renderMathJax())
 </script>
