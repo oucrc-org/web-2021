@@ -4,7 +4,7 @@
       お知らせ
     </div>
     <div
-      v-for="notice in notices.contents"
+      v-for="notice in news.contents"
       :key="notice.id"
       class="border-b-2 border-divider text-secondary"
     >
@@ -29,14 +29,18 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+import { News } from '~/types/micro-cms'
+
+interface Props {
+  news: MicroCMSListResponse<News>
+}
+
+const props = defineProps<Props>()
+</script>
+<script lang="ts">
 export default {
   name: 'News',
-  props: {
-    notices: {
-      type: Object,
-      default: {},
-    },
-  },
 }
 </script>

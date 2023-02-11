@@ -1,6 +1,6 @@
 <template>
   <div :class="{ fadeIn: visible }">
-    <slot v-show="visible"></slot>
+    <slot v-if="visible" />
   </div>
 </template>
 

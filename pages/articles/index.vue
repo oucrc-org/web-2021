@@ -1,15 +1,9 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
-    <OGPSetter
-      title="記事一覧"
-      description="OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！"
-      :url="this.$route.path"
-    />
-
     <!-- 絞り込みツール -->
     <Title label="絞り込み" class="mt-16" />
     <form @submit.prevent name="search" class="md:mx-32 my-8">
-      <div class="mt-10">
+      <div v-if="categories" class="mt-10">
         <LabeledCheckbox
           v-for="category in categories.contents"
           :key="`checkbox-${category.id}`"
@@ -20,7 +14,7 @@
           :value="category.id"
         />
       </div>
-      <div class="mt-4">
+      <div v-if="serieses" class="mt-4">
         <LabeledCheckbox
           v-for="series in serieses.contents"
           :key="`checkbox-${series.id}`"
@@ -35,7 +29,7 @@
 
     <!-- 記事一覧 -->
     <div
-      v-if="articles.contents !== void 0 && articles.contents.length"
+      v-if="articles && articles.contents.length"
       class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
     >
       <div class="container mx-auto">
@@ -66,7 +60,8 @@
         <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
       <NuxtLink
-        v-for="pageNum in arrayJumpTo"
+        v-if="articles?.totalCount"
+        v-for="pageNum in getArrayJumpTo(articles?.totalCount, 9)"
         :key="'jumper' + pageNum"
         :to="{ name: listType, params: { p: pageNum } }"
       >
@@ -78,7 +73,7 @@
         </div>
       </NuxtLink>
       <NuxtLink
-        v-if="currentPageNum < Math.ceil(articles.totalCount / 9)"
+        v-if="articles && currentPageNum < Math.ceil(articles.totalCount / 9)"
         :to="{ name: listType, params: { p: currentPageNum + 1 } }"
       >
         <div class="text-subtext text-xl">&gt;</div>
@@ -86,78 +81,56 @@
     </div>
   </div>
 </template>
+<script setup lang="ts">
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+import { Article, Category, Series } from '~/types/micro-cms'
 
-<script>
-import axios from 'axios'
+const { params, name } = useRoute()
 
-export default {
-  data() {
-    return {
-      currentPageNum: {
-        type: Number,
-        default: 1,
-      },
-      arrayJumpTo: [],
-      articles: { contents: [] },
-      categories: { contents: [] },
-      serieses: { contents: [] },
-      listType: this.$route.name === 'articles' ? 'article' : this.$route.name,
-    }
-  },
-  asyncData({ params, $config }) {
-    const currentPageNum = +params.p || 1
-    const currentTime = new Date().toISOString()
-    const url = $config.API_URL
-    const headers = {
-      'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-    }
-    const searchQuery = []
-    if ('categoryId' in params) {
-      searchQuery.push(`category[equals]${params.categoryId}`)
-    }
-    if ('seriesId' in params) {
-      searchQuery.push(`series[equals]${params.seriesId}`)
-    }
-    const promiseArticles = axios.get(url + '/article', {
-      headers,
-      params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body',
-        orders: '-date,-createdAt',
-        filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
-      },
-    })
-    const promiseCategories = axios.get(url + '/category', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,category',
-      },
-    })
-    const promiseSerieses = axios.get(url + '/series', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,series',
-        orders: 'createdAt',
-      },
-    })
-    return Promise.all([promiseArticles, promiseCategories, promiseSerieses]).then(
-      ([articles, categories, serieses]) => {
-        return Promise.resolve({
-          articles: articles.data,
-          currentPageNum: currentPageNum,
-          arrayJumpTo: getArrayJumpTo(articles.data.totalCount, 9),
-          categories: categories.data,
-          serieses: serieses.data,
-        })
-      }
-    )
-  },
+/**
+ * カテゴリーやシリーズのページも、pages:expandフックによりこのVueを使う
+ */
+let listType = 'article'
+if (name && name.toString() !== 'articles') {
+  listType = name.toString()
 }
 
-function getArrayJumpTo(totalCount, countPerPage) {
+const searchQuery: string[] = []
+if ('categoryId' in params) {
+  searchQuery.push(`category[equals]${params.categoryId}`)
+}
+if ('seriesId' in params) {
+  searchQuery.push(`series[equals]${params.seriesId}`)
+}
+const currentPageNum = Number(params.p) ?? 1
+const currentTime = new Date().toISOString()
+const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article', {
+  params: {
+    limit: 9,
+    offset: (currentPageNum - 1) * 9,
+    fields: 'id,title,category,image,body',
+    orders: '-date,-createdAt',
+    filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
+  },
+})
+const { data: categories } = useFetch<MicroCMSListResponse<Category>>('/api/category', {
+  params: {
+    limit: 1000,
+    fields: 'id,category',
+  },
+})
+const { data: serieses } = useFetch<MicroCMSListResponse<Series>>('/api/series', {
+  params: {
+    limit: 1000,
+    fields: 'id,series',
+    orders: 'createdAt',
+  },
+})
+useSeoMeta({
+  title: '記事一覧',
+  description: 'OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！',
+})
+const getArrayJumpTo = (totalCount: number, countPerPage: number) => {
   return [...Array(Math.ceil(totalCount / countPerPage)).keys()].map((i) => i + 1)
 }
 </script>

@@ -4,7 +4,7 @@
     :class="$style.article"
   >
     <!-- ▼ トップ画像 -->
-    <div v-if="typeof article.image !== 'undefined' && article.image !== null">
+    <div v-if="article.image && article.image.width">
       <picture>
         <source
           type="image/webp"
@@ -44,15 +44,17 @@
       >
         執筆者: {{ article.name.name }}
       </p>
-      <p class="sm:text-lg text-secondary tracking-widest">最終更新: {{ timeUpdated }}</p>
+      <p class="sm:text-lg text-secondary tracking-widest">
+        最終更新: {{ $dayjs(article.updatedAt).format('YYYY/MM/DD') }}
+      </p>
     </div>
     <!-- ▲ サブテキスト -->
 
     <!-- ▼ タグ -->
     <div class="mx-8 sm:mx-16 my-8">
       <NuxtLink
-        :to="`/articles/category/${category.id}`"
-        v-if="category !== null"
+        :to="`/articles/category/${article.category.id}`"
+        v-if="article.category !== null"
         class="bg-blockquote inline-block mb-3 mr-3 rounded-lg pb-2 px-4"
       >
         <span class="inline-block h-6 w-6">
@@ -64,13 +66,13 @@
           />
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
-          category.category
+          article.category.category
         }}</span>
       </NuxtLink>
 
       <NuxtLink
-        :to="`/articles/series/${series.id}`"
-        v-if="series !== null"
+        :to="`/articles/series/${article.series.id}`"
+        v-if="article.series !== null"
         class="bg-blockquote inline-block rounded-lg pb-2 px-4"
       >
         <span class="inline-block h-6 w-6">
@@ -82,7 +84,7 @@
           />
         </span>
         <span class="align-top inline-block pl-2 pt-2 text-secondary text-sm">{{
-          series.series
+          article.series.series
         }}</span>
       </NuxtLink>
     </div>
@@ -90,7 +92,7 @@
 
     <!-- ▼ ランキング -->
     <div class="mx-8 sm:mx-16 my-8">
-      <div v-for="value in ranking" :key="value.id" class="inline-block">
+      <div v-for="[key, value] in Object.entries(ranking)" :key="key" class="inline-block">
         <div
           v-if="value.data.includes(article.id)"
           :class="value.bg_class"
@@ -127,28 +129,24 @@
     <!-- ▲ 記事本文 -->
   </section>
 </template>
-
+<script setup lang="ts">
+import { Article } from '~/types/micro-cms'
+interface Props {
+  article: Article
+}
+const props = defineProps<Props>()
+useHead({
+  script: [
+    { src: 'https://polyfill.io/v3/polyfill.min.js?features=es6' },
+    {
+      src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML',
+    },
+  ],
+})
+</script>
 <script>
 export default {
   name: 'ArticleContent',
-  props: {
-    article: {
-      type: Object,
-      default: '',
-    },
-    category: {
-      type: Object,
-      default: null,
-    },
-    series: {
-      type: Object,
-      default: null,
-    },
-    timeUpdated: {
-      type: String,
-      default: '',
-    },
-  },
   data() {
     return {
       ranking: {
@@ -195,16 +193,6 @@ export default {
           data: ['wnkvw5pd8b1', 'cfykct7kadve', 'h_19frtxx7c'],
         },
       },
-    }
-  },
-  head() {
-    return {
-      script: [
-        { src: 'https://polyfill.io/v3/polyfill.min.js?features=es6', mode: 'client' },
-        {
-          src: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML',
-        },
-      ],
     }
   },
 }
