@@ -124,6 +124,8 @@
     ></span>
     <!-- ▲ 記事本文 -->
   </section>
+  <!-- TODO: 任意の -->
+  <component is="script" src=""></component>
 </template>
 <script setup lang="ts">
 import 'highlight.js/styles/androidstudio.css'

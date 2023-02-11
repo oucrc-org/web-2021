@@ -67,7 +67,7 @@ Object.keys(allMembers)
     membersByYear[a.toString() + ' '] = allMembers[Number(a)]
   })
 
-useSeoMeta({
+useServerSeoMeta({
   title: '部員一覧',
   description: 'OUCRC（岡山大学電子計算機研究会）の皆さんのプロフィールの一覧です！',
 })

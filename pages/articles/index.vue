@@ -124,8 +124,15 @@ const { data: serieses } = useFetch<MicroCMSListResponse<Series>>('/api/series',
     orders: 'createdAt',
   },
 })
-useSeoMeta({
-  title: '記事一覧',
+let title = '記事一覧'
+if (params.categoryId || params.seriesId) {
+  title += ` 絞り込み結果`
+}
+if (params.p) {
+  title += ` ${params.p}ページ目`
+}
+useOG({
+  title,
   description: 'OUCRC（岡山大学電子計算機研究会）の皆さんの書いた記事の一覧です！',
 })
 const getArrayJumpTo = (totalCount: number, countPerPage: number) => {

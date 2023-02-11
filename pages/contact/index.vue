@@ -72,7 +72,7 @@
 </template>
 
 <script setup lang="ts">
-useSeoMeta({
+useOG({
   title: 'お問い合わせ',
   description: 'OUCRC（岡山大学電子計算機研究会）のお問い合わせフォームです！',
 })

@@ -110,7 +110,7 @@
           <Heading label="この人が書いた記事" />
           <div
             v-for="otherArticle in otherArticles.contents"
-            :key="`otherarticle-${otherArticle.id}`"
+            :key="`otherArticle-${otherArticle.id}`"
           >
             <ArticleCard :article="article" :href="`/articles/${otherArticle.id}`" class="py-8" />
           </div>
@@ -124,10 +124,14 @@
         >
           <Heading label="最新のオススメ記事" />
           <div
-            v-for="otherArticle in recommendArticles.contents"
-            :key="`otherarticle-${otherArticle.id}`"
+            v-for="recommendArticle in recommendArticles.contents"
+            :key="`recommendArticle-${recommendArticle.id}`"
           >
-            <ArticleCard :article="article" :href="`/articles/${otherArticle.id}`" class="py-8" />
+            <ArticleCard
+              :article="article"
+              :href="`/articles/${recommendArticle.id}`"
+              class="py-8"
+            />
           </div>
         </div>
         <!-- ▲ 最新のオススメ記事 -->
@@ -162,6 +166,11 @@ const { data: recommendArticles } = useFetch<MicroCMSListResponse<Article>>(`/ap
     filters: `id[not_equals]${article.value?.id}`,
     limit: 4,
   },
+})
+useOG({
+  title: article.value?.title,
+  description: article.value?.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, ''),
+  ogImage: article.value?.image?.url,
 })
 const renderMathJax = () => {
   if (window.MathJax) {
