@@ -74,6 +74,11 @@ export default defineNuxtConfig({
 
   modules: ['@nuxtjs/tailwindcss'],
 
+  build: {
+    // CommonJS警告が出たらここに追加すること
+    transpile: ['vue3-particles'],
+  },
+
   runtimeConfig: {
     MICROCMS_SERVICE_DOMAIN: process.env.MICROCMS_SERVICE_DOMAIN,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
