@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fadeIn: visible}">
+  <div :class="{ fadeIn: visible }">
     <slot v-show="visible"></slot>
   </div>
 </template>
@@ -10,28 +10,28 @@ export default {
   props: {
     delay: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   data() {
     return {
-      visible: false
-    };
+      visible: false,
+    }
   },
   beforeMount() {
-    window.addEventListener('scroll', this.handleScroll);
+    window.addEventListener('scroll', this.handleScroll)
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     handleScroll() {
       if (!this.visible) {
-        const top = this.$el.getBoundingClientRect().top;
-        this.visible = top < window.innerHeight - this.delay;
+        const top = this.$el.getBoundingClientRect().top
+        this.visible = top < window.innerHeight - this.delay
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

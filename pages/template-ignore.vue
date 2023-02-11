@@ -1,17 +1,13 @@
 <template>
-	<div id="app">
-		<div id="contents">
-			<!-- ここにコンテンツ -->
-		</div>
-	</div>
+  <div id="app">
+    <div id="contents">
+      <!-- ここにコンテンツ -->
+    </div>
+  </div>
 </template>
 
 <script>
-export default {
-	
-}
+export default {}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

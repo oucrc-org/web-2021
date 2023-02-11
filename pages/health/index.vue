@@ -8,22 +8,38 @@
       <fieldset>
         <legend class="text-primary text-2xl">体温を入力してください</legend>
 
-        <img class="mt-16 mx-auto" src="@/assets/images/health/health2.png" width="200" height="200" alt="Icon">
+        <img
+          class="mt-16 mx-auto"
+          src="@/assets/images/health/health2.png"
+          width="200"
+          height="200"
+          alt="Icon"
+        />
 
         <div>
-          <input v-model="temperature" type="number" max="38" min="35" step="0.1"
-                 class="bg-blockquote mt-8 px-4 py-2 text-primary w-64"
-                 placeholder="35.0 〜 38.0" required>
+          <input
+            v-model="temperature"
+            type="number"
+            max="38"
+            min="35"
+            step="0.1"
+            class="bg-blockquote mt-8 px-4 py-2 text-primary w-64"
+            placeholder="35.0 〜 38.0"
+            required
+          />
         </div>
 
-        <button class="bg-secondary cursor-pointer inline-block mt-10 px-5 py-2 text-white" type="submit">
+        <button
+          class="bg-secondary cursor-pointer inline-block mt-10 px-5 py-2 text-white"
+          type="submit"
+        >
           完了
         </button>
 
         <div class="mt-4">
-          <a class="cursor-pointer text-primary" @click="resetMember">{{
-              memberName
-            }}ではありません</a>
+          <a class="cursor-pointer text-primary" @click="resetMember"
+            >{{ memberName }}ではありません</a
+          >
         </div>
       </fieldset>
     </form>
@@ -31,12 +47,22 @@
       <fieldset>
         <legend class="text-primary text-2xl">あなたのニックネームを選択してください</legend>
 
-        <img class="mt-16 mx-auto" src="@/assets/images/health/health1.png" width="200" height="200" alt="Icon">
+        <img
+          class="mt-16 mx-auto"
+          src="@/assets/images/health/health1.png"
+          width="200"
+          height="200"
+          alt="Icon"
+        />
 
         <div>
           <select v-model="memberKey" class="bg-blockquote mt-8 px-5 py-2 text-primary w-64">
             <option disabled value="initial">ニックネームを選択</option>
-            <option v-for="member in members" :key="member.member_key" v-bind:value="member.member_key">
+            <option
+              v-for="member in members"
+              :key="member.member_key"
+              v-bind:value="member.member_key"
+            >
               {{ member.nick_name }}
             </option>
           </select>
@@ -44,12 +70,15 @@
 
         <div class="mt-4">
           <label class="text-primary">
-            <input v-model="saveMemberKey" type="checkbox">
+            <input v-model="saveMemberKey" type="checkbox" />
             次回もこのユーザーで入力する
           </label>
         </div>
 
-        <a class="bg-secondary cursor-pointer inline-block mt-10 px-5 py-2 text-white" @click="confirmMember">
+        <a
+          class="bg-secondary cursor-pointer inline-block mt-10 px-5 py-2 text-white"
+          @click="confirmMember"
+        >
           次へ
         </a>
       </fieldset>
@@ -58,7 +87,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
   data() {
@@ -70,7 +99,7 @@ export default {
       memberKey: 'initial',
       memberName: null,
       saveMemberKey: false,
-      temperature: null
+      temperature: null,
     }
   },
   watch: {
@@ -79,21 +108,23 @@ export default {
       handler() {
         if (this.memberKey !== 'initial')
           axios
-            .get('https://i10jan-api.herokuapp.com/v1.1/personal/inputTemperatureAction?member_key=' + this.memberKey)
-            .then(response => {
-              if (response.data.success)
-                this.memberName = response.data.data
+            .get(
+              'https://i10jan-api.herokuapp.com/v1.1/personal/inputTemperatureAction?member_key=' +
+                this.memberKey
+            )
+            .then((response) => {
+              if (response.data.success) this.memberName = response.data.data
             })
-      }
-    }
+      },
+    },
   },
   asyncData() {
     return axios
       .get('https://i10jan-api.herokuapp.com/v1.1/personal/memberSelectAction')
-      .then(response => {
+      .then((response) => {
         if (response.data.success)
           return {
-            members: response.data.data
+            members: response.data.data,
           }
       })
   },
@@ -111,8 +142,7 @@ export default {
       } else {
         this.showAlert = false
         this.issetMember = true
-        if (this.saveMemberKey)
-          this.$cookies.set('MemberKey', this.memberKey)
+        if (this.saveMemberKey) this.$cookies.set('MemberKey', this.memberKey)
       }
     },
     resetMember: function () {
@@ -127,8 +157,13 @@ export default {
       } else {
         this.showAlert = false
         axios
-          .post('https://i10jan-api.herokuapp.com/v1.1/personal/registerAction?member_key=' + this.memberKey + '&body_temperature=' + this.temperature)
-          .then(response => {
+          .post(
+            'https://i10jan-api.herokuapp.com/v1.1/personal/registerAction?member_key=' +
+              this.memberKey +
+              '&body_temperature=' +
+              this.temperature
+          )
+          .then((response) => {
             if (response.data.success) {
               this.temperature = null
               this.showAlert = true
@@ -139,11 +174,9 @@ export default {
             }
           })
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

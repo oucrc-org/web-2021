@@ -1,19 +1,27 @@
 <template>
   <section class="relative">
     <div class="absolute bg-repeat bg-white h-full w-full"></div>
-    <div id="heroArea" class="relative w-full" style="height: 95vh"/>
+    <div id="heroArea" class="relative w-full" style="height: 95vh" />
     <div class="absolute pt-56 sm:pt-72 text-center top-0 w-full">
       <picture>
-        <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')">
-        <img class="fadeIn2s h-12 sm:h-20 md:h-24 mx-auto" v-lazy="require('@/assets/images/common/oucrc-label.png')" alt="岡山大学電子計算機研究会">
+        <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')" />
+        <img
+          class="fadeIn2s h-12 sm:h-20 md:h-24 mx-auto"
+          v-lazy="require('@/assets/images/common/oucrc-label.png')"
+          alt="岡山大学電子計算機研究会"
+        />
       </picture>
       <h2 class="fadeIn4s mt-4 sm:mt-8 text-lg sm:text-2xl tracking-widest">
         つくりたいものをつくる
       </h2>
     </div>
     <picture>
-      <source type="image/webp" :srcset="require('@/assets/images/landing/scroll.webp')">
-      <img class="fadeIn2s1s absolute bottom-0 h-40 mx-auto left-0 right-0" v-lazy="require('@/assets/images/landing/scroll.png')" alt="Scroll">
+      <source type="image/webp" :srcset="require('@/assets/images/landing/scroll.webp')" />
+      <img
+        class="fadeIn2s1s absolute bottom-0 h-40 mx-auto left-0 right-0"
+        v-lazy="require('@/assets/images/landing/scroll.png')"
+        alt="Scroll"
+      />
     </picture>
   </section>
 </template>
@@ -22,11 +30,11 @@
 import particles from '~/assets/js/particles.config'
 
 export default {
-  name: "HeroArea",
+  name: 'HeroArea',
   mounted() {
     require('particles.js')
     particlesJS('heroArea', particles.data)
-  }
+  },
 }
 </script>
 
