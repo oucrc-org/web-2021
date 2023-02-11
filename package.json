@@ -7,8 +7,7 @@
     "build": "nuxi build",
     "start": "nuxi start",
     "generate": "nuxi generate",
-    "preview": "nuxi preview",
-    "postinstall": "nuxi prepare"
+    "preview": "nuxi preview"
   },
   "dependencies": {
     "autoprefixer": "^10.3.3",
