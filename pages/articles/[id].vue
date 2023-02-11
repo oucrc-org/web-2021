@@ -2,7 +2,9 @@
   <div class="container mx-auto">
     <div class="lg:grid grid-cols-3 gap-8 xl:gap-12 lg:mt-16 pb-10">
       <!---------------------------------------------------  メイン  --------------------------------------------------->
-      <ArticleContent v-if="article" :article="article" />
+      <section class="bg-white lg:col-span-2 row-span-2 mb-2 md:mb-32 pb-20 lg:shadow-xl">
+        <ArticleContent v-if="data?.article" :article="data?.article" />
+      </section>
       <!---------------------------------------------------  メイン  --------------------------------------------------->
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
@@ -11,12 +13,15 @@
       >
         <div class="grid grid-cols-9 gap-4 mt-12">
           <!-- ▼ メンバーアイコン -->
-          <NuxtLink :to="`/members/${article?.name.id}`" class="col-span-4">
-            <div v-if="article?.name.avatar !== void 0" class="inline-block pl-8 row-end-2">
+          <NuxtLink :to="`/members/${data?.article?.name.id}`" class="col-span-4">
+            <div v-if="data?.article?.name.avatar !== void 0" class="inline-block pl-8 row-end-2">
               <picture>
-                <source type="image/webp" :srcset="`${article?.name.avatar.url}?fm=webp&w=128`" />
+                <source
+                  type="image/webp"
+                  :srcset="`${data?.article?.name.avatar.url}?fm=webp&w=128`"
+                />
                 <img
-                  :src="`${article?.name.avatar.url}?w=128`"
+                  :src="`${data?.article?.name.avatar.url}?w=128`"
                   class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32"
                   alt="取得に失敗しました"
                 />
@@ -42,14 +47,14 @@
             <p
               class="bg-highlight inline-block px-5 xl:px-6 py-1 rounded-lg text-secondary text-sm tracking-widest"
             >
-              {{ article?.name.enteryear }}年度 入部
+              {{ data?.article?.name.enteryear }}年度 入部
             </p>
             <div class="lg:text-left xl:pl-3 pr-1">
               <a
-                v-if="article?.name.twitter"
+                v-if="data?.article?.name.twitter"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://twitter.com/${article?.name.twitter.replace(/@/g, '')}`"
+                :href="`https://twitter.com/${data?.article?.name.twitter.replace(/@/g, '')}`"
               >
                 <img
                   src="/images/member/sns-twitter.png"
@@ -58,10 +63,10 @@
                 />
               </a>
               <a
-                v-if="article?.name.github"
+                v-if="data?.article?.name.github"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://github.com/${article?.name.github.replace(/@/g, '')}`"
+                :href="`https://github.com/${data?.article?.name.github.replace(/@/g, '')}`"
               >
                 <img
                   src="/images/member/sns-github.png"
@@ -70,10 +75,10 @@
                 />
               </a>
               <a
-                v-if="article?.name.youtube"
+                v-if="data?.article?.name.youtube"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://www.youtube.com/channel/${article?.name.youtube}`"
+                :href="`https://www.youtube.com/channel/${data?.article?.name.youtube}`"
               >
                 <img
                   src="/images/member/sns-youtube.png"
@@ -87,28 +92,25 @@
         </div>
 
         <!-- ▼ メンバー紹介 -->
-        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article?.name !== void 0">
+        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="data?.article?.name !== void 0">
           <p class="font-bold text-3xl text-secondary tracking-widest">
-            <NuxtLink :to="`/members/${article?.name.id}`">
-              {{ article?.name.name }}
+            <NuxtLink :to="`/members/${data?.article?.name.id}`">
+              {{ data?.article?.name.name }}
             </NuxtLink>
           </p>
           <p class="leading-7 mt-1 text-secondary tracking-widest">
-            <NuxtLink :to="`/members/${article?.name.id}`">
-              {{ article?.name.status }}
+            <NuxtLink :to="`/members/${data?.article?.name.id}`">
+              {{ data?.article?.name.status }}
             </NuxtLink>
           </p>
         </div>
         <!-- ▲ メンバー情報 -->
 
         <!-- ▼ この人が書いた記事 -->
-        <div
-          v-if="otherArticles && otherArticles.contents.length"
-          class="pt-24 mx-8 sm:mx-10 text-center"
-        >
+        <div class="pt-24 mx-8 sm:mx-10 text-center">
           <Heading label="この人が書いた記事" />
           <div
-            v-for="otherArticle in otherArticles.contents"
+            v-for="otherArticle in data?.otherArticles.contents"
             :key="`otherArticle-${otherArticle.id}`"
           >
             <ArticleCard
@@ -122,13 +124,10 @@
         <!-- ▲ この人が書いた記事 -->
 
         <!-- ▼ 最新のオススメ記事 -->
-        <div
-          v-if="recommendArticles && recommendArticles.contents.length"
-          class="pt-24 mx-8 sm:mx-10 text-center"
-        >
+        <div class="pt-24 mx-8 sm:mx-10 text-center">
           <Heading label="最新のオススメ記事" />
           <div
-            v-for="recommendArticle in recommendArticles.contents"
+            v-for="recommendArticle in data?.recommendArticles.contents"
             :key="`recommendArticle-${recommendArticle.id}`"
           >
             <ArticleCard
@@ -158,19 +157,16 @@ declare global {
 <script setup lang="ts">
 const { params } = useRoute()
 const { pending, data } = useFetch(`/api/article/${params.id}`)
-const article = data.value?.article
-const otherArticles = data.value?.otherArticles
-const recommendArticles = data.value?.recommendArticles
 
 useOG({
-  title: () => article?.title,
+  title: () => data?.value?.article?.title,
   description: () =>
-    article?.body
+    data?.value?.article?.body
       .slice(0, 200)
       .replace(/<br>/g, '\n')
       .replace(/<[^<>]+>/g, '')
       .replace(/\n/g, ''),
-  ogImage: () => article?.image?.url,
+  ogImage: () => data?.value?.article?.image?.url,
 })
 const renderMathJax = () => {
   if (window.MathJax) {
