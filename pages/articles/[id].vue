@@ -7,17 +7,16 @@
 
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
       <section
-        v-if="article && article.name !== null"
         class="bg-white border-t lg:border-none border-divider pt-16 lg:pt-0 sm:px-16 md:px-24 lg:px-0 lg:shadow-xl"
       >
         <div class="grid grid-cols-9 gap-4 mt-12">
           <!-- ▼ メンバーアイコン -->
-          <NuxtLink :to="`/members/${article.name.id}`" class="col-span-4">
-            <div v-if="article.name.avatar !== void 0" class="inline-block pl-8 row-end-2">
+          <NuxtLink :to="`/members/${article?.name.id}`" class="col-span-4">
+            <div v-if="article?.name.avatar !== void 0" class="inline-block pl-8 row-end-2">
               <picture>
-                <source type="image/webp" :srcset="`${article.name.avatar.url}?fm=webp&w=128`" />
+                <source type="image/webp" :srcset="`${article?.name.avatar.url}?fm=webp&w=128`" />
                 <img
-                  :src="`${article.name.avatar.url}?w=128`"
+                  :src="`${article?.name.avatar.url}?w=128`"
                   class="shadow-xl rounded-full w-32 lg:w-24 xl:w-32 h-32 lg:h-24 xl:h-32"
                   alt="取得に失敗しました"
                 />
@@ -43,14 +42,14 @@
             <p
               class="bg-highlight inline-block px-5 xl:px-6 py-1 rounded-lg text-secondary text-sm tracking-widest"
             >
-              {{ article.name.enteryear }}年度 入部
+              {{ article?.name.enteryear }}年度 入部
             </p>
             <div class="lg:text-left xl:pl-3 pr-1">
               <a
-                v-if="article.name.twitter"
+                v-if="article?.name.twitter"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://twitter.com/${article.name.twitter.replace(/@/g, '')}`"
+                :href="`https://twitter.com/${article?.name.twitter.replace(/@/g, '')}`"
               >
                 <img
                   src="/images/member/sns-twitter.png"
@@ -59,10 +58,10 @@
                 />
               </a>
               <a
-                v-if="article.name.github"
+                v-if="article?.name.github"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://github.com/${article.name.github.replace(/@/g, '')}`"
+                :href="`https://github.com/${article?.name.github.replace(/@/g, '')}`"
               >
                 <img
                   src="/images/member/sns-github.png"
@@ -71,10 +70,10 @@
                 />
               </a>
               <a
-                v-if="article.name.youtube"
+                v-if="article?.name.youtube"
                 target="_blank"
                 rel="noopener noreferrer"
-                :href="`https://www.youtube.com/channel/${article.name.youtube}`"
+                :href="`https://www.youtube.com/channel/${article?.name.youtube}`"
               >
                 <img
                   src="/images/member/sns-youtube.png"
@@ -88,15 +87,15 @@
         </div>
 
         <!-- ▼ メンバー紹介 -->
-        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article.name !== void 0">
+        <div class="mt-3 xl:mt-6 mx-10 pb-8" v-if="article?.name !== void 0">
           <p class="font-bold text-3xl text-secondary tracking-widest">
-            <NuxtLink :to="`/members/${article.name.id}`">
-              {{ article.name.name }}
+            <NuxtLink :to="`/members/${article?.name.id}`">
+              {{ article?.name.name }}
             </NuxtLink>
           </p>
           <p class="leading-7 mt-1 text-secondary tracking-widest">
-            <NuxtLink :to="`/members/${article.name.id}`">
-              {{ article.name.status }}
+            <NuxtLink :to="`/members/${article?.name.id}`">
+              {{ article?.name.status }}
             </NuxtLink>
           </p>
         </div>
@@ -112,7 +111,12 @@
             v-for="otherArticle in otherArticles.contents"
             :key="`otherArticle-${otherArticle.id}`"
           >
-            <ArticleCard :article="article" :href="`/articles/${otherArticle.id}`" class="py-8" />
+            <ArticleCard
+              v-if="otherArticle"
+              :article="otherArticle"
+              :href="`/articles/${otherArticle.id}`"
+              class="py-8"
+            />
           </div>
         </div>
         <!-- ▲ この人が書いた記事 -->
@@ -128,7 +132,8 @@
             :key="`recommendArticle-${recommendArticle.id}`"
           >
             <ArticleCard
-              :article="article"
+              v-if="recommendArticle"
+              :article="recommendArticle"
               :href="`/articles/${recommendArticle.id}`"
               class="py-8"
             />
@@ -139,6 +144,7 @@
       <!--------------------------------------------------  サイドバー  ------------------------------------------------->
     </div>
   </div>
+  <Loading v-if="pending" />
 </template>
 
 <script lang="ts">
@@ -150,15 +156,8 @@ declare global {
 </script>
 
 <script setup lang="ts">
-import type { Article } from '../../types/micro-cms'
-import { MicroCMSListResponse } from 'microcms-js-sdk'
-
 const { params } = useRoute()
-const { data } = useFetch<{
-  article: Article
-  otherArticles: MicroCMSListResponse<Article>
-  recommendArticles: MicroCMSListResponse<Article>
-}>(`/api/article/${params.id}`)
+const { pending, data } = useFetch(`/api/article/${params.id}`)
 const article = data.value?.article
 const otherArticles = data.value?.otherArticles
 const recommendArticles = data.value?.recommendArticles

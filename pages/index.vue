@@ -131,13 +131,10 @@
 </style>
 
 <script setup lang="ts">
-import { MicroCMSListResponse } from 'microcms-js-sdk'
-import type { News } from '../types/micro-cms'
-
 useOG({ titleTemplate: null })
 const { data: news } = useAsyncData(async () => {
   const currentTime = new Date().toISOString()
-  const response = await useFetch<MicroCMSListResponse<News>>(`/api/news`, {
+  const response = await useFetch(`/api/news`, {
     params: {
       limit: 3,
       fields: 'id,title,important,date',

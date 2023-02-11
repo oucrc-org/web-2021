@@ -31,15 +31,12 @@
     </form>
 
     <!-- 記事一覧 -->
-    <div
-      v-if="articles && articles.contents.length"
-      class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
-    >
+    <div class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center">
       <div class="container mx-auto">
         <Heading label="最新の投稿" class="mb-4" />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
-            v-for="article in articles.contents"
+            v-for="article in articles?.contents"
             :key="article.id"
             class="py-6"
             :article="article"
@@ -78,11 +75,9 @@
       </NuxtLink>
     </div>
   </div>
+  <Loading v-if="pending" />
 </template>
 <script setup lang="ts">
-import { MicroCMSListResponse } from 'microcms-js-sdk'
-import type { Article, Category, Series } from '~/types/micro-cms'
-
 const { params, name } = useRoute()
 
 /**
@@ -102,7 +97,7 @@ if ('seriesId' in params) {
 }
 const currentPageNum = Number(params.p) ?? 1
 const currentTime = new Date().toISOString()
-const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article', {
+const { pending, data } = useFetch('/api/article', {
   params: {
     limit: 9,
     offset: currentPageNum - 1 > 0 ? (currentPageNum - 1) * 9 : 0,
@@ -111,19 +106,9 @@ const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article
     filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
   },
 })
-const { data: categories } = useFetch<MicroCMSListResponse<Category>>('/api/category', {
-  params: {
-    limit: 1000,
-    fields: 'id,category',
-  },
-})
-const { data: serieses } = useFetch<MicroCMSListResponse<Series>>('/api/series', {
-  params: {
-    limit: 1000,
-    fields: 'id,series',
-    orders: 'createdAt',
-  },
-})
+const articles = data.value?.articles
+const categories = data.value?.categories
+const serieses = data.value?.serieses
 let title = '記事一覧'
 if (params.categoryId || params.seriesId) {
   title += ` 絞り込み結果`
