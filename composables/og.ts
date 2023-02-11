@@ -2,16 +2,22 @@ export const useOG = ({
   title,
   description,
   ogImage,
+  titleTemplate,
 }: {
-  title?: string
-  description?: string
-  ogImage?: string
+  title?: (() => string | undefined) | string
+  description?: (() => string | undefined) | string
+  ogImage?: (() => string | undefined) | string
+  titleTemplate?: string | null
 }) => {
   useHead({
-    title: (title ?? 'OUCRC').toString(),
+    title: title as string,
     meta: [
       {
-        property: 'description',
+        name: 'description',
+        content: description,
+      },
+      {
+        name: 'og:description',
         content: description,
       },
       {
@@ -20,8 +26,11 @@ export const useOG = ({
       },
     ],
   })
+
   useServerSeoMeta({
-    title: (title ?? 'OUCRC').toString(),
-    description,
+    title: title as string,
+    titleTemplate,
+    ogDescription: description,
+    ogImage,
   })
 }

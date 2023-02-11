@@ -168,9 +168,14 @@ const { data: recommendArticles } = useFetch<MicroCMSListResponse<Article>>(`/ap
   },
 })
 useOG({
-  title: article.value?.title,
-  description: article.value?.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, ''),
-  ogImage: article.value?.image?.url,
+  title: () => article.value?.title,
+  description: () =>
+    article.value?.body
+      .slice(0, 200)
+      .replace(/<br>/g, '\n')
+      .replace(/<[^<>]+>/g, '')
+      .replace(/\n/g, ''),
+  ogImage: () => article.value?.image?.url,
 })
 const renderMathJax = () => {
   if (window.MathJax) {

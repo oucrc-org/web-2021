@@ -157,9 +157,9 @@ const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article
   },
 })
 useOG({
-  title: member.value?.name ?? '',
-  description: member.value?.status,
-  ogImage: member.value?.avatar?.url,
+  title: () => member.value?.name,
+  description: () => member.value?.status,
+  ogImage: () => member.value?.avatar?.url,
 })
 </script>
 
