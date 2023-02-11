@@ -84,7 +84,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { Article } from '~/types/micro-cms'
+import type { Article } from '~/types/micro-cms'
 
 interface Props {
   article: Article

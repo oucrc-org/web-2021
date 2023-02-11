@@ -7,7 +7,7 @@
 
     <div class="lg:grid grid-cols-4 xl:grid-cols-5 gap-24 mt-16 px-8">
       <div class="col-span-2 xl:col-span-3">
-        <News :news="news" />
+        <News v-if="news" :news="news" />
       </div>
       <div class="col-span-2 mt-32 lg:mt-0">
         <a
@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { News } from '~/types/micro-cms'
+import type { News } from '~/types/micro-cms'
 const currentTime = new Date().toISOString()
 const { data: news } = useFetch<MicroCMSListResponse<News>>('/api/news', {
   params: {

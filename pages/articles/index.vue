@@ -81,7 +81,7 @@
 </template>
 <script setup lang="ts">
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { Article, Category, Series } from '~/types/micro-cms'
+import type { Article, Category, Series } from '~/types/micro-cms'
 
 const { params, name } = useRoute()
 

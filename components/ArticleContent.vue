@@ -11,7 +11,7 @@
           :srcset="`${article.image.url}?fm=webp${article.image.width > 1008 ? '&w=1008' : ''}`"
         />
         <img
-          src="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
+          :src="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
           class="h-64 sm:h-96 md:h-120 object-cover"
           style="margin: 0 !important"
           alt="トップ画像"
@@ -127,7 +127,7 @@
 </template>
 <script setup lang="ts">
 import 'highlight.js/styles/androidstudio.css'
-import { Article } from '~/types/micro-cms'
+import type { Article } from '~/types/micro-cms'
 interface Props {
   article: Article
 }
