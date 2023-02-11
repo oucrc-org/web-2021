@@ -139,9 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { useAsyncData, useFetch } from '#imports'
 import { MicroCMSListResponse } from 'microcms-js-sdk'
-import { ref } from 'vue'
 import type { News } from '../types/micro-cms'
 
 useSeoMeta({

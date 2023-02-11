@@ -1,15 +1,7 @@
 <template>
   <div>
-    <OGPSetter
-      :title="member.name"
-      :description="member.status"
-      :url="this.$route.path"
-      :image="member.avatar !== void 0 ? member.avatar.url : null"
-    />
-
     <!---------------------------------------------------  部員情報  --------------------------------------------------->
-
-    <section class="container mx-auto px-3 pt-16 lg:pt-0">
+    <section v-if="member" class="container mx-auto px-3 pt-16 lg:pt-0">
       <!-- ▼ 記事一覧じゃない方(flexに変えました) -->
       <div class="flex flex-col md:flex-row mt-16 md:mt-20 justify-between px-6">
         <div class="lg:pl-8 pr-6">
@@ -122,7 +114,7 @@
       </div>
 
       <!-- ▼ 自己紹介画像 -->
-      <div v-if="member.introImage !== void 0" class="my-32">
+      <div v-if="member && member.introImage" class="my-32">
         <Title label="自己紹介画像" class="mb-10" />
         <picture>
           <source type="image/webp" :srcset="member.introImage.url + '?fm=webp'" />
@@ -133,7 +125,7 @@
 
       <!-- ▼ この人が書いた記事 -->
       <div
-        v-if="articles.contents !== void 0 && articles.contents.length"
+        v-if="articles && articles.contents.length"
         class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
       >
         <div class="container mx-auto">
@@ -160,72 +152,22 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios'
+<script setup lang="ts">
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+import { Article, Member } from '~~/types/micro-cms'
+const { params } = useRoute()
 
-export default {
-  data() {
-    return {
-      member: 'no data',
-      articles: {
-        contents: [],
-      },
-    }
+const { data: member } = useFetch<Member>(`/api/member/${params.id}`)
+const { data: articles } = useFetch<MicroCMSListResponse<Article>>('/api/article', {
+  params: {
+    limit: 12,
+    filters: `name[equals]${member.value?.id}`,
   },
-  asyncData({ params, error, $config }) {
-    /*一回目：メンバー情報の取得*/
-    return axios
-      .get(`${$config.API_URL}/member/${params.id}`, {
-        headers: {
-          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-        },
-        /*一回目のコールバック*/
-      })
-      .then((response) => {
-        /*メンバーのIDが取得出来た時*/
-        if (response.data.id !== void 0) {
-          return axios
-            .get(`${$config.API_URL}/article`, {
-              headers: {
-                'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-              },
-              params: {
-                limit: 10000,
-                filters: `name[equals]${response.data.id}`,
-              },
-
-              /*二回目のコールバック*/
-            })
-            .then((res) => {
-              return {
-                member: response.data,
-                articles: res.data,
-              }
-
-              /*二回目の処理の例外処理*/
-            })
-            .catch(function (e) {
-              error({
-                statusCode: e.response.status,
-                message: e.message,
-              })
-            })
-        } else {
-          /*メンバーのIDが取得できなかったとき*/
-          return {
-            member: response.data,
-          }
-        }
-        /*一回目処理のの例外処理*/
-      })
-      .catch(function (e) {
-        error({
-          statusCode: e.response.status,
-          message: e.message,
-        })
-      })
-  },
-}
+})
+useSeoMeta({
+  title: member.value?.name,
+  description: member.value?.status,
+})
 </script>
 
 <style module>
