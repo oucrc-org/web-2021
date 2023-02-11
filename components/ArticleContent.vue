@@ -11,7 +11,7 @@
           :srcset="`${article.image.url}?fm=webp${article.image.width > 1008 ? '&w=1008' : ''}`"
         />
         <img
-          v-lazy="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
+          src="`${article.image.url}${article.image.width > 1008 ? '?w=1008' : ''}`"
           class="h-64 sm:h-96 md:h-120 object-cover"
           style="margin: 0 !important"
           alt="トップ画像"
@@ -20,12 +20,8 @@
     </div>
     <div v-else>
       <picture>
-        <source type="image/webp" :srcset="require('@/assets/images/article/cover.webp')" />
-        <img
-          v-lazy="require('@/assets/images/article/cover.jpg')"
-          class="block m-auto w-full"
-          alt="トップ画像"
-        />
+        <source type="image/webp" srcset="/images/article/cover.webp" />
+        <img src="/images/article/cover.jpg" class="block m-auto w-full" alt="トップ画像" />
       </picture>
     </div>
     <!-- ▲ トップ画像 -->
@@ -60,7 +56,7 @@
         <span class="inline-block h-6 w-6">
           <img
             class="pt-2"
-            v-lazy="require('@/assets/images/article/category.svg')"
+            src="/images/article/category.svg"
             style="margin: 0 !important"
             alt="カテゴリー"
           />
@@ -78,7 +74,7 @@
         <span class="inline-block h-6 w-6">
           <img
             class="pt-2"
-            v-lazy="require('@/assets/images/article/series.svg')"
+            src="/images/article/series.svg"
             style="margin: 0 !important"
             alt="シリーズ"
           />
@@ -130,6 +126,7 @@
   </section>
 </template>
 <script setup lang="ts">
+import 'highlight.js/styles/androidstudio.css'
 import { Article } from '~/types/micro-cms'
 interface Props {
   article: Article
@@ -144,7 +141,7 @@ useHead({
   ],
 })
 </script>
-<script>
+<script lang="ts">
 export default {
   name: 'ArticleContent',
   data() {

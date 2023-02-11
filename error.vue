@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <div class="error container mx-auto bg-white text-center m-8">
-      <p class="text-9xl">{{ error?.message ?? 'エラー' }}</p>
-      <div v-if="error?.statusCode === 404" class="text-5xl">ページが見つかりませんでした</div>
+      <p class="text-9xl">{{ error.statusCode ?? 'エラー' }}</p>
+      <div v-if="error.statusCode === 404" class="text-5xl">ページが見つかりませんでした</div>
       <div v-else>エラーが発生しました</div>
     </div>
     <div class="container mx-auto text-center m-8">
@@ -17,10 +17,7 @@
 </template>
 
 <script setup>
-import { clearError } from '#imports'
-const props = defineProps({
-  error: Object,
-})
+const error = useError()
 const handleError = () => clearError({ redirect: '/' })
 </script>
 

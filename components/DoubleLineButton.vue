@@ -1,17 +1,12 @@
 <template>
   <!-- todo: buttonタグでonClick2回発火しないようにリファクタリング / 苦肉の策でpタグにしているっぽい -->
   <p class="double-line-button transform hover:scale-105 transition duration-500 ease-in-out">
-    <img
-      v-if="hasRightArrow"
-      class="pt-1"
-      v-lazy="require('@/assets/images/common/article-link.svg')"
-      alt=">"
-    />
+    <img v-if="hasRightArrow" class="pt-1" src="/images/common/article-link.svg" :alt="label" />
     <span class="mr-1 tracking-widest">{{ label }}</span>
   </p>
 </template>
 
-<script>
+<script lang="ts">
 export default {
   name: 'DoubleLineButton',
   props: {

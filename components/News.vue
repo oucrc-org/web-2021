@@ -17,11 +17,7 @@
             {{ notice.title }}
           </p>
           <div class="text-right float-right pr-5">
-            <img
-              class="mt-3 h-2"
-              v-lazy="require('@/assets/images/common/news-link.svg')"
-              alt="News"
-            />
+            <img class="mt-3 h-2" src="/images/common/news-link.svg" alt="News" />
           </div>
         </div>
       </NuxtLink>

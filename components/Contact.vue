@@ -19,11 +19,7 @@
         <hr class="line" />
 
         <div class="text-left mb-6 mt-8">
-          <img
-            class="inline h-6"
-            v-lazy="require('@/assets/images/landing/contact-mail.svg')"
-            alt="Mail"
-          />
+          <img class="inline h-6" src="/images/landing/contact-mail.svg" alt="Mail" />
           <a
             href="mailto:oucrc.master@gmail.com"
             class="font-semibold ml-4 text-secondary tracking-widest"
@@ -33,11 +29,7 @@
         </div>
 
         <div class="text-left my-6">
-          <img
-            class="inline h-6"
-            v-lazy="require('@/assets/images/landing/contact-twitter.svg')"
-            alt="Twitter"
-          />
+          <img class="inline h-6" src="/images/landing/contact-twitter.svg" alt="Twitter" />
           <a
             href="https://twitter.com/oucrc?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
             class="font-semibold ml-4 text-secondary tracking-widest"
@@ -49,11 +41,7 @@
         </div>
 
         <div class="text-left mb-8 mt-6">
-          <img
-            class="inline h-6"
-            v-lazy="require('@/assets/images/landing/contact-google-form.svg')"
-            alt="GoogleForm"
-          />
+          <img class="inline h-6" src="/images/landing/contact-google-form.svg" alt="GoogleForm" />
           <NuxtLink to="contact" class="font-semibold ml-4 text-secondary tracking-widest">
             お問い合わせはこちら
           </NuxtLink>

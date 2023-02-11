@@ -72,10 +72,10 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxtjs/tailwindcss', 'nuxt3-lazy-load'],
+  modules: ['@nuxtjs/tailwindcss'],
 
   runtimeConfig: {
-    API_URL: process.env.API_URL,
+    MICROCMS_SERVICE_DOMAIN: process.env.MICROCMS_SERVICE_DOMAIN,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
     public: {
       GTAG_ID: process.env.GTAG_ID,
