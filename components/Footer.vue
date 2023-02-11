@@ -14,7 +14,7 @@
       </picture>
     </NuxtLink>
     <div class="text-sm text-center text-white pt-12 sm:pt-20">
-      &copy; 2021 OUCRC All rights reserved
+      &copy; 2023 OUCRC All rights reserved
     </div>
   </div>
 </template>
