@@ -4,7 +4,6 @@ import { addHljsClassToHtml } from '~/composables/highlight'
 
 export default defineEventHandler(async (event) => {
   const id = event.context.params?.id
-  console.log(typeof id)
   if (typeof id === 'string') {
     const data = await client.get<Article>({
       endpoint: 'article',
