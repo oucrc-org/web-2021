@@ -22,6 +22,8 @@ npx git-cz
 
 ## 本番における動作確認
 
+**Netlifyのディレクトリは`dist`を指定してください**
+
 ```sh
 npm run build
 npm run start
