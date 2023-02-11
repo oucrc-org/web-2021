@@ -2,6 +2,10 @@ import { defineNuxtConfig } from 'nuxt/config'
 import { resolve } from 'path'
 
 export default defineNuxtConfig({
+  nitro: {
+    // キャッシュ https://docs.netlify.com/configure-builds/on-demand-builders/
+    preset: 'netlify-builder',
+  },
   hooks: {
     'pages:extend'(pages) {
       pages.push(
@@ -29,10 +33,20 @@ export default defineNuxtConfig({
    * @see https://nuxt.com/docs/guide/concepts/rendering#route-rules
    */
   routeRules: {
+    // 一覧はキャッシュ期間長く
     '/articles': { swr: 3600 },
-    '/articles/**': { swr: 300 },
+    '/articles/p/**': { swr: 3600 },
+    '/articles/category/**': { swr: 3600 },
+    '/articles/series/**': { swr: 3600 },
+    // 個別ページは短く
+    '/articles/**': { swr: 600 },
+    '/contact': { static: true },
+    '/join': { static: true },
+    '/members': { swr: 3600 },
+    '/members/**': { swr: 600 },
     '/news': { swr: 3600 },
-    '/news/**': { swr: 300 },
+    '/news/**': { swr: 600 },
+    '/': { static: true },
   },
   css: ['/assets/css/index.scss'],
   app: {
