@@ -1,6 +1,12 @@
 <template>
   <div class="container mb-32 mx-auto px-10">
-    <Heading label="入部フォーム" class="mt-16" />
+    <OGPSetter
+      title="入部申込み"
+      description="OUCRC（岡山大学電子計算機研究会）への入部申込みフォームです！"
+      :url="this.$route.path"
+    />
+
+    <Title label="入部フォーム" class="mt-16" />
 
     <section class="text-center tracking-widest mt-8">
       <form @submit.prevent="submitForm" action="">
@@ -101,12 +107,7 @@
           </div>
         </div>
 
-        <DoubleLineButton
-          label="送信"
-          @click.native="submitForm"
-          class="mt-16 cursor-pointer"
-          :disabled="invalid"
-        />
+        <DoubleLineButton label="送信" @click.native="submitForm" class="mt-16 cursor-pointer" />
 
         <p class="mt-16 leading-7 text-sm">
           フォームから送信できない場合は、<a
@@ -122,81 +123,79 @@
   </div>
 </template>
 
-<script setup lang="ts">
-useOG({
-  title: '入部申込み',
-  description: 'OUCRC（岡山大学電子計算機研究会）への入部申込みフォームです！',
-})
-let invalid = ref(true)
-const form = ref({
-  studentNumber: '',
-  realName: '',
-  email: '',
-  phone: '',
-  nickname: '',
-  hobby: '',
-  comment: '',
-})
-const valid = ref({
-  studentNumber: false,
-  email: false,
-  phone: false,
-  nickname: false,
-})
-const check = () => {
-  invalid.value = Object.values(valid.value).some((x) => !x)
-}
-const router = useRouter()
-watch(form.value, () => {
-  if (!form.value.studentNumber.match(/^[a-zA-Z0-9]{8}$/)) {
-    valid.value.studentNumber = false
-  }
-  // HTML5と同レベルのValidation（RFC非準拠）
-  if (
-    !form.value.email.match(/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)
-  ) {
-    valid.value.email = false
-  }
-  if (!form.value.phone.match(/^[0-9-()]{9,13}$/)) {
-    valid.value.phone = false
-  }
-  if (form.value.nickname === '') {
-    valid.value.nickname = false
-  }
-  check()
-})
-const submitForm = async () => {
-  if (Object.values(valid.value).some((x) => !x)) {
-    return false
-  }
-  if (!window.confirm('送信してもよろしいですか？')) {
-    return false
-  }
+<script>
+import axios from 'axios'
 
-  const params = new URLSearchParams({
-    studentNumber: form.value.studentNumber,
-    realName: form.value.realName,
-    email: form.value.email,
-    phone: form.value.phone,
-    nickname: form.value.nickname,
-    hobby: form.value.hobby,
-    comment: form.value.comment,
-  })
-  return await fetch(`/api/join?${params.toString()}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+export default {
+  data() {
+    return {
+      form: {
+        studentNumber: '',
+        realName: '',
+        email: '',
+        phone: '',
+        nickname: '',
+        hobby: '',
+        comment: '',
+      },
+      valid: {
+        studentNumber: false,
+        email: false,
+        phone: false,
+        nickname: false,
+      },
+    }
+  },
+  methods: {
+    submitForm() {
+      if (!this.form.studentNumber.match(/^[a-zA-Z0-9]{8}$/)) {
+        this.valid.studentNumber = false
+      }
+      // HTML5と同レベルのValidation（RFC非準拠）
+      if (
+        !this.form.email.match(
+          /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+        )
+      ) {
+        this.valid.email = false
+      }
+      if (!this.form.phone.match(/^[0-9-()]{9,13}$/)) {
+        this.valid.phone = false
+      }
+      if (this.form.nickname === '') {
+        this.valid.nickname = false
+      }
+      if (Object.values(this.valid).some((x) => !x)) {
+        return false
+      }
+      if (!window.confirm('送信してもよろしいですか？')) {
+        return false
+      }
+
+      const url =
+        'https://docs.google.com/forms/u/0/d/e/1FAIpQLSds9xqdBsruaabapqvRkaW1gV10pv9lOJNasLCv5CHDZokdwQ/formResponse'
+      const params = new URLSearchParams({
+        'entry.1552183669': this.form.studentNumber,
+        'entry.514745000': this.form.realName,
+        'entry.821989733': this.form.email,
+        'entry.793184820': this.form.phone,
+        'entry.1050056731': this.form.nickname,
+        'entry.528663940': this.form.hobby,
+        'entry.1197263570': this.form.comment,
+      })
+      axios
+        .post(url, params, {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        })
+        .finally(() => {
+          window.alert('申込みが完了しました。')
+          this.$router.push('/')
+          return true
+        })
     },
-  })
-    .then(() => {
-      window.alert('申込みが完了しました。')
-      router.push('/')
-      return true
-    })
-    .catch((e) => {
-      window.alert('申し訳ありません。失敗しました')
-      console.error(e)
-    })
+  },
 }
 </script>
 
