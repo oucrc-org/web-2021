@@ -1,18 +1,11 @@
 <template>
   <div class="min-h-screen flex flex-col">
     <Header />
-    <div class="flex-grow pt-16"><NuxtPage /></div>
+    <Nuxt class="flex-grow pt-16" />
     <Footer />
   </div>
 </template>
-<script lang="ts" setup>
-const router = useRouter()
-const currentPath = computed(() => `https://oucrc.net${router.currentRoute.value.path}`)
 
-useHead({
-  meta: [{ property: 'og:url', content: currentPath }],
-})
-</script>
 <style>
 html {
   font-family: 'Noto Sans JP', Roboto, 'Source Sans Pro', -apple-system, BlinkMacSystemFont,

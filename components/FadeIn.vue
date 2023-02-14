@@ -1,10 +1,10 @@
 <template>
   <div :class="{ fadeIn: visible }">
-    <slot />
+    <slot v-show="visible"></slot>
   </div>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'FadeIn',
   props: {

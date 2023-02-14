@@ -2,10 +2,13 @@
   <div class="bg-footer h-48 sm:h-64 w-full z-30 flex-grow-0">
     <NuxtLink to="/">
       <picture>
-        <source type="image/webp" srcset="/images/common/oucrc-label-reverse.webp" />
+        <source
+          type="image/webp"
+          :srcset="require('~/assets/images/common/oucrc-label-reverse.webp')"
+        />
         <img
           class="h-10 sm:h-16 mt-16 sm:mt-20 mx-auto"
-          src="/images/common/oucrc-label-reverse.png"
+          v-lazy="require('~/assets/images/common/oucrc-label-reverse.png')"
           alt="岡山大学電子計算機研究会"
         />
       </picture>
@@ -15,3 +18,7 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {}
+</script>

@@ -1,17 +1,25 @@
 <template>
   <header>
     <div
-      class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-40"
+      class="bg-white text-lg flex flex-row h-16 justify-between opacity-90 px-3 shadow-md fixed w-full z-50"
     >
       <!-- ▼ ロゴ -->
       <NuxtLink to="/" class="m-2 flex flex-row items-center">
         <picture>
-          <source type="image/webp" srcset="/images/common/oucrc-logo.webp" />
-          <img class="h-10 hidden md:block mr-2" src="/images/common/oucrc-logo.png" alt="ロゴ" />
+          <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-logo.webp')" />
+          <img
+            class="h-10 hidden md:block mr-2"
+            v-lazy="require('@/assets/images/common/oucrc-logo.png')"
+            alt="ロゴ"
+          />
         </picture>
         <picture>
-          <source type="image/webp" srcset="/images/common/oucrc-label.webp" />
-          <img class="h-8" src="/images/common/oucrc-label.png" alt="岡山大学電子計算機研究会" />
+          <source type="image/webp" :srcset="require('@/assets/images/common/oucrc-label.webp')" />
+          <img
+            class="h-8"
+            v-lazy="require('@/assets/images/common/oucrc-label.png')"
+            alt="岡山大学電子計算機研究会"
+          />
         </picture>
       </NuxtLink>
       <!-- ▲ ロゴ -->
@@ -40,7 +48,7 @@
         <button class="focus:outline-none" v-on:click="flag = !flag" type="button">
           <img
             v-if="!flag"
-            src="/images/header/hamburger.svg"
+            v-lazy="require('~/assets/images/header/hamburger.svg')"
             width="18"
             height="18"
             alt="メニュー"
@@ -48,7 +56,7 @@
           />
           <img
             v-if="flag"
-            src="/images/header/close.svg"
+            v-lazy="require('~/assets/images/header/close.svg')"
             width="18"
             height="18"
             alt="キャンセル"
@@ -106,8 +114,14 @@
   </header>
 </template>
 
-<script setup lang="ts">
-const flag = ref(false)
+<script>
+export default {
+  data() {
+    return {
+      flag: false,
+    }
+  },
+}
 </script>
 
 <style scoped>

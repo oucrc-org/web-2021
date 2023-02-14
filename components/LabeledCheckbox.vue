@@ -6,14 +6,14 @@
   >
     <img
       class="inline h-6 mr-2"
-      :src="
+      v-lazy="
         name === 'category'
           ? checked
-            ? '/images/article/category-checked.svg'
-            : '/images/article/category.svg'
+            ? require('@/assets/images/article/category-checked.svg')
+            : require('@/assets/images/article/category.svg')
           : checked
-          ? '/images/article/series-checked.svg'
-          : '/images/article/series.svg'
+          ? require('@/assets/images/article/series-checked.svg')
+          : require('@/assets/images/article/series.svg')
       "
       alt="Image"
     />
@@ -30,7 +30,7 @@
   </label>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'LabeledCheckbox',
   data() {
@@ -60,7 +60,7 @@ export default {
     this.checked = this.checkQuery(this.id, this.name)
   },
   methods: {
-    checkQuery(id: string, kind: string) {
+    checkQuery(id, kind) {
       let value = kind === 'category' ? this.$route.params.categoryId : this.$route.params.seriesId
       if (value === 'undefined' || value === void 0) {
         return false

@@ -1,5 +1,12 @@
 module.exports = {
-  content: ['./**/*.vue'],
+  experimental: {
+    applyComplexClasses: true,
+  },
+  future: {
+    // removeDeprecatedGapUtilities: true,
+    // purgeLayersByDefault: true,
+  },
+  purge: [],
   theme: {
     extend: {
       colors: {

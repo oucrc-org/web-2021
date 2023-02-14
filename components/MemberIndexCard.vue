@@ -6,14 +6,14 @@
         <img
           class="object-cover shadow-xl rounded-full w-24 sm:w-32 h-24 sm:h-32 m-auto"
           alt="画像"
-          :src="`${imgPath}?fit=crop&w=128&h=128`"
+          v-lazy="`${imgPath}?fit=crop&w=128&h=128`"
         />
       </picture>
       <picture v-else>
-        <source type="image/webp" srcset="/images/member/member.webp" />
+        <source type="image/webp" :srcset="require('@/assets/images/member/member.webp')" />
         <img
           class="object-cover shadow-xl rounded-full w-24 sm:w-32 h-24 sm:h-32 m-auto"
-          src="/images/member/member.jpg"
+          :src="require('@/assets/images/member/member.jpg')"
           alt="メンバーアイコン"
         />
       </picture>
@@ -27,7 +27,7 @@
   </NuxtLink>
 </template>
 
-<script lang="ts">
+<script>
 export default {
   name: 'MemberIndexCard',
   props: {
