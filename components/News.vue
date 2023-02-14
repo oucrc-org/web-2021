@@ -4,7 +4,7 @@
       お知らせ
     </div>
     <div
-      v-for="notice in notices.contents"
+      v-for="notice in news.contents"
       :key="notice.id"
       class="border-b-2 border-divider text-secondary"
     >
@@ -17,11 +17,7 @@
             {{ notice.title }}
           </p>
           <div class="text-right float-right pr-5">
-            <img
-              class="mt-3 h-2"
-              v-lazy="require('@/assets/images/common/news-link.svg')"
-              alt="News"
-            />
+            <img class="mt-3 h-2" src="/images/common/news-link.svg" alt="News" />
           </div>
         </div>
       </NuxtLink>
@@ -29,14 +25,18 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { MicroCMSListResponse } from 'microcms-js-sdk'
+import type { News } from '~/types/micro-cms'
+
+interface Props {
+  news: MicroCMSListResponse<News>
+}
+
+const props = defineProps<Props>()
+</script>
+<script lang="ts">
 export default {
   name: 'News',
-  props: {
-    notices: {
-      type: Object,
-      default: {},
-    },
-  },
 }
 </script>

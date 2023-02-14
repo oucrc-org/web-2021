@@ -11,11 +11,14 @@ import timezone from 'dayjs/plugin/timezone'
  * [dayjsモジュール](https://github.com/nuxt-community/dayjs-module)が使えなかったので、手動でを定義
  * @see https://nuxtjs.org/docs/directory-structure/plugins/#inject-in-root--context
  */
-export default (context, inject) => {
+export default defineNuxtPlugin(() => {
   dayjs.locale('ja')
   dayjs.extend(utc)
   dayjs.extend(timezone)
   dayjs.tz.setDefault('Asia/Tokyo')
-  inject('dayjs', dayjs)
-  context.$dayjs = dayjs
-}
+  return {
+    provide: {
+      dayjs,
+    },
+  }
+})
