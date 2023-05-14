@@ -107,7 +107,6 @@ export default {
       'hast-util-sanitize',
       'hast-util-to-text',
       'hast-util-whitespace',
-      '',
     ],
   },
 
