@@ -192,6 +192,7 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
+import remarkGfm from 'remark-gfm'
 
 /**
  * 設定不要でハイライト可能な言語一覧▼
@@ -199,7 +200,8 @@ import remarkRehype from 'remark-rehype'
  * もし上記以外に必要なら、以下のように追加できる
  */
 import dart from 'highlight.js/lib/languages/dart'
-import remarkGfm from 'remark-gfm'
+import powershell from 'highlight.js/lib/languages/powershell'
+const languages = { dart, powershell }
 
 /**
  * HTMLをパースし、コードに適切なclassを付与する
@@ -222,7 +224,7 @@ export async function parseHtml(html) {
     .use(rehypeHighlight, {
       detect: true,
       // デフォルト以外の検知可能言語を追加
-      languages: { dart },
+      languages,
     })
     .use(rehypeStringify)
     .process(html)
@@ -245,7 +247,7 @@ export async function parseMarkdown(markdown) {
     .use(rehypeHighlight, {
       detect: true,
       // デフォルト以外の検知可能言語を追加
-      languages: { dart },
+      languages,
     })
     .use(rehypeStringify)
     .process(markdown)
@@ -264,19 +266,31 @@ function checkMarkdownEnabled(article) {
 /** 記事のbodyをパースして上書きする */
 async function parseArticle(article) {
   let body = article.body
+  let error = null
   const { body_markdown, body_html } = article
-  try {
-    if (checkMarkdownEnabled(article)) {
+
+  if (checkMarkdownEnabled(article)) {
+    try {
       body = await parseMarkdown(body_markdown)
-    } else if (body_html && body_html.length > 0) {
+    } catch (e) {
+      console.error(e)
+      error = JSON.stringify(e.message ?? e, null, '\t')
+      body = body_markdown
+    }
+  } else if (body_html && body_html.length > 0) {
+    try {
       body = await parseHtml(body_html)
+    } catch (e) {
+      console.error(e)
+      error = JSON.stringify(e.message ?? e, null, '\t')
+      body = body_html
     }
-    return {
-      ...article,
-      body,
-    }
-  } catch (e) {
-    return article
+  }
+
+  return {
+    ...article,
+    body,
+    error,
   }
 }
 

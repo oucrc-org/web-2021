@@ -120,6 +120,10 @@
     <!-- ▲ ランキング -->
 
     <!-- ▼ 記事本文 -->
+    <div v-if="article.error" class="p-3 bg-red-300 rounded-md">
+      <b>記事のパースに失敗したため、言語指定が適用されていません: </b>
+      <code>{{ article.error }}</code>
+    </div>
     <span
       v-html="article.body"
       class="block leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"
@@ -269,9 +273,9 @@ export default {
 }
 .article div[data-filename]::before {
   content: attr(data-filename);
-  @apply absolute top-0 right-0 py-1 px-2 bg-black;
+  @apply absolute top-0 left-0 py-1 px-2 bg-black;
   @apply text-sm text-white font-mono;
-  @apply rounded-bl-lg rounded-tr-lg;
+  @apply rounded-tl-lg rounded-br-lg;
 }
 
 .article blockquote {
