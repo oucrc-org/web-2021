@@ -185,120 +185,12 @@
 <script>
 import axios from 'axios'
 
-import { unified } from 'unified'
-import rehypeParse from 'rehype-parse'
-// import rehypeSanitize from 'rehype-sanitize';
-import rehypeHighlight from 'rehype-highlight'
-import rehypeStringify from 'rehype-stringify'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import remarkGfm from 'remark-gfm'
-
-/**
- * 設定不要でハイライト可能な言語一覧▼
- * @see https://github.com/wooorm/lowlight#syntaxes
- * もし上記以外に必要なら、以下のように追加できる
- */
-import dart from 'highlight.js/lib/languages/dart'
-import powershell from 'highlight.js/lib/languages/powershell'
-const languages = { dart, powershell }
-
-/**
- * HTMLをパースし、コードに適切なclassを付与する
- * 表示にはhighlight.jsのCSSが必要
- * HTMLにTeXを混ぜていてややこしいため、数式はクライアントサイドで描画する
- *
- * @see https://dev.classmethod.jp/articles/2020-04-15-conv-html-use-rehype/
- * @see https://github.com/rehypejs/rehype-highlight
- */
-export async function parseHtml(html) {
-  const parsed = await unified()
-    // まずHTMLをパースする
-    .use(rehypeParse, { fragment: true })
-    // YouTubeのiframeを消してしまわないように
-    // 以下のオプションだと中見が消えてしまうので保留
-    // TODO: YouTubeに対応しつつサニタイズ
-    // .use(rehypeSanitize, { tagNames: ['iframe'] })
-
-    // コードにハイライトを適用する
-    .use(rehypeHighlight, {
-      detect: true,
-      // デフォルト以外の検知可能言語を追加
-      languages,
-    })
-    .use(rehypeStringify)
-    .process(html)
-
-  return parsed.toString()
-}
-
-/**
- * MarkdownをパースしてHTMLに
- * こちらなら言語をコードブロックで指定可能
- */
-export async function parseMarkdown(markdown) {
-  const parsed = await unified()
-    // まずMDをパースする
-    .use(remarkParse)
-    // GFM (脚注や打ち消し線、テーブル、ToDoリスト)
-    .use(remarkGfm)
-    .use(remarkRehype)
-    // コードにハイライトを適用する
-    .use(rehypeHighlight, {
-      detect: true,
-      // デフォルト以外の検知可能言語を追加
-      languages,
-    })
-    .use(rehypeStringify)
-    .process(markdown)
-
-  return parsed.toString()
-}
-
 /**
  * @returns MDが有効か
  * @param {Article} article
  */
 function checkMarkdownEnabled(article) {
   return article.markdown_enabled && article.body_markdown && article.body_markdown.length > 0
-}
-
-/** 記事のbodyをパースして上書きする */
-async function parseArticle(article) {
-  let body = article.body
-  let error = null
-  const { body_markdown, body_html } = article
-
-  if (checkMarkdownEnabled(article)) {
-    try {
-      body = await parseMarkdown(body_markdown)
-    } catch (e) {
-      console.error(e)
-      error = JSON.stringify(e.message ?? e, null, '\t')
-      body = body_markdown
-    }
-  } else if (body_html && body_html.length > 0) {
-    try {
-      body = await parseHtml(body_html)
-    } catch (e) {
-      console.error(e)
-      error = JSON.stringify(e.message ?? e, null, '\t')
-      body = body_html
-    }
-  } else {
-    try {
-      body = await parseHtml(body)
-    } catch (e) {
-      console.error(e)
-      error = JSON.stringify(e.message ?? e, null, '\t')
-    }
-  }
-
-  return {
-    ...article,
-    body,
-    error,
-  }
 }
 
 export default {
@@ -338,35 +230,73 @@ export default {
       }
     },
   },
-  async asyncData({ params, error, $config, $dayjs }) {
-    let isAbortedThisFn = false;
+  async asyncData({ params, error, $config, $dayjs, $contentParser }) {
+    /** 記事のbodyをパースして上書きする */
+    async function parseArticle(article) {
+      let body = article.body
+      let error = null
+      const { body_markdown, body_html } = article
+
+      if (checkMarkdownEnabled(article)) {
+        try {
+          body = await $contentParser(body_markdown, { isMarkdown: true })
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+          body = body_markdown
+        }
+      } else if (body_html && body_html.length > 0) {
+        try {
+          body = await $contentParser(body_html)
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+          body = body_html
+        }
+      } else {
+        try {
+          body = await $contentParser(body)
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+        }
+      }
+
+      return {
+        ...article,
+        body,
+        error,
+      }
+    }
+
+    let isAbortedThisFn = false
     const headerAxios = {
       headers: {
         'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
       },
-    };
+    }
 
     // 記事が直接持つ（参照の内容以外の）情報を取得
     const { data: article } = await axios
       .get(`${$config.API_URL}/article/${params.id}`, { ...headerAxios })
       .catch((e) => {
-        isAbortedThisFn = true;
+        isAbortedThisFn = true
         error({
           statusCode: e.response?.status,
           message: e.message,
         })
-      });
-    if (isAbortedThisFn) return; // XXX: これ undefined を return していいの？
+      })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
 
     // 最終更新時間
-    const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD');
+    const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
 
     // 名前が取得できなかったときの処理
     if (article.name === null) {
       return {
         article,
         timeUpdated,
-      };
+      }
     }
 
     // 同じ作者のその他の記事を取得
@@ -379,13 +309,13 @@ export default {
         },
       })
       .catch((e) => {
-        isAbortedThisFn = true;
+        isAbortedThisFn = true
         error({
           statusCode: e.response?.status,
           message: e.message,
         })
-      });
-    if (isAbortedThisFn) return; // XXX: これ undefined を return していいの？
+      })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
 
     // おすすめ（新着）記事を取得
     const { data: recommendArticles } = await axios
@@ -397,21 +327,21 @@ export default {
         },
       })
       .catch((e) => {
-        isAbortedThisFn = true;
+        isAbortedThisFn = true
         error({
           statusCode: e.response?.status,
           message: e.message,
         })
-      });
-    if (isAbortedThisFn) return; // XXX: これ undefined を return していいの？
+      })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
 
-    const parsedArticle = await parseArticle(article);
+    const parsedArticle = await parseArticle(article)
     return {
       article: parsedArticle,
       otherArticles,
       recommendArticles,
-      timeUpdated
-    };
+      timeUpdated,
+    }
   },
 }
 </script>

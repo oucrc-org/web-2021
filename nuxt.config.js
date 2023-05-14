@@ -70,7 +70,11 @@ export default {
   css: ['@/assets/css/index.scss'],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [{ src: '~plugins/day.js' }, { src: '~plugins/lazyload.js' }],
+  plugins: [
+    { src: '~plugins/day.js' },
+    { src: '~plugins/lazyload.js' },
+    { src: '~plugins/content-parser.server.js' },
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -96,18 +100,11 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     /**
-     * パース系ライブラリはESMなので
+     * パース系ライブラリはESMなので、そのままではdevサーバーで使用できない
+     * スタンドアロンモードではサーバーサイドのバンドルに含めてしまう
+     * generate後の動作は問題ない
      */
-    transpile: [
-      'hast-util-to-html',
-      'hast-util-from-parse5',
-      'hast-util-is-element',
-      'hast-util-parse-selector',
-      'hast-util-raw',
-      'hast-util-sanitize',
-      'hast-util-to-text',
-      'hast-util-whitespace',
-    ],
+    standalone: true,
   },
 
   generate: {
