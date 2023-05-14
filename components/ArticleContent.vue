@@ -260,6 +260,19 @@ export default {
 .article p code {
   @apply bg-highlight mx-1 my-0 px-2 py-1 rounded text-base;
 }
+/* ファイル名 */
+.article div[data-filename] {
+  @apply relative;
+}
+.article div[data-filename] pre code {
+  padding-top: 3rem !important;
+}
+.article div[data-filename]::before {
+  content: attr(data-filename);
+  @apply absolute top-0 right-0 py-1 px-2 bg-black;
+  @apply text-sm text-white font-mono;
+  @apply rounded-bl-lg rounded-tr-lg;
+}
 
 .article blockquote {
   @apply p-2 bg-blockquote mb-4 border-l-8 border-blockquoteSidebar rounded pl-4;

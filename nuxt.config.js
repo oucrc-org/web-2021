@@ -91,10 +91,25 @@ export default {
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/markdownit'],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+    /**
+     * パース系ライブラリはESMなので
+     */
+    transpile: [
+      'hast-util-to-html',
+      'hast-util-from-parse5',
+      'hast-util-is-element',
+      'hast-util-parse-selector',
+      'hast-util-raw',
+      'hast-util-sanitize',
+      'hast-util-to-text',
+      'hast-util-whitespace',
+      '',
+    ],
+  },
 
   generate: {
     async routes() {
@@ -189,5 +204,14 @@ export default {
   publicRuntimeConfig: {
     API_URL: process.env.API_URL,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
+  },
+
+  /**
+   * `$md.render()`で描画可能に
+   * @see https://github.com/nuxt-community/markdownit-module#using-md-to-render-markdown
+   * */
+  markdownit: {
+    runtime: true,
+    use: ['markdown-it-highlightjs'],
   },
 }

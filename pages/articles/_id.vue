@@ -185,6 +185,101 @@
 <script>
 import axios from 'axios'
 
+import { unified } from 'unified'
+import rehypeParse from 'rehype-parse'
+// import rehypeSanitize from 'rehype-sanitize';
+import rehypeHighlight from 'rehype-highlight'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+
+/**
+ * 設定不要でハイライト可能な言語一覧▼
+ * @see https://github.com/wooorm/lowlight#syntaxes
+ * もし上記以外に必要なら、以下のように追加できる
+ */
+import dart from 'highlight.js/lib/languages/dart'
+import remarkGfm from 'remark-gfm'
+
+/**
+ * HTMLをパースし、コードに適切なclassを付与する
+ * 表示にはhighlight.jsのCSSが必要
+ * HTMLにTeXを混ぜていてややこしいため、数式はクライアントサイドで描画する
+ *
+ * @see https://dev.classmethod.jp/articles/2020-04-15-conv-html-use-rehype/
+ * @see https://github.com/rehypejs/rehype-highlight
+ */
+export async function parseHtml(html) {
+  const parsed = await unified()
+    // まずHTMLをパースする
+    .use(rehypeParse, { fragment: true })
+    // YouTubeのiframeを消してしまわないように
+    // 以下のオプションだと中見が消えてしまうので保留
+    // TODO: YouTubeに対応しつつサニタイズ
+    // .use(rehypeSanitize, { tagNames: ['iframe'] })
+
+    // コードにハイライトを適用する
+    .use(rehypeHighlight, {
+      detect: true,
+      // デフォルト以外の検知可能言語を追加
+      languages: { dart },
+    })
+    .use(rehypeStringify)
+    .process(html)
+
+  return parsed.toString()
+}
+
+/**
+ * MarkdownをパースしてHTMLに
+ * こちらなら言語をコードブロックで指定可能
+ */
+export async function parseMarkdown(markdown) {
+  const parsed = await unified()
+    // まずMDをパースする
+    .use(remarkParse)
+    // GFM (脚注や打ち消し線、テーブル、ToDoリスト)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    // コードにハイライトを適用する
+    .use(rehypeHighlight, {
+      detect: true,
+      // デフォルト以外の検知可能言語を追加
+      languages: { dart },
+    })
+    .use(rehypeStringify)
+    .process(markdown)
+
+  return parsed.toString()
+}
+
+/**
+ * @returns MDが有効か
+ * @param {Article} article
+ */
+function checkMarkdownEnabled(article) {
+  return article.markdown_enabled && article.body_markdown && article.body_markdown.length > 0
+}
+
+/** 記事のbodyをパースして上書きする */
+async function parseArticle(article) {
+  let body = article.body
+  const { body_markdown, body_html } = article
+  try {
+    if (checkMarkdownEnabled(article)) {
+      body = await parseMarkdown(body_markdown)
+    } else if (body_html && body_html.length > 0) {
+      body = await parseHtml(body_html)
+    }
+    return {
+      ...article,
+      body,
+    }
+  } catch (e) {
+    return article
+  }
+}
+
 export default {
   data() {
     return {
@@ -193,6 +288,11 @@ export default {
       recommendArticles: 'No',
       timeUpdated: '',
     }
+  },
+  computed: {
+    isMarkdown() {
+      return checkMarkdownEnabled(this.article)
+    },
   },
   mounted() {
     this.renderMathJax()
@@ -258,9 +358,10 @@ export default {
 
                   // 三回目の処理のコールバック
                 })
-                .then(({ data: recommendArticles }) => {
+                .then(async ({ data: recommendArticles }) => {
+                  const parsedArticle = await parseArticle(article)
                   return {
-                    article,
+                    article: parsedArticle,
                     otherArticles,
                     recommendArticles,
                     timeUpdated,
