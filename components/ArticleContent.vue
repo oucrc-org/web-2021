@@ -49,7 +49,7 @@
     <!-- ▲ サブテキスト -->
 
     <!-- ▼ タグ -->
-    <div class="mx-8 sm:mx-16 my-8">
+    <div v-if="category !== null || series !== null" class="mx-8 sm:mx-16 my-8">
       <NuxtLink
         :to="`/articles/category/${category.id}`"
         v-if="category !== null"
@@ -87,12 +87,10 @@
       </NuxtLink>
     </div>
     <!-- ▲ タグ -->
-
     <!-- ▼ ランキング -->
-    <div class="mx-8 sm:mx-16 my-8">
-      <div v-for="value in ranking" :key="value.id" class="inline-block">
+    <div v-if="rankingResult.length > 0" class="mx-8 sm:mx-16 my-8">
+      <div v-for="value in rankingResult" :key="value.id" class="inline-block">
         <div
-          v-if="value.data.includes(article.id)"
           :class="value.bg_class"
           class="sm:inline-block mb-3 sm:mr-4 rounded-lg pb-3 pt-1 px-4 tracking-widest"
         >
@@ -200,6 +198,18 @@ export default {
         },
       },
     }
+  },
+  computed: {
+    rankingResult() {
+      let result = []
+      Object.keys(this.ranking).forEach((key) => {
+        const object = this.ranking[key]
+        if (object.data.includes(this.article.id)) {
+          result.push(object)
+        }
+      })
+      return result
+    },
   },
   head() {
     return {
