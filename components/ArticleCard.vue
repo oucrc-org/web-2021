@@ -49,18 +49,7 @@
         class="font-semibold leading-8 mt-4 px-3 text-left text-lg text-secondary tracking-widest"
         :class="{ 'overflow-hidden': !ignoreAbridgement }"
       >
-        <span
-          class="block"
-          :style="
-            ignoreAbridgement
-              ? ''
-              : {
-                  display: '-webkit-box',
-                  '-webkit-box-orient': 'vertical',
-                  '-webkit-line-clamp': 3,
-                }
-          "
-        >
+        <span class="block" :class="{ 'line-clamp-3': !ignoreAbridgement }">
           {{ description }}
         </span>
       </h3>

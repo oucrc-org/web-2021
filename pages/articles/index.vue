@@ -51,7 +51,7 @@
             :img-path="article.image !== void 0 ? article.image.url : null"
             :img-max-width="559"
             :title="article.title !== void 0 ? article.title : null"
-            :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
+            :description="article.body"
           />
         </div>
       </div>
@@ -123,7 +123,7 @@ export default {
       params: {
         limit: 9,
         offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body',
+        fields: 'id,title,category,image,body,twitter_comment',
         orders: '-date,-createdAt',
         filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
       },
@@ -145,8 +145,21 @@ export default {
     })
     return Promise.all([promiseArticles, promiseCategories, promiseSerieses]).then(
       ([articles, categories, serieses]) => {
+        /** descriptionフィールドがないため取得後にsliceし、レスポンス量を削減する */
+        const contents = articles.data.contents.map(({ body, twitter_comment, ...rest }) => {
+          return {
+            ...rest,
+            body: body
+              .replace(/<br>/g, '\n')
+              .replace(/<[^<>]+>/g, '')
+              .slice(0, 100),
+          }
+        })
         return Promise.resolve({
-          articles: articles.data,
+          articles: {
+            ...articles.data,
+            contents,
+          },
           currentPageNum: currentPageNum,
           arrayJumpTo: getArrayJumpTo(articles.data.totalCount, 9),
           categories: categories.data,

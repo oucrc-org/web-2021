@@ -185,6 +185,14 @@
 <script>
 import axios from 'axios'
 
+/**
+ * @returns MDが有効か
+ * @param {Article} article
+ */
+function checkMarkdownEnabled(article) {
+  return article.markdown_enabled && article.body_markdown && article.body_markdown.length > 0
+}
+
 export default {
   data() {
     return {
@@ -193,6 +201,11 @@ export default {
       recommendArticles: 'No',
       timeUpdated: '',
     }
+  },
+  computed: {
+    isMarkdown() {
+      return checkMarkdownEnabled(this.article)
+    },
   },
   mounted() {
     this.renderMathJax()
@@ -217,88 +230,118 @@ export default {
       }
     },
   },
-  asyncData({ params, error, $config, $dayjs }) {
-    /*一度目の処理*/
-    return axios
-      .get(`${$config.API_URL}/article/${params.id}`, {
-        headers: {
-          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-        },
-      })
-      .then(({ data: article }) => {
-        /*最終更新時間*/
-        const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
+  async asyncData({ params, error, $config, $dayjs, $contentParser }) {
+    /** 記事のbodyをパースして上書きする */
+    async function parseArticle(article) {
+      let body = article.body
+      let error = null
+      const { body_markdown, body_html } = article
 
-        // 名前が取得できたとき
-        if (article.name !== null) {
-          // その他の記事を取得
-          return axios
-            .get(`${$config.API_URL}/article`, {
-              headers: {
-                'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-              },
-              params: {
-                filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
-                limit: 3,
-              },
-
-              /*二回目の処理のコールバック*/
-            })
-            .then(({ data: otherArticles }) => {
-              // おすすめ記事取得
-              return axios
-                .get(`${$config.API_URL}/article`, {
-                  headers: {
-                    'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-                  },
-                  params: {
-                    filters: `id[not_equals]${article.id}`,
-                    limit: 4,
-                  },
-
-                  // 三回目の処理のコールバック
-                })
-                .then(({ data: recommendArticles }) => {
-                  return {
-                    article,
-                    otherArticles,
-                    recommendArticles,
-                    timeUpdated,
-                  }
-
-                  //三回目の処理のエラーハンドリング
-                })
-                .catch(function (e) {
-                  error({
-                    statusCode: e.response?.status,
-                    message: e.message,
-                  })
-                })
-
-              //二回目の処理のエラーハンドリング
-            })
-            .catch(function (e) {
-              error({
-                statusCode: e.response?.status,
-                message: e.message,
-              })
-            })
-        } else {
-          //名前が取得できなかったときの処理
-          return {
-            article,
-            timeUpdated,
-          }
+      if (checkMarkdownEnabled(article)) {
+        try {
+          body = await $contentParser(body_markdown, { isMarkdown: true })
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+          body = body_markdown
         }
+      } else if (body_html && body_html.length > 0) {
+        try {
+          body = await $contentParser(body_html)
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+          body = body_html
+        }
+      } else {
+        try {
+          body = await $contentParser(body)
+        } catch (e) {
+          console.error(e)
+          error = JSON.stringify(e.message ?? e, null, '\t')
+        }
+      }
 
-        //一回目の処理のエラーハンドリング
-      })
-      .catch(function (e) {
+      return {
+        ...article,
+        body,
+        error,
+      }
+    }
+
+    let isAbortedThisFn = false
+    const headerAxios = {
+      headers: {
+        'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
+      },
+    }
+
+    // 記事が直接持つ（参照の内容以外の）情報を取得
+    const { data: article } = await axios
+      .get(`${$config.API_URL}/article/${params.id}`, { ...headerAxios })
+      .catch((e) => {
+        isAbortedThisFn = true
         error({
           statusCode: e.response?.status,
           message: e.message,
         })
       })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+
+    // 最終更新時間
+    const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
+
+    // 名前が取得できなかったときの処理
+    if (article.name === null) {
+      return {
+        article,
+        timeUpdated,
+      }
+    }
+
+    // 同じ作者のその他の記事を取得
+    const { data: otherArticles } = await axios
+      .get(`${$config.API_URL}/article`, {
+        ...headerAxios,
+        params: {
+          filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
+          limit: 3,
+        },
+      })
+      .catch((e) => {
+        isAbortedThisFn = true
+        error({
+          statusCode: e.response?.status,
+          message: e.message,
+        })
+      })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+
+    // おすすめ（新着）記事を取得
+    const { data: recommendArticles } = await axios
+      .get(`${$config.API_URL}/article`, {
+        ...headerAxios,
+        params: {
+          filters: `id[not_equals]${article.id}`,
+          limit: 4,
+        },
+      })
+      .catch((e) => {
+        isAbortedThisFn = true
+        error({
+          statusCode: e.response?.status,
+          message: e.message,
+        })
+      })
+    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+
+    const parsedArticle = await parseArticle(article)
+    return {
+      article: parsedArticle,
+      otherArticles,
+      recommendArticles,
+      timeUpdated,
+    }
   },
 }
 </script>
