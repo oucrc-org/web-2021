@@ -193,6 +193,11 @@ function checkMarkdownEnabled(article) {
   return article.markdown_enabled && article.body_markdown && article.body_markdown.length > 0
 }
 
+function logParseError(config, article, field) {
+  const editUrl = config.API_URL.replace(/\/v1/, 's/article/') + article.id
+  console.error(`以下の記事は${field}がパースできないため修正してください: ${editUrl}`)
+}
+
 export default {
   data() {
     return {
@@ -234,38 +239,37 @@ export default {
     /** 記事のbodyをパースして上書きする */
     async function parseArticle(article) {
       let body = article.body
-      let error = null
       const { body_markdown, body_html } = article
-
       if (checkMarkdownEnabled(article)) {
         try {
           body = await $contentParser(body_markdown, { isMarkdown: true })
         } catch (e) {
           console.error(e)
-          error = JSON.stringify(e.message ?? e, null, '\t')
+          logParseError($config, article, 'MD')
           body = body_markdown
         }
       } else if (body_html && body_html.length > 0) {
+        // 新リッチエディタ
         try {
           body = await $contentParser(body_html)
         } catch (e) {
           console.error(e)
-          error = JSON.stringify(e.message ?? e, null, '\t')
+          logParseError($config, article, '新リッチエディタ')
           body = body_html
         }
       } else {
+        // 旧リッチエディタ
         try {
           body = await $contentParser(body)
         } catch (e) {
           console.error(e)
-          error = JSON.stringify(e.message ?? e, null, '\t')
+          logParseError($config, article, '旧リッチエディタ')
         }
       }
 
       return {
         ...article,
         body,
-        error,
       }
     }
 
