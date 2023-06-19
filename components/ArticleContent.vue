@@ -118,14 +118,10 @@
     <!-- ▲ ランキング -->
 
     <!-- ▼ 記事本文 -->
-    <div v-if="article.error" class="p-3 bg-red-300 rounded-md">
-      <b>記事のパースに失敗したため、言語指定が適用されていません: </b>
-      <code>{{ article.error }}</code>
-    </div>
-    <span
+    <div
       v-html="article.body"
-      class="block leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"
-    ></span>
+      class="leading-8 mt-16 px-8 sm:px-16 text-lg tracking-wider"
+    ></div>
     <!-- ▲ 記事本文 -->
   </section>
 </template>
