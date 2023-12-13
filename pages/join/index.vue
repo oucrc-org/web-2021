@@ -70,6 +70,20 @@
             />
           </div>
           <div class="my-4">
+            <label for="major" class="text-left block">学部・学科・コース*</label>
+            <input
+              id="major"
+              v-model="form.major"
+              type="text"
+              name="entry.808509190"
+              required
+              placeholder="工学部 情報電気数理DS系 情報工学コース"
+              class="inputbox"
+              :class="{ invalid: !valid.major }"
+              @change="valid.major = true"
+            />
+          </div>
+          <div class="my-4">
             <label for="nickname" class="text-left block">ニックネーム*</label>
             <input
               id="nickname"
@@ -134,6 +148,7 @@ export default {
         realName: '',
         email: '',
         phone: '',
+        major: '',
         nickname: '',
         hobby: '',
         comment: '',
@@ -142,6 +157,7 @@ export default {
         studentNumber: false,
         email: false,
         phone: false,
+        major: false,
         nickname: false,
       },
     }
@@ -162,6 +178,9 @@ export default {
       if (!this.form.phone.match(/^[0-9-()]{9,13}$/)) {
         this.valid.phone = false
       }
+      if (this.form.major === '') {
+        this.valid.major = false
+      }
       if (this.form.nickname === '') {
         this.valid.nickname = false
       }
@@ -179,6 +198,7 @@ export default {
         'entry.514745000': this.form.realName,
         'entry.821989733': this.form.email,
         'entry.793184820': this.form.phone,
+        'entry.808509190': this.form.major,
         'entry.1050056731': this.form.nickname,
         'entry.528663940': this.form.hobby,
         'entry.1197263570': this.form.comment,
