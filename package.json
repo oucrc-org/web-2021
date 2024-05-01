@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "debug": "nuxt generate && cd dist && php -S localhost:8000"
+    "debug": "nuxt generate && serve -l localhost:8000 ./dist"
   },
   "dependencies": {
     "@nuxt/utils": "^2.15.8",
@@ -44,7 +44,8 @@
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "git-cz": "^4.9.0",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "serve": "^14.2.3"
   },
   "_id": "web@1.0.0",
   "engines": {
