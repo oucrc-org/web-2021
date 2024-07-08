@@ -300,6 +300,19 @@ export default {
   @apply list-disc p-2 px-6;
 }
 
+.article table {
+  @apply block border-black border-t-2 w-max max-w-full overflow-x-auto;
+}
+
+.article tr {
+  @apply border-black border-b;
+}
+
+.article th, .article td {
+  @apply text-left p-2;
+  text-wrap: nowrap;
+}
+
 .article a {
   line-break: anywhere;
   @apply text-blue-600;
