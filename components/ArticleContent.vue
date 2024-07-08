@@ -301,7 +301,7 @@ export default {
 }
 
 .article table {
-  @apply block border-black border-t-2 max-w-full overflow-x-auto;
+  @apply block border-black border-t-2 w-max max-w-full overflow-x-auto;
 }
 
 .article tr {
