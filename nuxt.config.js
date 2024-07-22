@@ -166,7 +166,9 @@ export default {
         }
       })
 
+      // これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
       return [
+        ...articleArray.map(([id]) => ({ route: `/articles/${id}` })),
         ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
         ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
         ...[...range(0, Math.ceil(articleArray.length / limit))].map((i) => ({
