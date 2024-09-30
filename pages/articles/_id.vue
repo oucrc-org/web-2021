@@ -183,8 +183,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 /**
  * @returns MDが有効か
  * @param {Article} article
@@ -235,7 +233,7 @@ export default {
       }
     },
   },
-  async asyncData({ params, error, $config, $dayjs, $contentParser }) {
+  async asyncData({ payload, params, error, $config, $dayjs, $contentParser }) {
     /** 記事のbodyをパースして上書きする */
     async function parseArticle(article) {
       let body = article.body
@@ -281,63 +279,17 @@ export default {
     }
 
     // 記事が直接持つ（参照の内容以外の）情報を取得
-    const { data: article } = await axios
-      .get(`${$config.API_URL}/article/${params.id}`, { ...headerAxios })
-      .catch((e) => {
-        isAbortedThisFn = true
-        error({
-          statusCode: e.response?.status,
-          message: e.message,
-        })
-      })
-    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+    const article = payload.article;
 
     // 最終更新時間
     const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
 
-    // 名前が取得できなかったときの処理
-    if (article.name === null) {
-      return {
-        article,
-        timeUpdated,
-      }
-    }
-
-    // 同じ作者のその他の記事を取得
-    const { data: otherArticles } = await axios
-      .get(`${$config.API_URL}/article`, {
-        ...headerAxios,
-        params: {
-          filters: `name[equals]${article.name.id}[and]id[not_equals]${article.id}`,
-          limit: 3,
-        },
-      })
-      .catch((e) => {
-        isAbortedThisFn = true
-        error({
-          statusCode: e.response?.status,
-          message: e.message,
-        })
-      })
-    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+    // TODO: 同じ作者のその他の記事を最新から3件取得
+    const otherArticles = [];
 
     // おすすめ（新着）記事を取得
-    const { data: recommendArticles } = await axios
-      .get(`${$config.API_URL}/article`, {
-        ...headerAxios,
-        params: {
-          filters: `id[not_equals]${article.id}`,
-          limit: 4,
-        },
-      })
-      .catch((e) => {
-        isAbortedThisFn = true
-        error({
-          statusCode: e.response?.status,
-          message: e.message,
-        })
-      })
-    if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
+    // FIXME: 同一記事は弾く
+    const recommendArticles = payload.recommendArticles;
 
     const parsedArticle = await parseArticle(article)
     return {

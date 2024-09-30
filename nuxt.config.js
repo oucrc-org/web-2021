@@ -109,76 +109,65 @@ export default {
 
   generate: {
     async routes() {
-      const limit = 9
+      const countPerPage = 9
       const headers = {
         'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY,
       }
 
-      const articleArray = await axios
-        .get(process.env.API_URL + '/article', {
-          headers,
-          params: {
-            limit: 1000,
-            fields: 'id,category.id,series.id',
-            depth: 0,
-          },
-        })
-        .then(({ data }) =>
-          data.contents.map((v) => {
-            return [v.id, v.category?.id, v.series?.id]
-          })
-        )
+      const articles = await getAll(
+        `${process.env.API_URL}/article`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const categories = await getAll(
+        `${process.env.API_URL}/category`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const series = await getAll(
+        `${process.env.API_URL}/series`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const members = await getAll(
+        `${process.env.API_URL}/member`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
 
-      const categoryArray = await axios
-        .get(process.env.API_URL + '/category', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
+      const countArticlesByCategory = new Map(categories.map(category => [category.id, 0]))
+      const countArticlesBySeries = new Map(series.map(series => [series.id, 0]))
 
-      const seriesArray = await axios
-        .get(process.env.API_URL + '/series', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
-
-      const countArticlesByCategory = Object.fromEntries(categoryArray.map((id) => [id, 0]))
-      const countArticlesBySeries = Object.fromEntries(seriesArray.map((id) => [id, 0]))
-
-      articleArray.forEach(([_, category, series]) => {
-        if (category in countArticlesByCategory) {
-          countArticlesByCategory[category]++
-        }
-        if (series in countArticlesBySeries) {
-          countArticlesBySeries[series]++
-        }
+      articles.forEach(({category, series}) => {
+        if (category) countArticlesByCategory[category.id]++
+        if (series) countArticlesBySeries[series.id]++
       })
 
       // これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
       return [
-        ...articleArray.map(([id]) => ({ route: `/articles/${id}` })),
+        // 記事ページ
+        ...articles.map(article => ({
+          route: `/articles/${article.id}`,
+          payload: {
+            article: article,
+            recommendArticles: articles.slice(4)
+          }
+        })),
         ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
         ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
-        ...[...range(0, Math.ceil(articleArray.length / limit))].map((i) => ({
+        ...[...range(0, Math.ceil(articles.length / countPerPage))].map((i) => ({
           route: `/articles/p/${i + 1}`,
         })),
         ...Object.entries(countArticlesByCategory)
           .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
+            return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
               route: `/articles/category/${k}/${i + 1}`,
             }))
           })
           .flat(),
         ...Object.entries(countArticlesBySeries)
           .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
+            return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
               route: `/articles/series/${k}/${i + 1}`,
             }))
           })
