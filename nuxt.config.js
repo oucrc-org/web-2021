@@ -113,11 +113,6 @@ export default {
       const headers = {
         'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY,
       }
-      const range = function* (start, end) {
-        while (start < end) {
-          yield start++
-        }
-      }
 
       const articleArray = await axios
         .get(process.env.API_URL + '/article', {
@@ -203,4 +198,51 @@ export default {
     API_URL: process.env.API_URL,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
   },
+}
+
+function* range(start, end, step = 1) {
+  let x = start
+  while (x < end) {
+    yield x
+    x += step
+  }
+}
+
+async function sleep(time) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}
+
+async function runSequentilly(promiseFactories, { throttle = 0 }) {
+  const res = []
+  for (const promiseFactory of promiseFactories) {
+    const running = promiseFactory()
+    await sleep(throttle)
+    // TODO: エラーハンドリング
+    res.push(await running)
+  }
+  return res
+}
+
+async function getAll(url, { params, ...options }, { bulkLimit = 100, throttle = 0 }) {
+  const { data: { totalCount } } = await axios.get(url, { ...options, params: { limit: 0 } })
+
+  const offsets = Array.from(range(0, totalCount, bulkLimit))
+  return Array.from(
+    await runSequentilly(
+      offsets.map(
+        (offset) => async () =>
+          axios.get(url, {
+            ...options,
+            params: {
+              ...params,
+              offset,
+              limit: bulkLimit,
+            },
+          }).then(({ data }) => data.contents)
+      ),
+      { throttle }
+    )
+  ).flat()
 }
