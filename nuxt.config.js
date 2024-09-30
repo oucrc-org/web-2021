@@ -143,7 +143,8 @@ export default {
         if (series) countArticlesBySeries[series.id]++
       })
 
-      // これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
+      // TODO: これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
+      // ↑を頑張ってやっています
       return [
         // 記事ページ
         ...articles.map(article => ({
@@ -151,27 +152,36 @@ export default {
           payload: {
             article: article,
             recommendArticles: articles.slice(4)
+            // FIXME: 執筆者情報が消え失せてるので渡してあげる
           }
         })),
-        ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
-        ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
-        ...[...range(0, Math.ceil(articles.length / countPerPage))].map((i) => ({
-          route: `/articles/p/${i + 1}`,
-        })),
-        ...Object.entries(countArticlesByCategory)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
-              route: `/articles/category/${k}/${i + 1}`,
-            }))
-          })
-          .flat(),
-        ...Object.entries(countArticlesBySeries)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
-              route: `/articles/series/${k}/${i + 1}`,
-            }))
-          })
-          .flat(),
+        // FIXME: 記事一覧ページ (絞り込みなし)
+        // ...[...range(0, Math.ceil(articles.length / countPerPage))].map((i) => ({
+        //   route: `/articles/p/${i + 1}`,
+        // })),
+        // FIXME: カテゴリ別記事一覧ページ
+        // ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
+        // FIXME: シリーズ別記事一覧ページ
+        // ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
+        // FIXME: カテゴリ別記事一覧ページ (ページネーションあり版)
+        // ...Object.entries(countArticlesByCategory)
+        //   .map(([k, v]) => {
+        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
+        //       route: `/articles/category/${k}/${i + 1}`,
+        //     }))
+        //   })
+        //   .flat(),
+        // FIXME: シリーズ別記事一覧ページ (ページネーションあり版)
+        // ...Object.entries(countArticlesBySeries)
+        //   .map(([k, v]) => {
+        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
+        //       route: `/articles/series/${k}/${i + 1}`,
+        //     }))
+        //   })
+        //   .flat(),
+        // FIXME: メンバー一覧ページ
+        // FIXME: メンバー個別ページ
+        // FIXME: お知らせページ
       ]
     },
   },
