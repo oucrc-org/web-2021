@@ -193,6 +193,11 @@ export default {
             notices: news,
           }
         },
+        // お知らせ個別ページ
+        ...news.map(news => ({
+          route: `/news/${news.id}`,
+          payload: news,
+        })),
       ]
     },
   },
