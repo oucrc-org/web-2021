@@ -184,6 +184,7 @@
 
 <script>
 import axios from 'axios'
+import payload from 'payload'
 
 /**
  * @returns MDが有効か
@@ -281,7 +282,7 @@ export default {
     }
 
     // 記事が直接持つ（参照の内容以外の）情報を取得
-    const { data: article } = await axios
+    const { data: article } = await payload
       .get(`${$config.API_URL}/article/${params.id}`, { ...headerAxios })
       .catch((e) => {
         isAbortedThisFn = true
@@ -304,7 +305,7 @@ export default {
     }
 
     // 同じ作者のその他の記事を取得
-    const { data: otherArticles } = await axios
+    const { data: otherArticles } = await payload
       .get(`${$config.API_URL}/article`, {
         ...headerAxios,
         params: {
@@ -322,7 +323,7 @@ export default {
     if (isAbortedThisFn) return // XXX: これ undefined を return していいの？
 
     // おすすめ（新着）記事を取得
-    const { data: recommendArticles } = await axios
+    const { data: recommendArticles } = await payload
       .get(`${$config.API_URL}/article`, {
         ...headerAxios,
         params: {
