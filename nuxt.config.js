@@ -134,6 +134,11 @@ export default {
         { headers, params: { depth: 0 } },
         { throttle: 100 }
       )
+      const news = await getAll(
+        `${process.env.API_URL}/news`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
 
       const countArticlesByCategory = new Map(categories.map(category => [category.id, 0]))
       const countArticlesBySeries = new Map(series.map(series => [series.id, 0]))
@@ -181,7 +186,18 @@ export default {
         //   .flat(),
         // FIXME: メンバー一覧ページ
         // FIXME: メンバー個別ページ
-        // FIXME: お知らせページ
+        // お知らせ一覧ページ
+        {
+          route: '/news',
+          payload: {
+            notices: news,
+          }
+        },
+        // お知らせ個別ページ
+        ...news.map(news => ({
+          route: `/news/${news.id}`,
+          payload: news,
+        })),
       ]
     },
   },

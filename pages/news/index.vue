@@ -35,8 +35,30 @@ export default {
       },
     }
   },
-  asyncData({ $config }) {
-    const currentTime = new Date().toISOString()
+  asyncData({ payload, $config }) {
+    const currentTime = Date.now();
+    if (payload) {
+      const notices = payload.notices.filter(notice => Date.parse(notice.date) < currentTime);
+      function toPriorityTuple(notice) {
+        return [
+          notice.important ? 1 : 0,
+          Date.parse(notice.date),
+          Date.parse(notice.createdAt)
+        ];
+      }
+      notices.sort((a, b) => {
+        const ap = toPriorityTuple(a);
+        const bp = toPriorityTuple(b);
+        return (
+          ap[0] > bp[0]
+          || ap[0] === bp[0] && ap[1] > bp[1]
+          || ap[0] === bp[0] && ap[1] === bp[1] && ap[2] >= bp[2]
+        );
+      });
+      return {
+        notices
+      };
+    }
     return axios
       .get(`${$config.API_URL}/news`, {
         headers: {
@@ -46,7 +68,7 @@ export default {
           limit: 1000,
           fields: 'id,title',
           orders: '-important,-date,-createdAt',
-          filters: `date[less_than]${currentTime}`,
+          filters: `date[less_than]${new Date(currentTime).toISOString()}`,
         },
       })
       .then((response) => {

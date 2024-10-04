@@ -120,7 +120,7 @@
           </div>
           <div class="col-span-3">
             <fade-in>
-              <News :notices="notices" />
+              <News :notices="notices.contents" />
               <NuxtLink
                 to="/news"
                 class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest"
