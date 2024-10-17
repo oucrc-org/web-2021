@@ -133,14 +133,14 @@
 
       <!-- ▼ この人が書いた記事 -->
       <div
-        v-if="articles.contents !== void 0 && articles.contents.length"
+        v-if="articles !== void 0 && articles.length"
         class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
       >
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4" />
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <ArticleCard
-              v-for="article in articles.contents"
+              v-for="article in articles"
               :key="`articlecard-${article.id}`"
               class="py-6"
               :href="`/articles/${article.id}`"
@@ -172,7 +172,13 @@ export default {
       },
     }
   },
-  asyncData({ params, error, $config }) {
+  asyncData({ payload, params, error, $config }) {
+    if (payload) {
+      return {
+        member: payload.member,
+        articles: payload.articles,
+      }
+    }
     /*一回目：メンバー情報の取得*/
     return axios
       .get(`${$config.API_URL}/member/${params.id}`, {
