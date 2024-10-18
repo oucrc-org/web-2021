@@ -185,7 +185,13 @@ export default {
         //     }))
         //   })
         //   .flat(),
-        // FIXME: メンバー一覧ページ
+        // メンバー一覧ページ
+        {
+          route: '/members',
+          payload: {
+            members
+          }
+        },
         // メンバー個別ページ
         ...members.map(member => ({
           route: `/members/${member.id}`,
