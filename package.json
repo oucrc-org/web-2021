@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "debug": "nuxt generate && serve -p 8000 ./dist"
+    "static": "serve -p 8000 ./dist"
   },
   "dependencies": {
     "@nuxt/utils": "^2.15.8",

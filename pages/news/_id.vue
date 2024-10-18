@@ -26,7 +26,14 @@ export default {
       timeUpdated: '',
     }
   },
-  asyncData({ params, error, $config, $dayjs }) {
+  asyncData({ payload, params, error, $config, $dayjs }) {
+    if (payload) {
+      const timeUpdated = $dayjs(payload.updatedAt).format('YYYY/MM/DD')
+      return {
+        article: payload,
+        timeUpdated,
+      }
+    }
     return axios
       .get(`${$config.API_URL}/news/${params.id}`, {
         headers: {
@@ -37,7 +44,7 @@ export default {
         const timeUpdated = $dayjs(response.data.updatedAt).format('YYYY/MM/DD')
         return {
           article: response.data,
-          timeUpdated: timeUpdated,
+          timeUpdated,
         }
       })
       .catch(function (e) {

@@ -4,7 +4,7 @@
       お知らせ
     </div>
     <div
-      v-for="notice in notices.contents"
+      v-for="notice in notices"
       :key="notice.id"
       class="border-b-2 border-divider text-secondary"
     >
@@ -34,8 +34,8 @@ export default {
   name: 'News',
   props: {
     notices: {
-      type: Object,
-      default: {},
+      type: Array,
+      default: [],
     },
   },
 }

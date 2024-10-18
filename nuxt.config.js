@@ -109,83 +109,109 @@ export default {
 
   generate: {
     async routes() {
-      const limit = 9
+      const countPerPage = 9
       const headers = {
         'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY,
       }
-      const range = function* (start, end) {
-        while (start < end) {
-          yield start++
-        }
-      }
 
-      const articleArray = await axios
-        .get(process.env.API_URL + '/article', {
-          headers,
-          params: {
-            limit: 1000,
-            fields: 'id,category.id,series.id',
-            depth: 0,
-          },
-        })
-        .then(({ data }) =>
-          data.contents.map((v) => {
-            return [v.id, v.category?.id, v.series?.id]
-          })
-        )
+      const articles = await getAll(
+        `${process.env.API_URL}/article`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const categories = await getAll(
+        `${process.env.API_URL}/category`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const series = await getAll(
+        `${process.env.API_URL}/series`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const members = await getAll(
+        `${process.env.API_URL}/member`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const news = await getAll(
+        `${process.env.API_URL}/news`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
 
-      const categoryArray = await axios
-        .get(process.env.API_URL + '/category', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
+      const countArticlesByCategory = new Map(categories.map(category => [category.id, 0]))
+      const countArticlesBySeries = new Map(series.map(series => [series.id, 0]))
 
-      const seriesArray = await axios
-        .get(process.env.API_URL + '/series', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
-
-      const countArticlesByCategory = Object.fromEntries(categoryArray.map((id) => [id, 0]))
-      const countArticlesBySeries = Object.fromEntries(seriesArray.map((id) => [id, 0]))
-
-      articleArray.forEach(([_, category, series]) => {
-        if (category in countArticlesByCategory) {
-          countArticlesByCategory[category]++
-        }
-        if (series in countArticlesBySeries) {
-          countArticlesBySeries[series]++
-        }
+      articles.forEach(({category, series}) => {
+        if (category) countArticlesByCategory[category.id]++
+        if (series) countArticlesBySeries[series.id]++
       })
 
+      // TODO: これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
+      // ↑を頑張ってやっています
       return [
-        ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
-        ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
-        ...[...range(0, Math.ceil(articleArray.length / limit))].map((i) => ({
-          route: `/articles/p/${i + 1}`,
+        // 記事ページ
+        ...articles.map(article => ({
+          route: `/articles/${article.id}`,
+          payload: {
+            article,
+            writer: members.find(member => member.id === article.name.id),
+            recommendArticles: articles.filter(a => a.id !== article.id).slice(4),
+            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(3),
+          }
         })),
-        ...Object.entries(countArticlesByCategory)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
-              route: `/articles/category/${k}/${i + 1}`,
-            }))
-          })
-          .flat(),
-        ...Object.entries(countArticlesBySeries)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
-              route: `/articles/series/${k}/${i + 1}`,
-            }))
-          })
-          .flat(),
+        // FIXME: 記事一覧ページ (絞り込みなし)
+        // ...[...range(0, Math.ceil(articles.length / countPerPage))].map((i) => ({
+        //   route: `/articles/p/${i + 1}`,
+        // })),
+        // FIXME: カテゴリ別記事一覧ページ
+        // ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
+        // FIXME: シリーズ別記事一覧ページ
+        // ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
+        // FIXME: カテゴリ別記事一覧ページ (ページネーションあり版)
+        // ...Object.entries(countArticlesByCategory)
+        //   .map(([k, v]) => {
+        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
+        //       route: `/articles/category/${k}/${i + 1}`,
+        //     }))
+        //   })
+        //   .flat(),
+        // FIXME: シリーズ別記事一覧ページ (ページネーションあり版)
+        // ...Object.entries(countArticlesBySeries)
+        //   .map(([k, v]) => {
+        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
+        //       route: `/articles/series/${k}/${i + 1}`,
+        //     }))
+        //   })
+        //   .flat(),
+        // メンバー一覧ページ
+        {
+          route: '/members',
+          payload: {
+            members
+          }
+        },
+        // メンバー個別ページ
+        ...members.map(member => ({
+          route: `/members/${member.id}`,
+          payload: {
+            member: member,
+            articles: articles.filter(article => article.name.id === member.id),
+          }
+        })),
+        // お知らせ一覧ページ
+        {
+          route: '/news',
+          payload: {
+            notices: news,
+          }
+        },
+        // お知らせ個別ページ
+        ...news.map(news => ({
+          route: `/news/${news.id}`,
+          payload: news,
+        })),
       ]
     },
   },
@@ -201,4 +227,51 @@ export default {
     API_URL: process.env.API_URL,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
   },
+}
+
+function* range(start, end, step = 1) {
+  let x = start
+  while (x < end) {
+    yield x
+    x += step
+  }
+}
+
+async function sleep(time) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}
+
+async function runSequentilly(promiseFactories, { throttle = 0 }) {
+  const res = []
+  for (const promiseFactory of promiseFactories) {
+    const running = promiseFactory()
+    await sleep(throttle)
+    // TODO: エラーハンドリング
+    res.push(await running)
+  }
+  return res
+}
+
+async function getAll(url, { params, ...options }, { bulkLimit = 100, throttle = 0 }) {
+  const { data: { totalCount } } = await axios.get(url, { ...options, params: { limit: 0 } })
+
+  const offsets = Array.from(range(0, totalCount, bulkLimit))
+  return Array.from(
+    await runSequentilly(
+      offsets.map(
+        (offset) => async () =>
+          axios.get(url, {
+            ...options,
+            params: {
+              ...params,
+              offset,
+              limit: bulkLimit,
+            },
+          }).then(({ data }) => data.contents)
+      ),
+      { throttle }
+    )
+  ).flat()
 }
