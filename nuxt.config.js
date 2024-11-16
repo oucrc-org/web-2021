@@ -157,8 +157,8 @@ export default {
           payload: {
             article,
             writer: members.find(member => member.id === article.name.id),
-            recommendArticles: articles.filter(a => a.id !== article.id).slice(4),
-            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(3),
+            recommendArticles: articles.filter(a => a.id !== article.id).slice(0, 4),
+            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(0, 3),
           }
         })),
         // FIXME: 記事一覧ページ (絞り込みなし)
