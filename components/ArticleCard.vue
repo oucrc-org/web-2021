@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white text-center">
     <NuxtLink
-      v-bind:to="href"
+      :to="href"
       class="inline-block transform hover:scale-101 transition duration-500 ease-in-out w-full"
     >
       <div class="relative">
@@ -15,7 +15,7 @@
           <img
             class="object-cover shadow-lg h-56 w-full"
             v-lazy="`${imgPath}${imgMaxWidth > 0 ? '?w=' + imgMaxWidth : ''}`"
-            v-bind:alt="category"
+            :alt="`記事「${title}」のサムネイル`"
           />
         </picture>
         <picture v-else>
