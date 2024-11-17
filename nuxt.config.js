@@ -58,12 +58,6 @@ export default {
         size: '180x180',
         href: '/apple-touch-icon.png',
       },
-      /* Google Fonts */
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap',
-      },
     ],
   },
 
@@ -84,7 +78,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    ['@nuxtjs/google-fonts', { display: 'block', download: true, inject: true }],
+    '@nuxtjs/google-fonts',
     '@nuxtjs/google-gtag',
     'cookie-universal-nuxt',
   ],
@@ -106,6 +100,19 @@ export default {
      * generate後の動作は問題ない
      */
     standalone: true,
+    html: {
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: true,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
+    }
   },
 
   generate: {
@@ -280,6 +287,13 @@ export default {
     configPath: 'tailwind.config.js',
     exposeConfig: false,
     config: {},
+  },
+
+  googleFonts: {
+    families: {
+      "Noto+Sans+JP": [400, 700],
+      Roboto: [400, 700],
+    },
   },
 
   publicRuntimeConfig: {
