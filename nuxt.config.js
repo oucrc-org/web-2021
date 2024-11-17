@@ -152,6 +152,7 @@ export default {
             writer: members.find(member => member.id === article.name.id),
             recommendArticles: articles.filter(a => a.id !== article.id).slice(0, 4),
             articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(0, 3),
+            categories: categories,
           }
         })),
         // 記事一覧ページ (絞り込みなし1ページ目)
@@ -255,6 +256,7 @@ export default {
           payload: {
             member: member,
             articles: articles.filter(article => article.name.id === member.id),
+            categories: categories,
           }
         })),
         // お知らせ一覧ページ

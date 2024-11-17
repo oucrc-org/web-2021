@@ -46,8 +46,10 @@
             :key="article.id"
             class="py-6"
             :href="`/articles/${article.id}`"
-            :series="article.series != null ? article.series : {}"
-            :category="article.category !== null ? article.category.category : null"
+            :category="
+              article.category !== null
+                ? categories.find(category => category.id === article.category.id) ?? null
+                : null"
             :img-path="article.image !== void 0 ? article.image.url : null"
             :img-max-width="559"
             :title="article.title !== void 0 ? article.title : null"

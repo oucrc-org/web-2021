@@ -144,8 +144,10 @@
               :key="`articlecard-${article.id}`"
               class="py-6"
               :href="`/articles/${article.id}`"
-              :series="article.series != null ? article.series : {}"
-              :category="article.category !== null ? article.category.category : null"
+              :category="
+                article.category !== null
+                  ? categories.find(category => category.id === article.category.id) ?? null
+                  : null"
               :img-path="article.image !== void 0 ? article.image.url : null"
               :title="article.title !== void 0 ? article.title : null"
               :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
@@ -166,10 +168,9 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      member: 'no data',
-      articles: {
-        contents: [],
-      },
+      member: {},
+      articles: [],
+      categories: [],
     }
   },
   async asyncData({ payload, params, error, $config }) {
@@ -177,6 +178,7 @@ export default {
       return {
         member: payload.member,
         articles: payload.articles,
+        categories: payload.categories,
       }
     }
     // fallback
