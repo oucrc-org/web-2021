@@ -11,7 +11,7 @@
     <form @submit.prevent name="search" class="md:mx-32 my-8">
       <div class="mt-10">
         <LabeledCheckbox
-          v-for="category in categories.contents"
+          v-for="category in categories"
           :key="`checkbox-${category.id}`"
           :id="category.id"
           :label="category.category"
@@ -22,7 +22,7 @@
       </div>
       <div class="mt-4">
         <LabeledCheckbox
-          v-for="series in serieses.contents"
+          v-for="series in serieses"
           :key="`checkbox-${series.id}`"
           :id="series.id"
           :label="series.series"
@@ -35,23 +35,25 @@
 
     <!-- 記事一覧 -->
     <div
-      v-if="articles.contents !== void 0 && articles.contents.length"
+      v-if="articles !== void 0 && articles.length"
       class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
     >
       <div class="container mx-auto">
         <Title label="最新の投稿" class="mb-4" />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
-            v-for="article in articles.contents"
+            v-for="article in articles"
             :key="article.id"
             class="py-6"
             :href="`/articles/${article.id}`"
-            :series="article.series != null ? article.series : {}"
-            :category="article.category !== null ? article.category.category : null"
+            :category="
+              article.category !== null
+                ? categories.find(category => category.id === article.category.id) ?? null
+                : null"
             :img-path="article.image !== void 0 ? article.image.url : null"
             :img-max-width="559"
             :title="article.title !== void 0 ? article.title : null"
-            :description="article.body"
+            :description="article.summary"
           />
         </div>
       </div>
@@ -66,7 +68,7 @@
         <div class="text-subtext text-xl">&lt;</div>
       </NuxtLink>
       <NuxtLink
-        v-for="pageNum in arrayJumpTo"
+        v-for="pageNum in [...Array(maxPageNum)].map((_, i) => i + 1)"
         :key="'jumper' + pageNum"
         :to="{ name: listType, params: { p: pageNum } }"
       >
@@ -78,7 +80,7 @@
         </div>
       </NuxtLink>
       <NuxtLink
-        v-if="currentPageNum < Math.ceil(articles.totalCount / 9)"
+        v-if="currentPageNum < maxPageNum"
         :to="{ name: listType, params: { p: currentPageNum + 1 } }"
       >
         <div class="text-subtext text-xl">&gt;</div>
@@ -88,90 +90,46 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   data() {
     return {
-      currentPageNum: {
-        type: Number,
-        default: 1,
-      },
-      arrayJumpTo: [],
-      articles: { contents: [] },
-      categories: { contents: [] },
-      serieses: { contents: [] },
+      currentPageNum: 1,
+      maxPageNum: 1,
+      articles: [],
+      categories: [],
+      serieses: [],
       listType: this.$route.name === 'articles' ? 'article' : this.$route.name,
     }
   },
-  asyncData({ params, $config }) {
-    const currentPageNum = +params.p || 1
-    const currentTime = new Date().toISOString()
-    const url = $config.API_URL
-    const headers = {
-      'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-    }
-    const searchQuery = []
-    if ('categoryId' in params) {
-      searchQuery.push(`category[equals]${params.categoryId}`)
-    }
-    if ('seriesId' in params) {
-      searchQuery.push(`series[equals]${params.seriesId}`)
-    }
-    const promiseArticles = axios.get(url + '/article', {
-      headers,
-      params: {
-        limit: 9,
-        offset: (currentPageNum - 1) * 9,
-        fields: 'id,title,category,image,body,twitter_comment',
-        orders: '-date,-createdAt',
-        filters: [`date[less_than]${currentTime}`, ...searchQuery].join('[and]'),
-      },
-    })
-    const promiseCategories = axios.get(url + '/category', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,category',
-      },
-    })
-    const promiseSerieses = axios.get(url + '/series', {
-      headers,
-      params: {
-        limit: 1000,
-        fields: 'id,series',
-        orders: 'createdAt',
-      },
-    })
-    return Promise.all([promiseArticles, promiseCategories, promiseSerieses]).then(
-      ([articles, categories, serieses]) => {
-        /** descriptionフィールドがないため取得後にsliceし、レスポンス量を削減する */
-        const contents = articles.data.contents.map(({ body, twitter_comment, ...rest }) => {
-          return {
-            ...rest,
-            body: body
-              .replace(/<br>/g, '\n')
-              .replace(/<[^<>]+>/g, '')
-              .slice(0, 100),
-          }
-        })
-        return Promise.resolve({
-          articles: {
-            ...articles.data,
-            contents,
-          },
-          currentPageNum: currentPageNum,
-          arrayJumpTo: getArrayJumpTo(articles.data.totalCount, 9),
-          categories: categories.data,
-          serieses: serieses.data,
-        })
+  asyncData({ payload, params, $config }) {
+    const currentPageNum = payload.currentPageNum;
+    const maxPageNum = payload.maxPageNum;
+    const articles = payload.articles;
+    const categories = payload.categories;
+    const serieses = payload.series;
+    articles.forEach(article => {
+      const summaryLengthLimit = 60;
+      if (article.summary !== undefined) {
+        return;
       }
-    )
+      if (article.markdown_enabled && article.body_markdown) {
+        article.summary = article.body_markdown.slice(0, summaryLengthLimit);
+        return;
+      }
+      article.summary = (
+        article.body_html ?? article.body
+      )
+        .replace(/<[^<>]+>/g, '')
+        .slice(0, summaryLengthLimit);
+    });
+    return {
+      currentPageNum,
+      maxPageNum,
+      articles,
+      categories,
+      serieses,
+    }
   },
-}
-
-function getArrayJumpTo(totalCount, countPerPage) {
-  return [...Array(Math.ceil(totalCount / countPerPage)).keys()].map((i) => i + 1)
 }
 </script>
 

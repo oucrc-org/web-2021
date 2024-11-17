@@ -29,32 +29,32 @@
           <fade-in class="opacity-0">
             <ArticleCard
               href="/articles/category/noi18t4xa3"
-              category="プログラミング"
+              :category="{id: 'noi18t4xa3', category: 'プログラミング'}"
               :imgPath="require('@/assets/images/landing/cover-programming.jpg')"
               :ignoreAbridgement="true"
               :webpPath="require('@/assets/images/landing/cover-programming.webp')"
               description="スマホアプリやゲームなどを、個人で開発したり、グループでプロジェクトを立ち上げたりしています！"
-            ></ArticleCard>
+            />
           </fade-in>
           <fade-in class="opacity-0" :delay="150">
             <ArticleCard
               href="/articles/category/2_x0e6wfbu"
-              category="電子工作"
+              :category="{id: '2_x0e6wfbu', category: '電子工作'}"
               :img-path="require('@/assets/images/landing/cover-electronic.jpg')"
               :ignoreAbridgement="true"
               :webpPath="require('@/assets/images/landing/cover-electronic.webp')"
               description="部室には道具がたくさんあるので、電子工作に挑戦するのに金銭的負担やハードルがないのも魅力です。"
-            ></ArticleCard>
+            />
           </fade-in>
           <fade-in class="opacity-0" :delay="300">
             <ArticleCard
               href="/articles/category/ls-ivl76nq2"
-              category="ガジェット/ハードウェア"
+              :category="{id: 'ls-ivl76nq2', category: 'ガジェット/ハードウェア'}"
               :img-path="require('@/assets/images/landing/cover-gadget.jpg')"
               :ignoreAbridgement="true"
               :webpPath="require('@/assets/images/landing/cover-gadget.webp')"
               description="過去にはXboxを分解したり、部の余ったPCに好きなOSを入れてサーバーを立てたりしました。"
-            ></ArticleCard>
+            />
           </fade-in>
         </div>
         <fade-in>
@@ -120,7 +120,7 @@
           </div>
           <div class="col-span-3">
             <fade-in>
-              <News :notices="notices" />
+              <News :notices="notices.contents" />
               <NuxtLink
                 to="/news"
                 class="block font-semibold lg:pb-0 pt-3 sm:pt-5 pr-2 text-sm sm:text-base text-right text-secondary tracking-widest"

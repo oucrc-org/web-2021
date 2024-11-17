@@ -133,19 +133,21 @@
 
       <!-- ▼ この人が書いた記事 -->
       <div
-        v-if="articles.contents !== void 0 && articles.contents.length"
+        v-if="articles !== void 0 && articles.length"
         class="pt-16 mb-24 mt-10 lg:mx-8 xl:mx-12 text-center"
       >
         <div class="container mx-auto">
           <Title label="この人が書いた記事" class="mb-4" />
           <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <ArticleCard
-              v-for="article in articles.contents"
+              v-for="article in articles"
               :key="`articlecard-${article.id}`"
               class="py-6"
               :href="`/articles/${article.id}`"
-              :series="article.series != null ? article.series : {}"
-              :category="article.category !== null ? article.category.category : null"
+              :category="
+                article.category !== null
+                  ? categories.find(category => category.id === article.category.id) ?? null
+                  : null"
               :img-path="article.image !== void 0 ? article.image.url : null"
               :title="article.title !== void 0 ? article.title : null"
               :description="article.body.replace(/<br>/g, '\n').replace(/<[^<>]+>/g, '')"
@@ -166,64 +168,55 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      member: 'no data',
-      articles: {
-        contents: [],
-      },
+      member: {},
+      articles: [],
+      categories: [],
     }
   },
-  asyncData({ params, error, $config }) {
-    /*一回目：メンバー情報の取得*/
-    return axios
-      .get(`${$config.API_URL}/member/${params.id}`, {
-        headers: {
-          'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-        },
-        /*一回目のコールバック*/
-      })
-      .then((response) => {
-        /*メンバーのIDが取得出来た時*/
-        if (response.data.id !== void 0) {
-          return axios
-            .get(`${$config.API_URL}/article`, {
-              headers: {
-                'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-              },
-              params: {
-                limit: 10000,
-                filters: `name[equals]${response.data.id}`,
-              },
-
-              /*二回目のコールバック*/
-            })
-            .then((res) => {
-              return {
-                member: response.data,
-                articles: res.data,
-              }
-
-              /*二回目の処理の例外処理*/
-            })
-            .catch(function (e) {
-              error({
-                statusCode: e.response.status,
-                message: e.message,
-              })
-            })
-        } else {
-          /*メンバーのIDが取得できなかったとき*/
-          return {
-            member: response.data,
+  async asyncData({ payload, params, error, $config }) {
+    if (payload) {
+      return {
+        member: payload.member,
+        articles: payload.articles,
+        categories: payload.categories,
+      }
+    }
+    // fallback
+    try {
+      const member = await axios
+        .get(
+          `${$config.API_URL}/member/${params.id}`,
+          {
+            headers: {
+              'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
+            },
           }
-        }
-        /*一回目処理のの例外処理*/
+        )
+        .then(res => res.data);
+      const articles = await axios
+        .get(
+          `${$config.API_URL}/article`,
+          {
+            headers: {
+              'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
+            },
+            params: {
+              limit: 10000,
+              filters: `name[equals]${member.id}`,
+            },
+          }
+        )
+        .then(res => res.contents);
+      return {
+        member,
+        articles,
+      }
+    } catch (e) {
+      error({
+        statusCode: e.response.status,
+        message: e.message,
       })
-      .catch(function (e) {
-        error({
-          statusCode: e.response.status,
-          message: e.message,
-        })
-      })
+    }
   },
 }
 </script>

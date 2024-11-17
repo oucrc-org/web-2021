@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { sortRoutes } from '@nuxt/utils'
+import _ from 'lodash'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -57,12 +58,6 @@ export default {
         size: '180x180',
         href: '/apple-touch-icon.png',
       },
-      /* Google Fonts */
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap',
-      },
     ],
   },
 
@@ -83,7 +78,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    ['@nuxtjs/google-fonts', { display: 'block', download: true, inject: true }],
+    '@nuxtjs/google-fonts',
     '@nuxtjs/google-gtag',
     'cookie-universal-nuxt',
   ],
@@ -105,87 +100,184 @@ export default {
      * generate後の動作は問題ない
      */
     standalone: true,
+    html: {
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: true,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
+    }
   },
 
   generate: {
     async routes() {
-      const limit = 9
+      const countPerPage = 9
       const headers = {
         'X-MICROCMS-API-KEY': process.env.MICROCMS_API_KEY,
       }
-      const range = function* (start, end) {
-        while (start < end) {
-          yield start++
-        }
-      }
 
-      const articleArray = await axios
-        .get(process.env.API_URL + '/article', {
-          headers,
-          params: {
-            limit: 1000,
-            fields: 'id,category.id,series.id',
-            depth: 0,
-          },
-        })
-        .then(({ data }) =>
-          data.contents.map((v) => {
-            return [v.id, v.category?.id, v.series?.id]
-          })
-        )
+      const articles = await getAll(
+        `${process.env.API_URL}/article`,
+        { headers, params: { depth: 0, orders: '-date' } },
+        { throttle: 100 }
+      )
+      const categories = await getAll(
+        `${process.env.API_URL}/category`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const series = await getAll(
+        `${process.env.API_URL}/series`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const members = await getAll(
+        `${process.env.API_URL}/member`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
+      const news = await getAll(
+        `${process.env.API_URL}/news`,
+        { headers, params: { depth: 0 } },
+        { throttle: 100 }
+      )
 
-      const categoryArray = await axios
-        .get(process.env.API_URL + '/category', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
-
-      const seriesArray = await axios
-        .get(process.env.API_URL + '/series', {
-          headers,
-          params: {
-            limit: 100,
-            fields: 'id',
-          },
-        })
-        .then(({ data }) => data.contents.map((content) => content.id))
-
-      const countArticlesByCategory = Object.fromEntries(categoryArray.map((id) => [id, 0]))
-      const countArticlesBySeries = Object.fromEntries(seriesArray.map((id) => [id, 0]))
-
-      articleArray.forEach(([_, category, series]) => {
-        if (category in countArticlesByCategory) {
-          countArticlesByCategory[category]++
-        }
-        if (series in countArticlesBySeries) {
-          countArticlesBySeries[series]++
-        }
-      })
-
+      // TODO: これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
+      // ↑を頑張ってやっています
       return [
-        ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
-        ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
-        ...[...range(0, Math.ceil(articleArray.length / limit))].map((i) => ({
-          route: `/articles/p/${i + 1}`,
+        // 記事ページ
+        ...articles.map(article => ({
+          route: `/articles/${article.id}`,
+          payload: {
+            article,
+            writer: members.find(member => member.id === article.name.id),
+            recommendArticles: articles.filter(a => a.id !== article.id).slice(0, 4),
+            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(0, 3),
+            categories: categories,
+          }
         })),
-        ...Object.entries(countArticlesByCategory)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
-              route: `/articles/category/${k}/${i + 1}`,
+        // 記事一覧ページ (絞り込みなし1ページ目)
+        {
+          route: '/articles',
+          payload: {
+            currentPageNum: 1,
+            maxPageNum: Math.ceil(articles.length / countPerPage),
+            articles: articles.slice(0, countPerPage),
+            categories: categories,
+            series: series,
+          },
+        },
+        // 記事一覧ページ (絞り込みなし)
+        ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+          route: `/articles/p/${i + 1}`,
+          payload: {
+            currentPageNum: i + 1,
+            maxPageNum: Math.ceil(articles.length / countPerPage),
+            articles: chunkedArticles,
+            categories: categories,
+            series: series,
+          },
+        })),
+        // カテゴリ別記事一覧ページ
+        ..._.chain(categories)
+          .map(category => [category.id, []])
+          .fromPairs()
+          .assign(_.chain(articles)
+            .groupBy('category.id')
+            .omit(undefined)
+            .value()
+          )
+          .toPairs()
+          .flatMap(([categoryId, articles]) => [
+            {
+              route: `/articles/category/${categoryId}`,
+              payload: {
+                currentPageNum: 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: articles.slice(0, countPerPage),
+                categories: categories,
+                series: series,
+              },
+            },
+            ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+              route: `/articles/category/${categoryId}/${i + 1}`,
+              payload: {
+                currentPageNum: i + 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: chunkedArticles,
+                categories: categories,
+                series: series,
+              },
             }))
-          })
-          .flat(),
-        ...Object.entries(countArticlesBySeries)
-          .map(([k, v]) => {
-            return [...range(0, Math.ceil(v / limit))].map((i) => ({
-              route: `/articles/series/${k}/${i + 1}`,
+          ])
+          .value(),
+        // シリーズ別記事一覧ページ
+        ..._.chain(series)
+          .map(aSeries => [aSeries.id, []])
+          .fromPairs()
+          .assign(_.chain(articles)
+            .groupBy('series.id')
+            .omit(undefined)
+            .value()
+          )
+          .toPairs()
+          .flatMap(([seriesId, articles]) => [
+            {
+              route: `/articles/series/${seriesId}`,
+              payload: {
+                currentPageNum: 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: articles.slice(0, countPerPage),
+                categories: categories,
+                series: series,
+              },
+            },
+            ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+              route: `/articles/series/${seriesId}/${i + 1}`,
+              payload: {
+                currentPageNum: i + 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: chunkedArticles,
+                categories: categories,
+                series: series,
+              },
             }))
-          })
-          .flat(),
+          ])
+          .value(),
+        // メンバー一覧ページ
+        {
+          route: '/members',
+          payload: {
+            members
+          }
+        },
+        // メンバー個別ページ
+        ...members.map(member => ({
+          route: `/members/${member.id}`,
+          payload: {
+            member: member,
+            articles: articles.filter(article => article.name.id === member.id),
+            categories: categories,
+          }
+        })),
+        // お知らせ一覧ページ
+        {
+          route: '/news',
+          payload: {
+            notices: news,
+          }
+        },
+        // お知らせ個別ページ
+        ...news.map(news => ({
+          route: `/news/${news.id}`,
+          payload: news,
+        })),
       ]
     },
   },
@@ -197,8 +289,62 @@ export default {
     config: {},
   },
 
+  googleFonts: {
+    families: {
+      "Noto+Sans+JP": [400, 700],
+      Roboto: [400, 700],
+    },
+  },
+
   publicRuntimeConfig: {
     API_URL: process.env.API_URL,
     MICROCMS_API_KEY: process.env.MICROCMS_API_KEY,
   },
+}
+
+function* range(start, end, step = 1) {
+  let x = start
+  while (x < end) {
+    yield x
+    x += step
+  }
+}
+
+async function sleep(time) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, time)
+  })
+}
+
+async function runSequentilly(promiseFactories, { throttle = 0 }) {
+  const res = []
+  for (const promiseFactory of promiseFactories) {
+    const running = promiseFactory()
+    await sleep(throttle)
+    // TODO: エラーハンドリング
+    res.push(await running)
+  }
+  return res
+}
+
+async function getAll(url, { params, ...options }, { bulkLimit = 100, throttle = 0 }) {
+  const { data: { totalCount } } = await axios.get(url, { ...options, params: { limit: 0 } })
+
+  const offsets = Array.from(range(0, totalCount, bulkLimit))
+  return Array.from(
+    await runSequentilly(
+      offsets.map(
+        (offset) => async () =>
+          axios.get(url, {
+            ...options,
+            params: {
+              ...params,
+              offset,
+              limit: bulkLimit,
+            },
+          }).then(({ data }) => data.contents)
+      ),
+      { throttle }
+    )
+  ).flat()
 }
