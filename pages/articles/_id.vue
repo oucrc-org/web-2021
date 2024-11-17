@@ -281,18 +281,13 @@ export default {
       }
     }
 
-    const headerAxios = {
-      headers: {
-        'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-      },
-    }
-
     // 記事が直接持つ（参照の内容以外の）情報を取得
     const article = payload.article;
     const parsedArticle = await parseArticle(article)
 
     // 記事の作者
     const writer = payload.writer;
+    parsedArticle.name = writer;
 
     // 最終更新時間
     const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
