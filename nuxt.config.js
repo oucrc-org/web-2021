@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { sortRoutes } from '@nuxt/utils'
+import _ from 'lodash'
 
 export default {
   // Target: https://go.nuxtjs.dev/config-target
@@ -57,12 +58,6 @@ export default {
         size: '180x180',
         href: '/apple-touch-icon.png',
       },
-      /* Google Fonts */
-      { rel: 'preconnect', href: 'https://fonts.gstatic.com' },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto:wght@400;700&display=swap',
-      },
     ],
   },
 
@@ -83,7 +78,7 @@ export default {
   buildModules: [
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    ['@nuxtjs/google-fonts', { display: 'block', download: true, inject: true }],
+    '@nuxtjs/google-fonts',
     '@nuxtjs/google-gtag',
     'cookie-universal-nuxt',
   ],
@@ -105,6 +100,19 @@ export default {
      * generate後の動作は問題ない
      */
     standalone: true,
+    html: {
+      minify: {
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: false,
+        minifyJS: true,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true
+      }
+    }
   },
 
   generate: {
@@ -116,7 +124,7 @@ export default {
 
       const articles = await getAll(
         `${process.env.API_URL}/article`,
-        { headers, params: { depth: 0 } },
+        { headers, params: { depth: 0, orders: '-date' } },
         { throttle: 100 }
       )
       const categories = await getAll(
@@ -140,14 +148,6 @@ export default {
         { throttle: 100 }
       )
 
-      const countArticlesByCategory = new Map(categories.map(category => [category.id, 0]))
-      const countArticlesBySeries = new Map(series.map(series => [series.id, 0]))
-
-      articles.forEach(({category, series}) => {
-        if (category) countArticlesByCategory[category.id]++
-        if (series) countArticlesBySeries[series.id]++
-      })
-
       // TODO: これ route と一緒に payload も返すようにすれば N+1 問題解消できるのでは？
       // ↑を頑張ってやっています
       return [
@@ -157,34 +157,99 @@ export default {
           payload: {
             article,
             writer: members.find(member => member.id === article.name.id),
-            recommendArticles: articles.filter(a => a.id !== article.id).slice(4),
-            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(3),
+            recommendArticles: articles.filter(a => a.id !== article.id).slice(0, 4),
+            articlesBySameWriter: articles.filter(a => a.name.id === article.name.id && a.id !== article.id).slice(0, 3),
+            categories: categories,
           }
         })),
-        // FIXME: 記事一覧ページ (絞り込みなし)
-        // ...[...range(0, Math.ceil(articles.length / countPerPage))].map((i) => ({
-        //   route: `/articles/p/${i + 1}`,
-        // })),
-        // FIXME: カテゴリ別記事一覧ページ
-        // ...categoryArray.map((key) => ({ route: `/articles/category/${key}` })),
-        // FIXME: シリーズ別記事一覧ページ
-        // ...seriesArray.map((key) => ({ route: `/articles/series/${key}` })),
-        // FIXME: カテゴリ別記事一覧ページ (ページネーションあり版)
-        // ...Object.entries(countArticlesByCategory)
-        //   .map(([k, v]) => {
-        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
-        //       route: `/articles/category/${k}/${i + 1}`,
-        //     }))
-        //   })
-        //   .flat(),
-        // FIXME: シリーズ別記事一覧ページ (ページネーションあり版)
-        // ...Object.entries(countArticlesBySeries)
-        //   .map(([k, v]) => {
-        //     return [...range(0, Math.ceil(v / countPerPage))].map((i) => ({
-        //       route: `/articles/series/${k}/${i + 1}`,
-        //     }))
-        //   })
-        //   .flat(),
+        // 記事一覧ページ (絞り込みなし1ページ目)
+        {
+          route: '/articles',
+          payload: {
+            currentPageNum: 1,
+            maxPageNum: Math.ceil(articles.length / countPerPage),
+            articles: articles.slice(0, countPerPage),
+            categories: categories,
+            series: series,
+          },
+        },
+        // 記事一覧ページ (絞り込みなし)
+        ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+          route: `/articles/p/${i + 1}`,
+          payload: {
+            currentPageNum: i + 1,
+            maxPageNum: Math.ceil(articles.length / countPerPage),
+            articles: chunkedArticles,
+            categories: categories,
+            series: series,
+          },
+        })),
+        // カテゴリ別記事一覧ページ
+        ..._.chain(categories)
+          .map(category => [category.id, []])
+          .fromPairs()
+          .assign(_.chain(articles)
+            .groupBy('category.id')
+            .omit(undefined)
+            .value()
+          )
+          .toPairs()
+          .flatMap(([categoryId, articles]) => [
+            {
+              route: `/articles/category/${categoryId}`,
+              payload: {
+                currentPageNum: 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: articles.slice(0, countPerPage),
+                categories: categories,
+                series: series,
+              },
+            },
+            ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+              route: `/articles/category/${categoryId}/${i + 1}`,
+              payload: {
+                currentPageNum: i + 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: chunkedArticles,
+                categories: categories,
+                series: series,
+              },
+            }))
+          ])
+          .value(),
+        // シリーズ別記事一覧ページ
+        ..._.chain(series)
+          .map(aSeries => [aSeries.id, []])
+          .fromPairs()
+          .assign(_.chain(articles)
+            .groupBy('series.id')
+            .omit(undefined)
+            .value()
+          )
+          .toPairs()
+          .flatMap(([seriesId, articles]) => [
+            {
+              route: `/articles/series/${seriesId}`,
+              payload: {
+                currentPageNum: 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: articles.slice(0, countPerPage),
+                categories: categories,
+                series: series,
+              },
+            },
+            ..._.chunk(articles, countPerPage).map((chunkedArticles, i) => ({
+              route: `/articles/series/${seriesId}/${i + 1}`,
+              payload: {
+                currentPageNum: i + 1,
+                maxPageNum: Math.ceil(articles.length / countPerPage),
+                articles: chunkedArticles,
+                categories: categories,
+                series: series,
+              },
+            }))
+          ])
+          .value(),
         // メンバー一覧ページ
         {
           route: '/members',
@@ -198,6 +263,7 @@ export default {
           payload: {
             member: member,
             articles: articles.filter(article => article.name.id === member.id),
+            categories: categories,
           }
         })),
         // お知らせ一覧ページ
@@ -221,6 +287,13 @@ export default {
     configPath: 'tailwind.config.js',
     exposeConfig: false,
     config: {},
+  },
+
+  googleFonts: {
+    families: {
+      "Noto+Sans+JP": [400, 700],
+      Roboto: [400, 700],
+    },
   },
 
   publicRuntimeConfig: {

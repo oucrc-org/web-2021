@@ -13,7 +13,10 @@
       <ArticleContent
         :article="article"
         :timeUpdated="timeUpdated"
-        :category="article.category"
+        :category="
+          article.category !== null
+            ? categories.find(category => category.id === article.category.id) ?? null
+            : null"
         :series="article.series"
       />
 
@@ -119,17 +122,20 @@
 
         <!-- ▼ この人が書いた記事 -->
         <div
-          v-if="otherArticles.contents !== void 0 && otherArticles.contents.length"
+          v-if="otherArticles !== void 0 && otherArticles.length"
           class="pt-24 mx-8 sm:mx-10 text-center"
         >
           <Title label="この人が書いた記事" />
           <div
-            v-for="otherArticle in otherArticles.contents"
+            v-for="otherArticle in otherArticles"
             :key="`otherarticle-${otherArticle.id}`"
           >
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
-              :category="otherArticle.category !== null ? otherArticle.category.category : null"
+              :category="
+                otherArticle.category !== null
+                  ? categories.find(category => category.id === otherArticle.category.id) ?? null
+                  : null"
               class="py-8"
               :img-path="otherArticle.image !== void 0 ? otherArticle.image.url : null"
               :description="otherArticle.title"
@@ -141,18 +147,20 @@
 
         <!-- ▼ 最新のオススメ記事 -->
         <div
-          v-if="recommendArticles.contents !== void 0 && recommendArticles.contents.length"
+          v-if="recommendArticles !== void 0 && recommendArticles.length"
           class="pt-24 mx-8 sm:mx-10 text-center"
         >
           <Title label="最新のオススメ記事" />
           <div
-            v-for="otherArticle in recommendArticles.contents"
+            v-for="otherArticle in recommendArticles"
             :key="`otherarticle-${otherArticle.id}`"
           >
             <ArticleCard
               :href="`/articles/${otherArticle.id}`"
-              :category="otherArticle.category !== null ? otherArticle.category.category : null"
-              class="py-8"
+              :category="
+                otherArticle.category !== null
+                  ? categories.find(category => category.id === otherArticle.category.id) ?? null
+                  : null" class="py-8"
               :img-path="otherArticle.image !== void 0 ? otherArticle.image.url : null"
               :description="otherArticle.title"
               :img-max-width="575"
@@ -203,6 +211,7 @@ export default {
       writer: undefined,
       otherArticles: [],
       recommendArticles: [],
+      categories: [],
       timeUpdated: '',
     }
   },
@@ -272,18 +281,13 @@ export default {
       }
     }
 
-    const headerAxios = {
-      headers: {
-        'X-MICROCMS-API-KEY': $config.MICROCMS_API_KEY,
-      },
-    }
-
     // 記事が直接持つ（参照の内容以外の）情報を取得
     const article = payload.article;
     const parsedArticle = await parseArticle(article)
 
     // 記事の作者
     const writer = payload.writer;
+    parsedArticle.name = writer;
 
     // 最終更新時間
     const timeUpdated = $dayjs(article.updatedAt).format('YYYY/MM/DD')
@@ -300,6 +304,7 @@ export default {
       otherArticles,
       recommendArticles,
       timeUpdated,
+      categories: payload.categories,
     }
   },
 }
