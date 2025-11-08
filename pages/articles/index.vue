@@ -40,6 +40,13 @@
     >
       <div class="container mx-auto">
         <Title label="最新の投稿" class="mb-4" />
+        <!-- ページジャンパー（上部） -->
+        <Pagenation
+          :currentPageNum="currentPageNum"
+          :maxPageNum="maxPageNum"
+          :createNuxtLinkTo="(n) => ({ name: listType, params: { p: n } })"
+          class="mb-8"
+        />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
             v-for="article in articles"
