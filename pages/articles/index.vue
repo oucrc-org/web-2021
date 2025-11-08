@@ -40,6 +40,14 @@
     >
       <div class="container mx-auto">
         <Title label="最新の投稿" class="mb-4" />
+        <!-- ページジャンパー（上部） -->
+        <Pagenation
+          v-if="maxPageNum > 1"
+          :currentPageNum="currentPageNum"
+          :maxPageNum="maxPageNum"
+          :createNuxtLinkTo="(n) => ({ name: listType, params: { p: n } })"
+          class="mb-8"
+        />
         <div class="sm:grid grid-cols-3 gap-8">
           <ArticleCard
             v-for="article in articles"
@@ -60,32 +68,12 @@
     </div>
 
     <!-- ページジャンパー -->
-    <div class="page-jumper">
-      <NuxtLink
-        v-if="currentPageNum > 1"
-        :to="{ name: listType, params: { p: currentPageNum - 1 } }"
-      >
-        <div class="text-subtext text-xl">&lt;</div>
-      </NuxtLink>
-      <NuxtLink
-        v-for="pageNum in [...Array(maxPageNum)].map((_, i) => i + 1)"
-        :key="'jumper' + pageNum"
-        :to="{ name: listType, params: { p: pageNum } }"
-      >
-        <div
-          class="text-xl"
-          :class="[pageNum === currentPageNum ? 'text-primary' : 'text-subtext']"
-        >
-          {{ pageNum }}
-        </div>
-      </NuxtLink>
-      <NuxtLink
-        v-if="currentPageNum < maxPageNum"
-        :to="{ name: listType, params: { p: currentPageNum + 1 } }"
-      >
-        <div class="text-subtext text-xl">&gt;</div>
-      </NuxtLink>
-    </div>
+    <Pagenation
+      v-if="maxPageNum > 1"
+      :currentPageNum="currentPageNum"
+      :maxPageNum="maxPageNum"
+      :createNuxtLinkTo="(n) => ({ name: listType, params: { p: n } })"
+    />
   </div>
 </template>
 
@@ -136,13 +124,5 @@ export default {
 <style scoped>
 ::-webkit-search-cancel-button {
   appearance: none;
-}
-
-.page-jumper {
-  @apply flex flex-row mx-auto my-2 justify-center;
-}
-
-.page-jumper div {
-  @apply px-3;
 }
 </style>
