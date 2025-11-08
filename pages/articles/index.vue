@@ -42,6 +42,7 @@
         <Title label="最新の投稿" class="mb-4" />
         <!-- ページジャンパー（上部） -->
         <Pagenation
+          v-if="maxPageNum > 1"
           :currentPageNum="currentPageNum"
           :maxPageNum="maxPageNum"
           :createNuxtLinkTo="(n) => ({ name: listType, params: { p: n } })"
@@ -68,6 +69,7 @@
 
     <!-- ページジャンパー -->
     <Pagenation
+      v-if="maxPageNum > 1"
       :currentPageNum="currentPageNum"
       :maxPageNum="maxPageNum"
       :createNuxtLinkTo="(n) => ({ name: listType, params: { p: n } })"
