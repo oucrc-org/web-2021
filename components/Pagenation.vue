@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import { generatePageNumbers } from './utils/pagination.js'
+
 export default {
   name: 'Pagenation',
   props: {
@@ -51,26 +53,7 @@ export default {
   },
   computed: {
     pageNumbers() {
-      const { currentPageNum, maxPageNum } = this
-
-      // 現在ページの前後1ページの範囲を計算
-      const rangeStart = Math.max(2, currentPageNum - 1)
-      const rangeEnd = Math.min(maxPageNum - 1, currentPageNum + 1)
-
-      // 範囲内のページ番号を生成
-      const middlePages = Array.from(
-        { length: rangeEnd - rangeStart + 1 },
-        (_, i) => rangeStart + i
-      )
-
-      // 最初のページ、省略記号、範囲内、省略記号、最後のページを結合
-      return [
-        1,
-        ...(rangeStart > 2 ? ['ellipsis'] : []),
-        ...middlePages,
-        ...(rangeEnd < maxPageNum - 1 ? ['ellipsis'] : []),
-        ...(maxPageNum > 1 ? [maxPageNum] : []),
-      ]
+      return generatePageNumbers(this.currentPageNum, this.maxPageNum)
     },
   },
 }
