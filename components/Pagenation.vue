@@ -6,18 +6,23 @@
     >
       <div class="text-subtext text-xl">&lt;</div>
     </NuxtLink>
-    <NuxtLink
-      v-for="pageNum in [...Array(maxPageNum)].map((_, i) => i + 1)"
-      :key="'jumper' + pageNum"
-      :to="createNuxtLinkTo(pageNum)"
-    >
-      <div
-        class="text-xl"
-        :class="[pageNum === currentPageNum ? 'text-primary' : 'text-subtext']"
+    <template v-for="(item, index) in pageNumbers">
+      <NuxtLink
+        v-if="typeof item === 'number'"
+        :key="'page-' + item"
+        :to="createNuxtLinkTo(item)"
       >
-        {{ pageNum }}
-      </div>
-    </NuxtLink>
+        <div
+          class="text-xl"
+          :class="[item === currentPageNum ? 'text-primary' : 'text-subtext']"
+        >
+          {{ item }}
+        </div>
+      </NuxtLink>
+      <span v-else :key="'ellipsis-' + index" class="text-subtext text-xl px-3">
+        ...
+      </span>
+    </template>
     <NuxtLink
       v-if="currentPageNum < maxPageNum"
       :to="createNuxtLinkTo(currentPageNum + 1)"
@@ -44,8 +49,33 @@ export default {
       required: true,
     },
   },
+  computed: {
+    pageNumbers() {
+      const { currentPageNum, maxPageNum } = this
+
+      // 現在ページの前後1ページの範囲を計算
+      const rangeStart = Math.max(2, currentPageNum - 1)
+      const rangeEnd = Math.min(maxPageNum - 1, currentPageNum + 1)
+
+      // 範囲内のページ番号を生成
+      const middlePages = Array.from(
+        { length: rangeEnd - rangeStart + 1 },
+        (_, i) => rangeStart + i
+      )
+
+      // 最初のページ、省略記号、範囲内、省略記号、最後のページを結合
+      return [
+        1,
+        ...(rangeStart > 2 ? ['ellipsis'] : []),
+        ...middlePages,
+        ...(rangeEnd < maxPageNum - 1 ? ['ellipsis'] : []),
+        ...(maxPageNum > 1 ? [maxPageNum] : []),
+      ]
+    },
+  },
 }
 </script>
+
 
 <style scoped>
 .page-jumper {
