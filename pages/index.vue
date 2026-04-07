@@ -70,6 +70,25 @@
     </section>
     <!-- ▲ 電子計算機研究会とは -->
 
+    <!-- ▼ 入部はこちらから-->
+    <section class="bg-white border-t-2 py-10 relative w-full">
+      <div class="container mx-auto">
+        <fade-in>
+          <div class="divide-y divide-divider mb-20 px-4 sm:px-24 md:px-40 lg:px-64 xl:px-96">
+            <h2 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">
+                <NuxtLink
+                  to="/join"
+                  class="inline-block w-full"
+                >
+                  <BigDoubleLineButton label="入部はこちらから！"></BigDoubleLineButton>
+                </NuxtLink>
+            </h2>
+          </div>
+        </fade-in>
+      </div>
+    </section>
+    <!-- ▲ 入部はこちらから -->
+
     <!-- ▼ 電算研の部室 -->
     <section class="relative w-full z-10" style="height: 83vh">
       <div class="container h-full relative mx-auto">
@@ -144,6 +163,7 @@
 import Contact from '~/components/Contact'
 import HeroArea from '~/components/HeroArea'
 import axios from 'axios'
+import BigDoubleLineButton from '../components/BigDoubleLineButton.vue';
 
 export default {
   /*お知らせを取ってくる処理系統*/
