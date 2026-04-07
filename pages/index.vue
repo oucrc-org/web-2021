@@ -78,7 +78,7 @@
             <h2 class="font-bold mb-4 text-3xl sm:text-4xl text-center tracking-widest">
                 <NuxtLink
                   to="/join"
-                  class="inline-block transform hover:scale-101 transition duration-500 ease-in-out w-full"
+                  class="inline-block w-full"
                 >
                   <BigDoubleLineButton label="入部はこちらから！"></BigDoubleLineButton>
                 </NuxtLink>
