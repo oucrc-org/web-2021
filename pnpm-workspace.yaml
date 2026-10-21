@@ -1,7 +1,8 @@
 packages:
   - "."
 
-onlyBuiltDependencies:
-  - '@parcel/watcher'
-  - core-js
-  - nuxt
+allowBuilds:
+  '@parcel/watcher': true
+  core-js: true
+  esbuild: true
+  nuxt: true
